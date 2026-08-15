@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>我的阅读记录</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f6f3ee;color:#403b36;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
+button,input,select,textarea{font:inherit}
+header{padding:28px 6%;background:#fff;border-bottom:1px solid #e8e1d8}
+h1{margin:0 0 8px;font-size:28px}
+.sub{color:#8a8178}
+main{max-width:1100px;margin:28px auto;padding:0 20px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+button{border:0;border-radius:10px;padding:10px 16px;cursor:pointer}
+.primary{background:#5f6f52;color:white}
+.secondary{background:white;border:1px solid #ddd5cc}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #ddd5cc;border-radius:9px;background:white;color:#403b36}
+.search{flex:1;min-width:220px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.stat,.panel,.book{background:white;border:1px solid #e8e1d8;border-radius:14px;padding:18px}
+.stat b{display:block;font-size:25px;margin-top:5px}
+.stat span{color:#8a8178;font-size:13px}
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:18px}
+.book{margin-bottom:12px}
+.book-head{display:flex;justify-content:space-between;gap:15px}
+.title{font-size:19px;font-weight:700}
+.meta{color:#8a8178;font-size:13px;line-height:1.8;margin-top:6px}
+.words{font-size:20px;font-weight:700;white-space:nowrap}
+.tags{margin-top:10px}
+.tag{display:inline-block;background:#f1eee9;border-radius:20px;padding:4px 9px;margin:3px;font-size:12px}
+.actions{margin-top:14px;display:flex;gap:8px}
+.textbtn{background:#f6f3ee;padding:7px 11px}
+.empty{text-align:center;color:#999;padding:50px 10px}
+.panel h2{font-size:18px;margin-top:0}
+.barrow{display:grid;grid-template-columns:35px 1fr 55px;align-items:center;gap:8px;margin:10px 0;font-size:12px}
+.barbg{height:10px;background:#eee9e2;border-radius:10px;overflow:hidden}
+.bar{height:100%;background:#8b9b78;border-radius:10px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);align-items:center;justify-content:center;padding:20px;z-index:10}
+.modal.show{display:flex}
+.modalbox{background:#fff;border-radius:16px;width:min(650px,100%);max-height:90vh;overflow:auto;padding:22px}
+.modalhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.close{background:transparent;font-size:25px;padding:0}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.field.full{grid-column:1/-1}
+.field label{display:block;font-size:13px;margin-bottom:6px;color:#665f57}
+textarea{min-height:100px;resize:vertical}
+.formfooter{display:flex;justify-content:flex-end;gap:10px;margin-top:18px}
+.stars{font-size:27px;letter-spacing:3px;cursor:pointer;color:#cfc8be}
+.stars .active{color:#c18b45}
+.detail-row{padding:11px 0;border-bottom:1px solid #eee8e1}
+.detail-label{font-size:12px;color:#968d83;margin-bottom:5px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#403b36;color:#fff;padding:10px 18px;border-radius:9px;display:none;z-index:20}
+.toast.show{display:block}
+@media(max-width:750px){.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}}
+</style>
+</head>
+<body>
+<header>
+<h1>我的阅读记录</h1>
+<div class="sub">记录读过的小说，也记录读完之后还剩多少余味。</div>
+</header>
+
+<main>
+<div class="toolbar">
+<input id="search" class="search" placeholder="搜索小说、作者、主角、标签">
+<select id="filter" style="max-width:140px">
+<option value="all">全部状态</option><option value="reading">在读</option>
+<option value="finished">已完成</option><option value="want">想读</option><option value="dropped">弃读</option>
+</select>
+<button class="primary" id="add">＋ 添加小说</button>
+<button class="secondary" id="export">导出数据</button>
+<button class="secondary" id="importBtn">导入数据</button>
+<input id="file" type="file" accept=".json" hidden>
+</div>
+
+<section class="stats">
+<div class="stat"><span>今年阅读字数</span><b id="yearWords">0w</b></div>
+<div class="stat"><span>本月阅读字数</span><b id="monthWords">0w</b></div>
+<div class="stat"><span>今年完成小说</span><b id="yearBooks">0</b></div>
+<div class="stat"><span>累计记录</span><b id="totalBooks">0</b></div>
+</section>
+
+<div class="grid">
+<section>
+<div id="books"></div>
+</section>
+<aside>
+<div class="panel">
+<h2>今年每月阅读量</h2>
+<div id="months"></div>
+</div>
+<div class="panel" style="margin-top:18px">
+<h2>最近开始阅读</h2>
+<div id="timeline"></div>
+</div>
+</aside>
+</div>
+</main>
+
+<div class="modal" id="modal">
+<div class="modalbox">
+<div class="modalhead"><h2 id="modalTitle">添加小说</h2><button class="close" id="close">×</button></div>
+<div class="formgrid">
+<div class="field"><label>小说名称 *</label><input id="title"></div>
+<div class="field"><label>作者</label><input id="author"></div>
+<div class="field"><label>主角</label><input id="protagonist"></div>
+<div class="field"><label>字数（w）</label><input id="words" type="number" step="0.1" min="0"></div>
+<div class="field"><label>阅读状态</label><select id="status"><option value="reading">在读</option><option value="finished">已完成</option><option value="want">想读</option><option value="dropped">弃读</option></select></div>
+<div class="field"><label>标签，用逗号分隔</label><input id="tags" placeholder="古风,轻松,HE"></div>
+<div class="field"><label>开始阅读</label><input id="start" type="date"></div>
+<div class="field"><label>结束阅读</label><input id="end" type="date"></div>
+<div class="field full"><label>评分</label><div class="stars" id="stars"><span data-r="1">★</span><span data-r="2">★</span><span data-r="3">★</span><span data-r="4">★</span><span data-r="5">★</span></div></div>
+<div class="field full"><label>个人感受</label><textarea id="feeling" placeholder="这本书给你的感觉、喜欢的地方、不喜欢的地方……"></textarea></div>
+<div class="field full"><label>名场面 / 备注</label><textarea id="note"></textarea></div>
+</div>
+<div class="formfooter"><button class="secondary" id="cancel">取消</button><button class="primary" id="save">保存</button></div>
+</div>
+</div>
+
+<div class="modal" id="detailModal">
+<div class="modalbox">
+<div class="modalhead"><h2 id="detailTitle"></h2><button class="close" id="detailClose">×</button></div>
+<div id="detail"></div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+let books=JSON.parse(localStorage.getItem("readingBooks")||"[]");
+let editing=null, rating=0;
+
+const $=id=>document.getElementById(id);
+function saveData(){localStorage.setItem("readingBooks",JSON.stringify(books))}
+function esc(v){return String(v||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function fmt(n){return Number(n||0).toLocaleString("zh-CN",{maximumFractionDigits:1})}
+function date(v){if(!v)return "";let d=new Date(v);return d.getFullYear()+"."+String(d.getMonth()+1).padStart(2,"0")+"."+String(d.getDate()).padStart(2,"0")}
+function days(b){if(!b.start)return 0;let a=new Date(b.start),z=b.end?new Date(b.end):new Date();return Math.max(1,Math.floor((z-a)/86400000)+1)}
+function statusText(s){return {reading:"在读",finished:"已完成",want:"想读",dropped:"弃读"}[s]||s}
+function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),1800)}
+
+function render(){
+ let key=$("search").value.trim().toLowerCase(), filter=$("filter").value;
+ let list=books.filter(b=>(filter==="all"||b.status===filter)&&(!key||[b.title,b.author,b.protagonist,...(b.tags||[])].join(" ").toLowerCase().includes(key)));
+ $("books").innerHTML=list.length?list.map(b=>`
+ <article class="book">
+  <div class="book-head"><div><div class="title">${esc(b.title)}</div><div class="meta">${b.author?"作者："+esc(b.author):""}${b.protagonist?"　主角："+esc(b.protagonist):""}<br>${b.start?date(b.start)+" - "+(b.end?date(b.end):"至今")+"　·　"+days(b)+"天":"未记录阅读时间"}</div></div><div class="words">${fmt(b.words)}w</div></div>
+  <div class="tags">${(b.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
+  <div class="actions"><button class="textbtn" onclick="detail('${b.id}')">查看</button><button class="textbtn" onclick="editBook('${b.id}')">编辑</button><button class="textbtn" onclick="removeBook('${b.id}')">删除</button></div>
+ </article>`).join(""):`<div class="empty">还没有记录小说<br><small>点击“添加小说”开始吧</small></div>`;
+
+ let now=new Date(), y=now.getFullYear(),m=now.getMonth()+1;
+ let yw=books.filter(b=>b.start&&new Date(b.start).getFullYear()===y).reduce((a,b)=>a+Number(b.words||0),0);
+ let mw=books.filter(b=>b.start&&new Date(b.start).getFullYear()===y&&new Date(b.start).getMonth()+1===m).reduce((a,b)=>a+Number(b.words||0),0);
+ $("yearWords").textContent=fmt(yw)+"w";$("monthWords").textContent=fmt(mw)+"w";
+ $("yearBooks").textContent=books.filter(b=>b.status==="finished"&&b.start&&new Date(b.start).getFullYear()===y).length;
+ $("totalBooks").textContent=books.length;
+
+ let vals=Array.from({length:12},(_,i)=>books.filter(b=>b.start&&new Date(b.start).getFullYear()===y&&new Date(b.start).getMonth()===i).reduce((a,b)=>a+Number(b.words||0),0));
+ let max=Math.max(...vals,1);
+ $("months").innerHTML=vals.map((v,i)=>`<div class="barrow"><span>${i+1}月</span><div class="barbg"><div class="bar" style="width:${v/max*100}%"></div></div><span>${fmt(v)}w</span></div>`).join("");
+
+ let recent=[...books].filter(b=>b.start).sort((a,b)=>new Date(b.start)-new Date(a.start)).slice(0,8);
+ $("timeline").innerHTML=recent.length?recent.map(b=>`<div class="meta" style="margin:10px 0"><b>${date(b.start)}</b>　${esc(b.title)}</div>`).join(""):"<div class='meta'>暂无记录</div>";
+}
+
+function openModal(b=null){
+ editing=b?b.id:null;$("modalTitle").textContent=b?"编辑小说":"添加小说";
+ ["title","author","protagonist","words","tags","start","end","feeling","note"].forEach(id=>$(id).value=b?(id==="tags"?(b.tags||[]).join(","):b[id]||""):"");
+ $("status").value=b?b.status:"reading";rating=b?Number(b.rating||0):0;updateStars();$("modal").classList.add("show");
+}
+function closeModal(){$("modal").classList.remove("show")}
+function updateStars(){$("#stars").querySelectorAll("span").forEach(s=>s.classList.toggle("active",Number(s.dataset.r)<=rating))}
+function editBook(id){let b=books.find(x=>x.id===id);if(b)openModal(b)}
+function removeBook(id){let b=books.find(x=>x.id===id);if(b&&confirm("确定删除《"+b.title+"》吗？")){books=books.filter(x=>x.id!==id);saveData();render();toast("已删除")}}
+function detail(id){
+ let b=books.find(x=>x.id===id);if(!b)return;
+ $("detailTitle").textContent=b.title;
+ $("detail").innerHTML=`<div class="detail-row"><div class="detail-label">作者 / 主角</div>${esc(b.author||"未记录")}　/　${esc(b.protagonist||"未记录")}</div>
+ <div class="detail-row"><div class="detail-label">字数 / 状态</div>${fmt(b.words)}w　·　${statusText(b.status)}</div>
+ <div class="detail-row"><div class="detail-label">阅读时间</div>${b.start?date(b.start)+" - "+(b.end?date(b.end):"至今")+"　·　"+days(b)+"天":"未记录"}</div>
+ <div class="detail-row"><div class="detail-label">评分</div>${"★".repeat(b.rating||0)}${"☆".repeat(5-(b.rating||0))}</div>
+ <div class="detail-row"><div class="detail-label">标签</div>${(b.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")||"暂无"}</div>
+ <div class="detail-row"><div class="detail-label">个人感受</div>${esc(b.feeling)||"暂无记录"}</div>
+ <div class="detail-row"><div class="detail-label">名场面 / 备注</div>${esc(b.note)||"暂无记录"}</div>`;
+ $("detailModal").classList.add("show");
+}
+
+$("add").onclick=()=>openModal();
+$("close").onclick=closeModal;$("cancel").onclick=closeModal;
+$("detailClose").onclick=()=>$("detailModal").classList.remove("show");
+$("search").oninput=render;$("filter").onchange=render;
+$("#stars").querySelectorAll("span").forEach(s=>s.onclick=()=>{rating=Number(s.dataset.r);updateStars()});
+$("save").onclick=()=>{
+ let title=$("title").value.trim();if(!title){alert("请输入小说名称");return}
+ let b={id:editing||Date.now().toString(),title,author:$("author").value.trim(),protagonist:$("protagonist").value.trim(),words:Number($("words").value)||0,status:$("status").value,tags:$("tags").value.split(",").map(x=>x.trim()).filter(Boolean),start:$("start").value,end:$("end").value,rating,feeling:$("feeling").value.trim(),note:$("note").value.trim()};
+ if(editing){let i=books.findIndex(x=>x.id===editing);if(i>=0)books[i]=b}else books.unshift(b);
+ saveData();closeModal();render();toast(editing?"已更新":"已添加");
+};
+$("export").onclick=()=>{
+ let blob=new Blob([JSON.stringify(books,null,2)],{type:"application/json"}),a=document.createElement("a");
+ a.href=URL.createObjectURL(blob);a.download="reading-record.json";a.click();URL.revokeObjectURL(a.href);toast("数据已导出");
+};
+$("importBtn").onclick=()=>$("file").click();
+$("file").onchange=e=>{
+ let f=e.target.files[0];if(!f)return;let r=new FileReader();
+ r.onload=()=>{try{let d=JSON.parse(r.result);if(!Array.isArray(d))throw 0;if(confirm("导入数据会覆盖当前记录，确定吗？")){books=d;saveData();render();toast("导入成功")}}catch{alert("导入失败：JSON 文件格式不正确")}};
+ r.readAsText(f);e.target.value="";
+};
+render();
+</script>
+</body>
+</html>
