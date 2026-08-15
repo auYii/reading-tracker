@@ -1,1319 +1,1819 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的阅读记录</title>
-
-<style>
-:root {
-    --bg: #f6f4f1;
-    --card: #ffffff;
-    --text: #292725;
-    --subtext: #85817c;
-    --border: #e8e4df;
-    --accent: #806b5c;
-    --accent-light: #eee8e2;
-    --danger: #b96b6b;
-    --shadow: 0 8px 30px rgba(70, 60, 50, 0.07);
-}
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        "Microsoft YaHei",
-        "PingFang SC",
-        sans-serif;
-}
-
-button,
-input,
-select,
-textarea {
-    font: inherit;
-}
-
-button {
-    cursor: pointer;
-}
-
-.app {
-    max-width: 1400px;
-    margin: auto;
-    padding: 30px;
-}
-
-/* 顶部 */
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.logo h1 {
-    margin: 0;
-    font-size: 30px;
-    font-weight: 600;
-    letter-spacing: 1px;
-}
-
-.logo p {
-    margin: 7px 0 0;
-    color: var(--subtext);
-    font-size: 14px;
-}
-
-.header-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.btn {
-    border: 1px solid var(--border);
-    background: var(--card);
-    color: var(--text);
-    padding: 10px 16px;
-    border-radius: 10px;
-    transition: 0.2s;
-}
-
-.btn:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow);
-}
-
-.btn-primary {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
-}
-
-.btn-danger {
-    color: var(--danger);
-}
-
-/* 统计卡片 */
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.stat-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 22px;
-    box-shadow: var(--shadow);
-}
-
-.stat-label {
-    color: var(--subtext);
-    font-size: 13px;
-    margin-bottom: 10px;
-}
-
-.stat-value {
-    font-size: 28px;
-    font-weight: 600;
-}
-
-.stat-unit {
-    font-size: 13px;
-    color: var(--subtext);
-    margin-left: 4px;
-}
-
-/* 页面主体 */
-
-.content-grid {
-    display: grid;
-    grid-template-columns: 1fr 350px;
-    gap: 20px;
-}
-
-.panel {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-}
-
-.panel-header {
-    padding: 20px 22px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.panel-title {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.panel-body {
-    padding: 20px;
-}
-
-/* 搜索 */
-
-.search-area {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 18px;
-}
-
-.search-input {
-    flex: 1;
-}
-
-input,
-select,
-textarea {
-    width: 100%;
-    padding: 11px 13px;
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    outline: none;
-    background: var(--card);
-    color: var(--text);
-    transition: 0.2s;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    border-color: var(--accent);
-}
-
-textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-/* 小说列表 */
-
-.book-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.book-item {
-    border: 1px solid var(--border);
-    border-radius: 13px;
-    padding: 17px;
-    transition: 0.2s;
-}
-
-.book-item:hover {
-    box-shadow: 0 5px 20px rgba(70, 60, 50, 0.06);
-    transform: translateY(-1px);
-}
-
-.book-main {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.book-info {
-    min-width: 0;
-}
-
-.book-title {
-    font-size: 17px;
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.book-meta {
-    color: var(--subtext);
-    font-size: 13px;
-    line-height: 1.8;
-}
-
-.book-side {
-    text-align: right;
-    min-width: 110px;
-}
-
-.book-words {
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.book-date {
-    color: var(--subtext);
-    font-size: 12px;
-    margin-top: 4px;
-}
-
-.book-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 13px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
-}
-
-.tags {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-}
-
-.tag {
-    background: var(--accent-light);
-    color: var(--accent);
-    border-radius: 20px;
-    padding: 4px 9px;
-    font-size: 11px;
-}
-
-.status {
-    display: inline-block;
-    border-radius: 20px;
-    padding: 4px 9px;
-    font-size: 11px;
-}
-
-.status-finished {
-    background: #e8f0e7;
-    color: #607b5e;
-}
-
-.status-reading {
-    background: #eee8dd;
-    color: #8a704c;
-}
-
-.status-dropped {
-    background: #f1e5e5;
-    color: #9a6262;
-}
-
-.status-want {
-    background: #e7e9ef;
-    color: #65708a;
-}
-
-.book-actions {
-    display: flex;
-    gap: 6px;
-}
-
-.small-btn {
-    border: none;
-    background: transparent;
-    color: var(--subtext);
-    font-size: 12px;
-    padding: 4px 7px;
-}
-
-.small-btn:hover {
-    color: var(--accent);
-}
-
-/* 右侧 */
-
-.side-section {
-    margin-bottom: 20px;
-}
-
-.side-section:last-child {
-    margin-bottom: 0;
-}
-
-.side-title {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 14px;
-}
-
-/* 月度统计 */
-
-.month-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.month-row {
-    display: grid;
-    grid-template-columns: 45px 1fr 70px;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-}
-
-.month-name {
-    color: var(--subtext);
-}
-
-.bar-bg {
-    height: 8px;
-    border-radius: 10px;
-    background: #eeeae6;
-    overflow: hidden;
-}
-
-.bar {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 10px;
-}
-
-.month-value {
-    text-align: right;
-    color: var(--subtext);
-}
-
-/* 时间线 */
-
-.timeline {
-    position: relative;
-    padding-left: 20px;
-}
-
-.timeline::before {
-    content: "";
-    position: absolute;
-    left: 4px;
-    top: 4px;
-    bottom: 4px;
-    width: 1px;
-    background: var(--border);
-}
-
-.timeline-item {
-    position: relative;
-    margin-bottom: 18px;
-}
-
-.timeline-item::before {
-    content: "";
-    position: absolute;
-    left: -20px;
-    top: 5px;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--accent);
-}
-
-.timeline-date {
-    color: var(--subtext);
-    font-size: 11px;
-    margin-bottom: 3px;
-}
-
-.timeline-title {
-    font-size: 13px;
-}
-
-/* 空状态 */
-
-.empty {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--subtext);
-}
-
-.empty-icon {
-    font-size: 38px;
-    margin-bottom: 10px;
-}
-
-/* 弹窗 */
-
-.modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(20, 18, 16, 0.45);
-    z-index: 100;
-    padding: 20px;
-    overflow-y: auto;
-}
-
-.modal.active {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-content {
-    width: min(720px, 100%);
-    background: var(--card);
-    border-radius: 18px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-    overflow: hidden;
-}
-
-.modal-header {
-    padding: 20px 22px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.modal-header h2 {
-    margin: 0;
-    font-size: 19px;
-}
-
-.close {
-    border: none;
-    background: transparent;
-    font-size: 25px;
-    color: var(--subtext);
-}
-
-.modal-body {
-    padding: 22px;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-}
-
-.form-group {
-    margin-bottom: 2px;
-}
-
-.form-group.full {
-    grid-column: 1 / -1;
-}
-
-.form-label {
-    display: block;
-    font-size: 13px;
-    margin-bottom: 7px;
-}
-
-.required {
-    color: var(--danger);
-}
-
-.modal-footer {
-    padding: 15px 22px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-/* 星星 */
-
-.rating {
-    display: flex;
-    gap: 3px;
-}
-
-.star {
-    font-size: 24px;
-    color: #d9d2ca;
-    cursor: pointer;
-}
-
-.star.active {
-    color: #b28c54;
-}
-
-/* 图表 */
-
-.chart-container {
-    width: 100%;
-    height: 240px;
-    position: relative;
-}
-
-.chart {
-    display: flex;
-    height: 190px;
-    align-items: flex-end;
-    gap: 10px;
-    padding: 10px 5px 0;
-}
-
-.chart-column {
-    flex: 1;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 5px;
-}
-
-.chart-bar {
-    width: min(35px, 70%);
-    background: var(--accent);
-    border-radius: 5px 5px 0 0;
-    min-height: 2px;
-    transition: 0.3s;
-}
-
-.chart-bar:hover {
-    opacity: 0.75;
-}
-
-.chart-label {
-    font-size: 10px;
-    color: var(--subtext);
-}
-
-.chart-value {
-    font-size: 9px;
-    color: var(--subtext);
-}
-
-/* Toast */
-
-.toast {
-    position: fixed;
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: #292725;
-    color: white;
-    padding: 10px 18px;
-    border-radius: 9px;
-    font-size: 13px;
-    opacity: 0;
-    pointer-events: none;
-    transition: 0.3s;
-    z-index: 300;
-}
-
-.toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-
-/* 响应式 */
-
-@media (max-width: 900px) {
-    .content-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 600px) {
-    .app {
-        padding: 15px;
-    }
-
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-
-    .header-actions {
-        width: 100%;
-    }
-
-    .header-actions .btn {
-        flex: 1;
-    }
-
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-
-    .stat-card {
-        padding: 16px;
-    }
-
-    .stat-value {
-        font-size: 23px;
-    }
-
-    .book-main {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .book-side {
-        text-align: left;
-    }
-
-    .book-bottom {
-        align-items: flex-start;
-        gap: 10px;
-        flex-direction: column;
-    }
-
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .form-group.full {
-        grid-column: auto;
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>我的阅读记录</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f6f3ee;
+            color: #403b36;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                "Microsoft YaHei",
+                "PingFang SC",
+                sans-serif;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+
+        /* =========================
+           顶部
+        ========================= */
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e8e1d8;
+            padding: 30px 6%;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #8b8177;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           主体
+        ========================= */
+
+        main {
+            width: 100%;
+            max-width: 1100px;
+            margin: 28px auto;
+            padding: 0 20px;
+        }
+
+
+        /* =========================
+           工具栏
+        ========================= */
+
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid #ddd5cc;
+            border-radius: 9px;
+            background: #ffffff;
+            color: #403b36;
+            padding: 11px 12px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #9aa88a;
+        }
+
+        textarea {
+            min-height: 110px;
+            max-height: 110px;
+
+            /*
+             * 关键：
+             * 禁止用户拖动文本框改变大小
+             */
+            resize: none;
+
+            line-height: 1.6;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 9px;
+            padding: 10px 16px;
+            transition: 0.15s;
+        }
+
+        .btn:hover {
+            opacity: 0.88;
+        }
+
+        .btn-primary {
+            background: #69795c;
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #514a43;
+            border: 1px solid #ddd5cc;
+        }
+
+        .btn-danger {
+            background: #fff1ef;
+            color: #b55347;
+        }
+
+
+        /* =========================
+           统计卡片
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #e8e1d8;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .stat-label {
+            color: #91877e;
+            font-size: 13px;
+        }
+
+        .stat-value {
+            margin-top: 7px;
+            font-size: 25px;
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           内容布局
+        ========================= */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 18px;
+            align-items: start;
+        }
+
+        .panel {
+            background: #ffffff;
+            border: 1px solid #e8e1d8;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .panel-title {
+            margin: 0 0 16px;
+            font-size: 18px;
+        }
+
+
+        /* =========================
+           小说卡片
+        ========================= */
+
+        .book-card {
+            background: #ffffff;
+            border: 1px solid #e8e1d8;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 12px;
+        }
+
+        .book-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .book-title {
+            font-size: 19px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .book-meta {
+            margin-top: 7px;
+            color: #8d847b;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .book-words {
+            font-size: 20px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .status-reading {
+            background: #edf3e8;
+            color: #637452;
+        }
+
+        .status-finished {
+            background: #eeeaf6;
+            color: #71628b;
+        }
+
+        .status-want {
+            background: #f5eee1;
+            color: #947548;
+        }
+
+        .status-dropped {
+            background: #f6e9e6;
+            color: #a86459;
+        }
+
+        .tags {
+            margin-top: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            margin: 3px 4px 3px 0;
+            padding: 4px 9px;
+            background: #f1eee9;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #716a63;
+        }
+
+        .rating {
+            margin-top: 8px;
+            color: #c28d45;
+            letter-spacing: 2px;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .small-btn {
+            border: 0;
+            border-radius: 8px;
+            padding: 7px 11px;
+            background: #f5f2ed;
+            color: #5c554e;
+        }
+
+        .small-btn:hover {
+            background: #ece8e1;
+        }
+
+
+        /* =========================
+           空状态
+        ========================= */
+
+        .empty {
+            text-align: center;
+            padding: 55px 20px;
+            color: #99918a;
+        }
+
+        .empty-icon {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+
+        /* =========================
+           月度统计
+        ========================= */
+
+        .month-row {
+            display: grid;
+            grid-template-columns: 35px 1fr 55px;
+            align-items: center;
+            gap: 8px;
+            margin: 11px 0;
+            font-size: 12px;
+        }
+
+        .progress-bg {
+            height: 10px;
+            background: #eeeae4;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: #8b9a78;
+            border-radius: 10px;
+        }
+
+
+        /* =========================
+           最近阅读
+        ========================= */
+
+        .timeline-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee8e1;
+        }
+
+        .timeline-item:last-child {
+            border-bottom: 0;
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            color: #978e85;
+        }
+
+        .timeline-title {
+            margin-top: 4px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        /* =========================
+           弹窗
+        ========================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+
+            z-index: 1000;
+
+            /*
+             * 不使用 align-items:center
+             * 防止窗口太高时顶部被截掉
+             */
+            display: none;
+
+            align-items: flex-start;
+            justify-content: center;
+
+            padding: 40px 20px;
+
+            background: rgba(0, 0, 0, 0.45);
+
+            /*
+             * 页面本身可以滚动
+             */
+            overflow-y: auto;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            position: relative;
+
+            width: min(680px, 100%);
+
+            /*
+             * 最大高度不能超过浏览器窗口
+             */
+            max-height: calc(100vh - 80px);
+
+            margin: 0 auto;
+
+            background: #ffffff;
+
+            border-radius: 16px;
+
+            padding: 24px;
+
+            /*
+             * 如果表单内容太长，
+             * 只让弹窗内部滚动
+             */
+            overflow-y: auto;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.18);
+        }
+
+        .modal-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+
+            position: sticky;
+            top: -24px;
+
+            padding-top: 2px;
+            padding-bottom: 14px;
+
+            background: #ffffff;
+
+            z-index: 2;
+        }
+
+        .modal-head h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .close-button {
+            border: 0;
+            background: transparent;
+            color: #777;
+            font-size: 28px;
+            line-height: 1;
+            padding: 3px 7px;
+        }
+
+        .close-button:hover {
+            color: #333;
+        }
+
+
+        /* =========================
+           表单
+        ========================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-field.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-field label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #6f675f;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+
+            margin-top: 20px;
+
+            padding-top: 16px;
+
+            border-top: 1px solid #eee8e1;
+
+            position: sticky;
+            bottom: -24px;
+
+            background: #ffffff;
+        }
+
+
+        /* =========================
+           星星
+        ========================= */
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            font-size: 28px;
+        }
+
+        .star {
+            color: #d3ccc3;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .star.active {
+            color: #c28d45;
+        }
+
+
+        /* =========================
+           详情
+        ========================= */
+
+        .detail-row {
+            padding: 13px 0;
+            border-bottom: 1px solid #eee8e1;
+        }
+
+        .detail-row:last-child {
+            border-bottom: 0;
+        }
+
+        .detail-label {
+            color: #978e85;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .detail-text {
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+
+        /* =========================
+           Toast
+        ========================= */
+
+        .toast {
+            position: fixed;
+            z-index: 2000;
+
+            left: 50%;
+            bottom: 30px;
+
+            transform: translateX(-50%);
+
+            display: none;
+
+            padding: 10px 18px;
+
+            border-radius: 9px;
+
+            background: #403b36;
+            color: #ffffff;
+
+            font-size: 14px;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+
+        /* =========================
+           响应式
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 25px 20px;
+            }
+
+            main {
+                margin-top: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-field.full {
+                grid-column: auto;
+            }
+
+            .modal {
+                padding: 20px 12px;
+            }
+
+            .modal-box {
+                max-height: calc(100vh - 40px);
+                padding: 18px;
+            }
+
+            .modal-head {
+                top: -18px;
+            }
+
+        }
+
+
+    </style>
 </head>
+
 
 <body>
 
-<div class="app">
 
-    <!-- 顶部 -->
-    <header class="header">
+<!-- =========================
+     顶部
+========================= -->
 
-        <div class="logo">
-            <h1>我的阅读记录</h1>
-            <p>记录读过的故事，也记录当时的自己。</p>
+<header>
+
+    <div class="header-inner">
+
+        <h1>
+            我的阅读记录
+        </h1>
+
+        <div class="subtitle">
+            记录读过的小说，也记录读完之后还剩多少余味。
         </div>
 
-        <div class="header-actions">
-            <button class="btn" onclick="exportData()">导出数据</button>
+    </div>
 
-            <button class="btn" onclick="document.getElementById('importFile').click()">
-                导入数据
-            </button>
+</header>
+
+
+
+<main>
+
+
+    <!-- =========================
+         工具栏
+    ========================= -->
+
+    <div class="toolbar">
+
+        <div class="search-box">
 
             <input
-                type="file"
-                id="importFile"
-                accept=".json"
-                style="display:none"
-                onchange="importData(event)"
+                id="searchInput"
+                type="text"
+                placeholder="搜索小说、作者、主角、标签……"
             >
 
-            <button class="btn btn-primary" onclick="openAddModal()">
-                ＋ 添加小说
-            </button>
         </div>
 
-    </header>
+
+        <div style="width:140px">
+
+            <select id="statusFilter">
+
+                <option value="all">
+                    全部状态
+                </option>
+
+                <option value="reading">
+                    在读
+                </option>
+
+                <option value="finished">
+                    已完成
+                </option>
+
+                <option value="want">
+                    想读
+                </option>
+
+                <option value="dropped">
+                    弃读
+                </option>
+
+            </select>
+
+        </div>
 
 
-    <!-- 数据统计 -->
+        <button
+            class="btn btn-primary"
+            id="addBookBtn"
+        >
+            ＋ 添加小说
+        </button>
 
-    <section class="stats-grid">
+
+        <button
+            class="btn btn-secondary"
+            id="exportBtn"
+        >
+            导出数据
+        </button>
+
+
+        <button
+            class="btn btn-secondary"
+            id="importBtn"
+        >
+            导入数据
+        </button>
+
+
+        <input
+            id="importFile"
+            type="file"
+            accept=".json"
+            style="display:none"
+        >
+
+    </div>
+
+
+
+    <!-- =========================
+         统计
+    ========================= -->
+
+    <section class="stats">
+
 
         <div class="stat-card">
-            <div class="stat-label">今年阅读</div>
-            <div class="stat-value">
-                <span id="yearWords">0</span>
-                <span class="stat-unit">w</span>
+
+            <div class="stat-label">
+                今年阅读字数
             </div>
+
+            <div
+                class="stat-value"
+                id="yearWords"
+            >
+                0w
+            </div>
+
         </div>
 
-        <div class="stat-card">
-            <div class="stat-label">本月阅读</div>
-            <div class="stat-value">
-                <span id="monthWords">0</span>
-                <span class="stat-unit">w</span>
-            </div>
-        </div>
 
         <div class="stat-card">
-            <div class="stat-label">今年小说</div>
-            <div class="stat-value">
-                <span id="yearBooks">0</span>
-                <span class="stat-unit">本</span>
+
+            <div class="stat-label">
+                本月阅读字数
             </div>
+
+            <div
+                class="stat-value"
+                id="monthWords"
+            >
+                0w
+            </div>
+
         </div>
 
+
         <div class="stat-card">
-            <div class="stat-label">全部小说</div>
-            <div class="stat-value">
-                <span id="totalBooks">0</span>
-                <span class="stat-unit">本</span>
+
+            <div class="stat-label">
+                今年完成小说
             </div>
+
+            <div
+                class="stat-value"
+                id="yearBooks"
+            >
+                0
+            </div>
+
         </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                累计记录
+            </div>
+
+            <div
+                class="stat-value"
+                id="totalBooks"
+            >
+                0
+            </div>
+
+        </div>
+
 
     </section>
 
 
-    <!-- 主体 -->
+
+    <!-- =========================
+         内容
+    ========================= -->
 
     <div class="content-grid">
 
-        <!-- 左侧小说 -->
 
-        <main>
+        <!-- 小说列表 -->
 
-            <div class="panel">
+        <section>
 
-                <div class="panel-header">
+            <div id="bookList"></div>
 
-                    <h2 class="panel-title">我的书目</h2>
-
-                    <select
-                        id="statusFilter"
-                        onchange="renderBooks()"
-                        style="width:120px"
-                    >
-                        <option value="all">全部</option>
-                        <option value="finished">已完成</option>
-                        <option value="reading">在读</option>
-                        <option value="want">想读</option>
-                        <option value="dropped">弃读</option>
-                    </select>
-
-                </div>
-
-                <div class="panel-body">
-
-                    <div class="search-area">
-
-                        <input
-                            id="searchInput"
-                            class="search-input"
-                            placeholder="搜索小说、作者、主角或标签..."
-                            oninput="renderBooks()"
-                        >
-
-                    </div>
-
-                    <div id="bookList" class="book-list"></div>
-
-                </div>
-
-            </div>
+        </section>
 
 
-            <!-- 年度图表 -->
 
-            <div class="panel" style="margin-top:20px">
-
-                <div class="panel-header">
-                    <h2 class="panel-title" id="chartTitle">
-                        2026 年阅读趋势
-                    </h2>
-
-                    <select
-                        id="chartYear"
-                        onchange="renderChart()"
-                        style="width:100px"
-                    ></select>
-                </div>
-
-                <div class="panel-body">
-
-                    <div class="chart-container">
-                        <div id="chart" class="chart"></div>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </main>
-
-
-        <!-- 右侧 -->
+        <!-- 右侧统计 -->
 
         <aside>
 
-            <!-- 月度 -->
 
-            <div class="panel side-section">
+            <div class="panel">
 
-                <div class="panel-header">
-                    <h2 class="panel-title">月度阅读</h2>
-                </div>
+                <h2 class="panel-title">
+                    今年每月阅读量
+                </h2>
 
-                <div class="panel-body">
-
-                    <div id="monthList" class="month-list"></div>
-
-                </div>
+                <div id="monthList"></div>
 
             </div>
 
 
-            <!-- 最近阅读 -->
 
-            <div class="panel side-section">
+            <div
+                class="panel"
+                style="margin-top:18px"
+            >
 
-                <div class="panel-header">
-                    <h2 class="panel-title">阅读时间线</h2>
-                </div>
+                <h2 class="panel-title">
+                    最近开始阅读
+                </h2>
 
-                <div class="panel-body">
-
-                    <div id="timeline" class="timeline"></div>
-
-                </div>
+                <div id="timeline"></div>
 
             </div>
+
 
         </aside>
 
+
     </div>
 
-</div>
+
+</main>
 
 
-<!-- 添加/编辑小说 -->
 
-<div id="bookModal" class="modal">
+<!-- ==================================================
+     添加 / 编辑小说弹窗
+================================================== -->
 
-    <div class="modal-content">
+<div
+    class="modal"
+    id="bookModal"
+>
 
-        <div class="modal-header">
 
-            <h2 id="modalTitle">添加小说</h2>
+    <div class="modal-box">
 
-            <button class="close" onclick="closeModal()">×</button>
+
+        <div class="modal-head">
+
+            <h2 id="modalTitle">
+                添加小说
+            </h2>
+
+
+            <button
+                class="close-button"
+                id="closeModalBtn"
+                type="button"
+            >
+                ×
+            </button>
 
         </div>
 
 
-        <div class="modal-body">
 
-            <form id="bookForm">
-
-                <div class="form-grid">
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            小说名称 <span class="required">*</span>
-                        </label>
-
-                        <input
-                            id="bookTitle"
-                            required
-                            placeholder="例如：某某"
-                        >
-                    </div>
+        <div class="form-grid">
 
 
-                    <div class="form-group">
-                        <label class="form-label">作者</label>
+            <!-- 小说名称 -->
 
-                        <input
-                            id="bookAuthor"
-                            placeholder="作者名称"
-                        >
-                    </div>
+            <div class="form-field">
 
+                <label>
+                    小说名称 *
+                </label>
 
-                    <div class="form-group">
-                        <label class="form-label">主角</label>
+                <input
+                    id="bookTitle"
+                    type="text"
+                    placeholder="例如：XXX"
+                >
 
-                        <input
-                            id="bookProtagonist"
-                            placeholder="例如：A × B"
-                        >
-                    </div>
+            </div>
 
 
-                    <div class="form-group">
-                        <label class="form-label">
-                            字数（万字）
-                        </label>
 
-                        <input
-                            id="bookWords"
-                            type="number"
-                            step="0.1"
-                            min="0"
-                            placeholder="例如：120"
-                        >
-                    </div>
+            <!-- 作者 -->
 
+            <div class="form-field">
 
-                    <div class="form-group">
-                        <label class="form-label">阅读状态</label>
+                <label>
+                    作者
+                </label>
 
-                        <select id="bookStatus">
+                <input
+                    id="bookAuthor"
+                    type="text"
+                    placeholder="作者名称"
+                >
 
-                            <option value="finished">
-                                已完成
-                            </option>
-
-                            <option value="reading">
-                                在读
-                            </option>
-
-                            <option value="want">
-                                想读
-                            </option>
-
-                            <option value="dropped">
-                                弃读
-                            </option>
-
-                        </select>
-
-                    </div>
+            </div>
 
 
-                    <div class="form-group">
 
-                        <label class="form-label">
-                            评分
-                        </label>
+            <!-- 主角 -->
 
-                        <div id="rating" class="rating">
+            <div class="form-field">
 
-                            <span class="star" data-rating="1">★</span>
-                            <span class="star" data-rating="2">★</span>
-                            <span class="star" data-rating="3">★</span>
-                            <span class="star" data-rating="4">★</span>
-                            <span class="star" data-rating="5">★</span>
+                <label>
+                    主角
+                </label>
 
-                        </div>
+                <input
+                    id="bookProtagonist"
+                    type="text"
+                    placeholder="主角名称"
+                >
 
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label class="form-label">
-                            开始阅读
-                        </label>
-
-                        <input
-                            id="startDate"
-                            type="date"
-                        >
-
-                    </div>
+            </div>
 
 
-                    <div class="form-group">
 
-                        <label class="form-label">
-                            结束阅读
-                        </label>
+            <!-- 字数 -->
 
-                        <input
-                            id="endDate"
-                            type="date"
-                        >
+            <div class="form-field">
 
-                    </div>
+                <label>
+                    字数（w）
+                </label>
 
+                <input
+                    id="bookWords"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    placeholder="例如：120"
+                >
 
-                    <div class="form-group full">
-
-                        <label class="form-label">
-                            标签
-                        </label>
-
-                        <input
-                            id="bookTags"
-                            placeholder="用逗号分隔，例如：现代,BL,HE,无限流"
-                        >
-
-                    </div>
+            </div>
 
 
-                    <div class="form-group full">
 
-                        <label class="form-label">
-                            个人感受
-                        </label>
+            <!-- 状态 -->
 
-                        <textarea
-                            id="bookFeeling"
-                            placeholder="记录一下读完之后的感觉……"
-                        ></textarea>
+            <div class="form-field">
 
-                    </div>
+                <label>
+                    阅读状态
+                </label>
+
+                <select id="bookStatus">
+
+                    <option value="reading">
+                        在读
+                    </option>
+
+                    <option value="finished">
+                        已完成
+                    </option>
+
+                    <option value="want">
+                        想读
+                    </option>
+
+                    <option value="dropped">
+                        弃读
+                    </option>
+
+                </select>
+
+            </div>
 
 
-                    <div class="form-group full">
 
-                        <label class="form-label">
-                            名场面 / 备注
-                        </label>
+            <!-- 标签 -->
 
-                        <textarea
-                            id="bookNote"
-                            placeholder="可以记录喜欢的角色、情节、名场面、吐槽等等……"
-                        ></textarea>
+            <div class="form-field">
 
-                    </div>
+                <label>
+                    标签
+                </label>
+
+                <input
+                    id="bookTags"
+                    type="text"
+                    placeholder="多个标签用逗号分隔"
+                >
+
+            </div>
+
+
+
+            <!-- 开始时间 -->
+
+            <div class="form-field">
+
+                <label>
+                    开始阅读
+                </label>
+
+                <input
+                    id="startDate"
+                    type="date"
+                >
+
+            </div>
+
+
+
+            <!-- 结束时间 -->
+
+            <div class="form-field">
+
+                <label>
+                    结束阅读
+                </label>
+
+                <input
+                    id="endDate"
+                    type="date"
+                >
+
+            </div>
+
+
+
+            <!-- 评分 -->
+
+            <div class="form-field full">
+
+                <label>
+                    评分
+                </label>
+
+                <div
+                    class="star-rating"
+                    id="starRating"
+                >
+
+                    <span
+                        class="star"
+                        data-rating="1"
+                    >
+                        ★
+                    </span>
+
+                    <span
+                        class="star"
+                        data-rating="2"
+                    >
+                        ★
+                    </span>
+
+                    <span
+                        class="star"
+                        data-rating="3"
+                    >
+                        ★
+                    </span>
+
+                    <span
+                        class="star"
+                        data-rating="4"
+                    >
+                        ★
+                    </span>
+
+                    <span
+                        class="star"
+                        data-rating="5"
+                    >
+                        ★
+                    </span>
 
                 </div>
 
-            </form>
+            </div>
+
+
+
+            <!-- 个人感受 -->
+
+            <div class="form-field full">
+
+                <label>
+                    个人感受
+                </label>
+
+                <textarea
+                    id="bookFeeling"
+                    placeholder="记录一下读完这本小说之后的感受……"
+                ></textarea>
+
+            </div>
+
+
+
+            <!-- 备注 -->
+
+            <div class="form-field full">
+
+                <label>
+                    名场面 / 备注
+                </label>
+
+                <textarea
+                    id="bookNote"
+                    placeholder="可以记录喜欢的情节、名场面、吐槽等……"
+                ></textarea>
+
+            </div>
+
 
         </div>
 
 
-        <div class="modal-footer">
 
-            <button class="btn" onclick="closeModal()">
+        <div class="form-footer">
+
+
+            <button
+                class="btn btn-secondary"
+                id="cancelBtn"
+                type="button"
+            >
                 取消
             </button>
 
+
             <button
                 class="btn btn-primary"
-                onclick="saveBook()"
+                id="saveBtn"
+                type="button"
             >
                 保存
             </button>
 
+
         </div>
 
+
     </div>
+
 
 </div>
 
 
+
+<!-- ==================================================
+     查看详情弹窗
+================================================== -->
+
+<div
+    class="modal"
+    id="detailModal"
+>
+
+
+    <div class="modal-box">
+
+
+        <div class="modal-head">
+
+            <h2 id="detailTitle">
+                小说详情
+            </h2>
+
+
+            <button
+                class="close-button"
+                id="closeDetailBtn"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div id="detailContent"></div>
+
+
+        <div class="form-footer">
+
+            <button
+                class="btn btn-secondary"
+                id="closeDetailButton"
+                type="button"
+            >
+                关闭
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
 <!-- Toast -->
 
-<div id="toast" class="toast"></div>
+<div
+    class="toast"
+    id="toast"
+></div>
+
 
 
 <script>
 
-/* =========================================================
-   数据
-========================================================= */
 
-let books = JSON.parse(
-    localStorage.getItem("readingBooks") || "[]"
-);
+/* ==================================================
+   数据
+================================================== */
+
+let books = [];
 
 let editingId = null;
+
 let currentRating = 0;
 
 
-/* =========================================================
+
+/* ==================================================
    初始化
-========================================================= */
+================================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    initializeYearSelect();
+        loadData();
 
-    renderAll();
+        bindEvents();
 
-    setupRating();
+        renderAll();
 
-});
+    }
+);
 
 
-/* =========================================================
-   保存
-========================================================= */
 
-function saveToStorage() {
+/* ==================================================
+   LocalStorage
+================================================== */
+
+function loadData() {
+
+    try {
+
+        const data =
+            localStorage.getItem(
+                "readingTrackerBooks"
+            );
+
+
+        if (data) {
+
+            const parsed =
+                JSON.parse(data);
+
+
+            if (
+                Array.isArray(parsed)
+            ) {
+
+                books = parsed;
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        books = [];
+
+    }
+
+}
+
+
+function saveData() {
 
     localStorage.setItem(
-        "readingBooks",
+        "readingTrackerBooks",
         JSON.stringify(books)
     );
 
 }
 
 
-/* =========================================================
-   ID
-========================================================= */
 
-function createId() {
+/* ==================================================
+   事件
+================================================== */
 
-    return Date.now().toString(36) +
-        Math.random().toString(36).substr(2, 6);
+function bindEvents() {
+
+
+    document
+        .getElementById("addBookBtn")
+        .addEventListener(
+            "click",
+            openAddModal
+        );
+
+
+    document
+        .getElementById("closeModalBtn")
+        .addEventListener(
+            "click",
+            closeBookModal
+        );
+
+
+    document
+        .getElementById("cancelBtn")
+        .addEventListener(
+            "click",
+            closeBookModal
+        );
+
+
+    document
+        .getElementById("saveBtn")
+        .addEventListener(
+            "click",
+            saveBook
+        );
+
+
+    document
+        .getElementById("closeDetailBtn")
+        .addEventListener(
+            "click",
+            closeDetailModal
+        );
+
+
+    document
+        .getElementById("closeDetailButton")
+        .addEventListener(
+            "click",
+            closeDetailModal
+        );
+
+
+    document
+        .getElementById("searchInput")
+        .addEventListener(
+            "input",
+            renderBooks
+        );
+
+
+    document
+        .getElementById("statusFilter")
+        .addEventListener(
+            "change",
+            renderBooks
+        );
+
+
+    document
+        .getElementById("exportBtn")
+        .addEventListener(
+            "click",
+            exportData
+        );
+
+
+    document
+        .getElementById("importBtn")
+        .addEventListener(
+            "click",
+            function () {
+
+                document
+                    .getElementById("importFile")
+                    .click();
+
+            }
+        );
+
+
+    document
+        .getElementById("importFile")
+        .addEventListener(
+            "change",
+            importData
+        );
+
+
+    document
+        .querySelectorAll(".star")
+        .forEach(
+            function (star) {
+
+                star.addEventListener(
+                    "click",
+                    function () {
+
+                        currentRating =
+                            Number(
+                                this.dataset.rating
+                            );
+
+                        updateStars();
+
+                    }
+                );
+
+            }
+        );
 
 }
 
 
-/* =========================================================
+
+/* ==================================================
    添加小说
-========================================================= */
+================================================== */
 
 function openAddModal() {
 
     editingId = null;
 
-    document.getElementById("modalTitle").textContent =
+    document
+        .getElementById("modalTitle")
+        .textContent =
         "添加小说";
 
-    document.getElementById("bookForm").reset();
+
+    document
+        .getElementById("bookTitle")
+        .value = "";
+
+
+    document
+        .getElementById("bookAuthor")
+        .value = "";
+
+
+    document
+        .getElementById("bookProtagonist")
+        .value = "";
+
+
+    document
+        .getElementById("bookWords")
+        .value = "";
+
+
+    document
+        .getElementById("bookStatus")
+        .value =
+        "reading";
+
+
+    document
+        .getElementById("bookTags")
+        .value = "";
+
+
+    document
+        .getElementById("startDate")
+        .value = "";
+
+
+    document
+        .getElementById("endDate")
+        .value = "";
+
+
+    document
+        .getElementById("bookFeeling")
+        .value = "";
+
+
+    document
+        .getElementById("bookNote")
+        .value = "";
+
 
     currentRating = 0;
 
     updateStars();
 
-    document.getElementById("bookModal")
-        .classList.add("active");
+
+    document
+        .getElementById("bookModal")
+        .classList.add("show");
 
 }
 
 
-/* =========================================================
+
+/* ==================================================
    编辑小说
-========================================================= */
+================================================== */
 
 function openEditModal(id) {
 
-    const book = books.find(b => b.id === id);
+    const book =
+        books.find(
+            function (item) {
 
-    if (!book) return;
+                return item.id === id;
 
-    editingId = id;
-
-    document.getElementById("modalTitle").textContent =
-        "编辑小说";
-
-    document.getElementById("bookTitle").value =
-        book.title || "";
-
-    document.getElementById("bookAuthor").value =
-        book.author || "";
-
-    document.getElementById("bookProtagonist").value =
-        book.protagonist || "";
-
-    document.getElementById("bookWords").value =
-        book.words || "";
-
-    document.getElementById("bookStatus").value =
-        book.status || "finished";
-
-    document.getElementById("startDate").value =
-        book.startDate || "";
-
-    document.getElementById("endDate").value =
-        book.endDate || "";
-
-    document.getElementById("bookTags").value =
-        (book.tags || []).join(",");
-
-    document.getElementById("bookFeeling").value =
-        book.feeling || "";
-
-    document.getElementById("bookNote").value =
-        book.note || "";
-
-    currentRating = book.rating || 0;
-
-    updateStars();
-
-    document.getElementById("bookModal")
-        .classList.add("active");
-
-}
+            }
+        );
 
 
-/* =========================================================
-   关闭弹窗
-========================================================= */
-
-function closeModal() {
-
-    document.getElementById("bookModal")
-        .classList.remove("active");
-
-}
-
-
-/* =========================================================
-   保存小说
-========================================================= */
-
-function saveBook() {
-
-    const title =
-        document.getElementById("bookTitle")
-            .value.trim();
-
-    if (!title) {
-
-        showToast("请输入小说名称");
+    if (!book) {
 
         return;
 
     }
 
 
+    editingId = id;
+
+
+    document
+        .getElementById("modalTitle")
+        .textContent =
+        "编辑小说";
+
+
+    document
+        .getElementById("bookTitle")
+        .value =
+        book.title || "";
+
+
+    document
+        .getElementById("bookAuthor")
+        .value =
+        book.author || "";
+
+
+    document
+        .getElementById("bookProtagonist")
+        .value =
+        book.protagonist || "";
+
+
+    document
+        .getElementById("bookWords")
+        .value =
+        book.words || "";
+
+
+    document
+        .getElementById("bookStatus")
+        .value =
+        book.status || "reading";
+
+
+    document
+        .getElementById("bookTags")
+        .value =
+        Array.isArray(book.tags)
+            ? book.tags.join(",")
+            : "";
+
+
+    document
+        .getElementById("startDate")
+        .value =
+        book.startDate || "";
+
+
+    document
+        .getElementById("endDate")
+        .value =
+        book.endDate || "";
+
+
+    document
+        .getElementById("bookFeeling")
+        .value =
+        book.feeling || "";
+
+
+    document
+        .getElementById("bookNote")
+        .value =
+        book.note || "";
+
+
+    currentRating =
+        Number(
+            book.rating || 0
+        );
+
+
+    updateStars();
+
+
+    document
+        .getElementById("bookModal")
+        .classList.add("show");
+
+}
+
+
+
+/* ==================================================
+   保存
+================================================== */
+
+function saveBook() {
+
+
+    const title =
+        document
+            .getElementById("bookTitle")
+            .value
+            .trim();
+
+
+    if (!title) {
+
+        alert(
+            "请输入小说名称。"
+        );
+
+        return;
+
+    }
+
+
+    const tags =
+        document
+            .getElementById("bookTags")
+            .value
+            .split(",")
+            .map(
+                function (tag) {
+
+                    return tag.trim();
+
+                }
+            )
+            .filter(
+                function (tag) {
+
+                    return tag !== "";
+
+                }
+            );
+
+
     const book = {
 
-        id: editingId || createId(),
 
-        title: title,
+        id:
+            editingId ||
+            Date.now().toString(),
+
+
+        title:
+            title,
+
 
         author:
-            document.getElementById("bookAuthor")
-                .value.trim(),
+            document
+                .getElementById("bookAuthor")
+                .value
+                .trim(),
+
 
         protagonist:
-            document.getElementById("bookProtagonist")
-                .value.trim(),
+            document
+                .getElementById("bookProtagonist")
+                .value
+                .trim(),
+
 
         words:
-            parseFloat(
-                document.getElementById("bookWords")
+            Number(
+                document
+                    .getElementById("bookWords")
                     .value
             ) || 0,
 
+
         status:
-            document.getElementById("bookStatus")
+            document
+                .getElementById("bookStatus")
                 .value,
 
-        rating: currentRating,
-
-        startDate:
-            document.getElementById("startDate")
-                .value,
-
-        endDate:
-            document.getElementById("endDate")
-                .value,
 
         tags:
-            document.getElementById("bookTags")
-                .value
-                .split(",")
-                .map(x => x.trim())
-                .filter(Boolean),
+            tags,
+
+
+        rating:
+            currentRating,
+
+
+        startDate:
+            document
+                .getElementById("startDate")
+                .value,
+
+
+        endDate:
+            document
+                .getElementById("endDate")
+                .value,
+
 
         feeling:
-            document.getElementById("bookFeeling")
-                .value.trim(),
+            document
+                .getElementById("bookFeeling")
+                .value
+                .trim(),
+
 
         note:
-            document.getElementById("bookNote")
-                .value.trim(),
+            document
+                .getElementById("bookNote")
+                .value
+                .trim()
 
-        updatedAt:
-            new Date().toISOString()
 
     };
 
 
     if (editingId) {
 
+
         const index =
-            books.findIndex(b => b.id === editingId);
+            books.findIndex(
+                function (item) {
+
+                    return item.id === editingId;
+
+                }
+            );
+
 
         if (index !== -1) {
 
@@ -1321,344 +1821,292 @@ function saveBook() {
 
         }
 
-        showToast("小说已更新");
 
     } else {
 
         books.unshift(book);
 
-        showToast("小说已添加");
-
     }
 
 
-    saveToStorage();
+    saveData();
 
-    closeModal();
+    closeBookModal();
 
     renderAll();
 
-}
-
-
-/* =========================================================
-   删除
-========================================================= */
-
-function deleteBook(id) {
-
-    const book =
-        books.find(b => b.id === id);
-
-    if (!book) return;
-
-    if (
-        !confirm(
-            `确定要删除《${book.title}》吗？`
-        )
-    ) {
-        return;
-    }
-
-
-    books =
-        books.filter(b => b.id !== id);
-
-    saveToStorage();
-
-    renderAll();
-
-    showToast("已删除");
-
-}
-
-
-/* =========================================================
-   状态
-========================================================= */
-
-function getStatusText(status) {
-
-    const map = {
-
-        finished: "已完成",
-
-        reading: "在读",
-
-        want: "想读",
-
-        dropped: "弃读"
-
-    };
-
-    return map[status] || "未知";
-
-}
-
-
-/* =========================================================
-   状态样式
-========================================================= */
-
-function getStatusClass(status) {
-
-    return "status status-" + status;
-
-}
-
-
-/* =========================================================
-   阅读跨度
-========================================================= */
-
-function getReadingDays(book) {
-
-    if (!book.startDate) {
-
-        return null;
-
-    }
-
-
-    const start =
-        new Date(book.startDate);
-
-
-    let end;
-
-
-    if (book.endDate) {
-
-        end = new Date(book.endDate);
-
-    } else {
-
-        end = new Date();
-
-    }
-
-
-    const diff =
-        Math.floor(
-            (end - start) /
-            (1000 * 60 * 60 * 24)
-        );
-
-
-    return Math.max(diff + 1, 1);
-
-}
-
-
-/* =========================================================
-   日期格式
-========================================================= */
-
-function formatDate(date) {
-
-    if (!date) return "";
-
-    const d = new Date(date);
-
-    if (isNaN(d)) return date;
-
-    return (
-        d.getFullYear() +
-        "." +
-        String(d.getMonth() + 1).padStart(2, "0") +
-        "." +
-        String(d.getDate()).padStart(2, "0")
+    showToast(
+        editingId
+            ? "小说已更新"
+            : "小说已添加"
     );
 
-}
-
-
-/* =========================================================
-   日期范围
-========================================================= */
-
-function getDateRange(book) {
-
-    if (!book.startDate) {
-
-        return "未记录阅读时间";
-
-    }
-
-
-    const start =
-        formatDate(book.startDate);
-
-
-    if (!book.endDate) {
-
-        return `${start} - 至今`;
-
-    }
-
-
-    return `${start} - ${formatDate(book.endDate)}`;
 
 }
 
 
-/* =========================================================
+
+/* ==================================================
+   关闭弹窗
+================================================== */
+
+function closeBookModal() {
+
+    document
+        .getElementById("bookModal")
+        .classList.remove("show");
+
+
+    editingId = null;
+
+}
+
+
+function closeDetailModal() {
+
+    document
+        .getElementById("detailModal")
+        .classList.remove("show");
+
+}
+
+
+
+/* ==================================================
    小说列表
-========================================================= */
+================================================== */
 
 function renderBooks() {
 
-    const list =
-        document.getElementById("bookList");
 
-    const search =
-        document.getElementById("searchInput")
+    const container =
+        document.getElementById(
+            "bookList"
+        );
+
+
+    const keyword =
+        document
+            .getElementById("searchInput")
             .value
             .trim()
             .toLowerCase();
 
-    const filter =
-        document.getElementById("statusFilter")
+
+    const status =
+        document
+            .getElementById("statusFilter")
             .value;
 
 
-    let filtered =
-        books.filter(book => {
-
-            const matchesStatus =
-                filter === "all" ||
-                book.status === filter;
+    const filtered =
+        books.filter(
+            function (book) {
 
 
-            const searchable = [
-
-                book.title,
-
-                book.author,
-
-                book.protagonist,
-
-                ...(book.tags || [])
-
-            ]
-            .join(" ")
-            .toLowerCase();
+                const statusOK =
+                    status === "all" ||
+                    book.status === status;
 
 
-            const matchesSearch =
-                !search ||
-                searchable.includes(search);
+                const text = [
+
+                    book.title,
+
+                    book.author,
+
+                    book.protagonist,
+
+                    ...(book.tags || [])
+
+                ]
+                    .join(" ")
+                    .toLowerCase();
 
 
-            return matchesStatus &&
-                   matchesSearch;
+                return (
 
-        });
+                    statusOK &&
+
+                    (
+                        keyword === "" ||
+                        text.includes(keyword)
+                    )
+
+                );
+
+            }
+        );
 
 
-    if (filtered.length === 0) {
+    if (
+        filtered.length === 0
+    ) {
 
-        list.innerHTML = `
 
-            <div class="empty">
+        container.innerHTML = `
 
-                <div class="empty-icon">📖</div>
+            <div class="panel empty">
 
-                <div>还没有找到小说</div>
+                <div class="empty-icon">
+                    📖
+                </div>
 
-                <div style="font-size:12px;margin-top:6px">
-                    开始记录你的阅读吧
+                <div>
+                    ${
+                        books.length === 0
+                            ? "还没有记录小说"
+                            : "没有找到符合条件的小说"
+                    }
+                </div>
+
+                <div
+                    style="
+                        margin-top:8px;
+                        font-size:12px;
+                    "
+                >
+                    ${
+                        books.length === 0
+                            ? "点击右上角「添加小说」开始记录"
+                            : "试试其他搜索条件"
+                    }
                 </div>
 
             </div>
 
         `;
 
+
         return;
 
     }
 
 
-    list.innerHTML =
+
+    container.innerHTML =
+
         filtered
-        .map(book => {
-
-            const days =
-                getReadingDays(book);
+            .map(
+                function (book) {
 
 
-            const tags =
-                (book.tags || [])
-                .map(tag =>
-                    `<span class="tag">${escapeHtml(tag)}</span>`
-                )
-                .join("");
+                    const tags =
+                        (book.tags || [])
+                            .map(
+                                function (tag) {
 
+                                    return `
 
-            const stars =
-                "★".repeat(book.rating || 0) +
-                "☆".repeat(5 - (book.rating || 0));
+                                        <span class="tag">
+                                            ${escapeHtml(tag)}
+                                        </span>
 
+                                    `;
 
-            return `
-
-                <div class="book-item">
-
-                    <div class="book-main">
-
-                        <div class="book-info">
-
-                            <div class="book-title">
-                                ${escapeHtml(book.title)}
-                            </div>
-
-                            <div class="book-meta">
-
-                                ${book.author
-                                    ? `作者：${escapeHtml(book.author)}`
-                                    : ""}
-
-                                ${book.protagonist
-                                    ? `　主角：${escapeHtml(book.protagonist)}`
-                                    : ""}
-
-                                <br>
-
-                                ${getDateRange(book)}
-
-                                ${
-                                    days
-                                    ? `　·　${days}天`
-                                    : ""
                                 }
+                            )
+                            .join("");
+
+
+                    const rating =
+                        Number(
+                            book.rating || 0
+                        );
+
+
+                    const stars =
+                        "★".repeat(rating) +
+                        "☆".repeat(5 - rating);
+
+
+                    return `
+
+                        <article
+                            class="book-card"
+                        >
+
+
+                            <div class="book-top">
+
+
+                                <div>
+
+
+                                    <div
+                                        class="book-title"
+                                    >
+                                        ${escapeHtml(book.title)}
+                                    </div>
+
+
+                                    <div
+                                        class="book-meta"
+                                    >
+
+                                        ${
+                                            book.author
+                                                ? "作者：" +
+                                                  escapeHtml(book.author)
+                                                : ""
+                                        }
+
+                                        ${
+                                            book.protagonist
+                                                ? "　主角：" +
+                                                  escapeHtml(book.protagonist)
+                                                : ""
+                                        }
+
+                                        <br>
+
+                                        ${
+                                            getDateRange(book)
+                                        }
+
+                                        ${
+                                            getReadingDays(book)
+                                                ? "　·　" +
+                                                  getReadingDays(book) +
+                                                  "天"
+                                                : ""
+                                        }
+
+                                    </div>
+
+
+                                </div>
+
+
+
+                                <div>
+
+
+                                    <div
+                                        class="book-words"
+                                    >
+                                        ${formatNumber(book.words)}w
+                                    </div>
+
+
+                                    <span
+                                        class="
+                                            status
+                                            status-${book.status}
+                                        "
+                                    >
+
+                                        ${getStatusText(book.status)}
+
+                                    </span>
+
+
+                                </div>
+
 
                             </div>
 
-                        </div>
 
-
-                        <div class="book-side">
-
-                            <div class="book-words">
-                                ${book.words || 0}w
-                            </div>
-
-                            <div class="book-date">
-
-                                <span class="${getStatusClass(book.status)}">
-                                    ${getStatusText(book.status)}
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="book-bottom">
-
-                        <div>
 
                             <div class="tags">
 
@@ -1666,473 +2114,649 @@ function renderBooks() {
 
                             </div>
 
+
+
                             ${
-                                book.rating
-                                ? `<div style="
-                                    margin-top:6px;
-                                    color:#b28c54;
-                                    font-size:13px;
-                                ">${stars}</div>`
-                                : ""
+                                rating
+                                    ? `
+                                        <div class="rating">
+                                            ${stars}
+                                        </div>
+                                    `
+                                    : ""
                             }
 
-                        </div>
 
 
-                        <div class="book-actions">
+                            <div class="book-actions">
 
-                            <button
-                                class="small-btn"
-                                onclick="viewBook('${book.id}')"
-                            >
-                                查看
-                            </button>
 
-                            <button
-                                class="small-btn"
-                                onclick="openEditModal('${book.id}')"
-                            >
-                                编辑
-                            </button>
+                                <button
+                                    class="small-btn"
+                                    onclick="
+                                        viewBook('${book.id}')
+                                    "
+                                >
+                                    查看
+                                </button>
 
-                            <button
-                                class="small-btn"
-                                onclick="deleteBook('${book.id}')"
-                            >
-                                删除
-                            </button>
 
-                        </div>
+                                <button
+                                    class="small-btn"
+                                    onclick="
+                                        openEditModal('${book.id}')
+                                    "
+                                >
+                                    编辑
+                                </button>
 
-                    </div>
 
-                </div>
+                                <button
+                                    class="small-btn"
+                                    onclick="
+                                        deleteBook('${book.id}')
+                                    "
+                                >
+                                    删除
+                                </button>
 
-            `;
 
-        })
-        .join("");
+                            </div>
+
+
+                        </article>
+
+                    `;
+
+                }
+            )
+            .join("");
 
 }
 
 
-/* =========================================================
-   查看小说详情
-========================================================= */
+
+/* ==================================================
+   查看详情
+================================================== */
 
 function viewBook(id) {
 
+
     const book =
-        books.find(b => b.id === id);
+        books.find(
+            function (item) {
 
-    if (!book) return;
+                return item.id === id;
+
+            }
+        );
 
 
-    const days =
-        getReadingDays(book);
+    if (!book) {
+
+        return;
+
+    }
+
+
+    const rating =
+        Number(
+            book.rating || 0
+        );
 
 
     const stars =
-        "★".repeat(book.rating || 0) +
-        "☆".repeat(5 - (book.rating || 0));
+        "★".repeat(rating) +
+        "☆".repeat(5 - rating);
 
 
-    const tags =
-        (book.tags || [])
-        .map(t => `<span class="tag">${escapeHtml(t)}</span>`)
-        .join("");
+    document
+        .getElementById("detailTitle")
+        .textContent =
+        book.title;
 
 
-    const message = [
-
-        `《${book.title}》`,
-
-        book.author
-            ? `作者：${book.author}`
-            : "",
-
-        book.protagonist
-            ? `主角：${book.protagonist}`
-            : "",
-
-        `字数：${book.words || 0}w`,
-
-        `状态：${getStatusText(book.status)}`,
-
-        book.startDate
-            ? `阅读时间：${getDateRange(book)}`
-            : "",
-
-        days
-            ? `阅读跨度：${days}天`
-            : "",
-
-        book.rating
-            ? `评分：${stars}`
-            : "",
-
-        book.tags?.length
-            ? `标签：${book.tags.join("、")}`
-            : "",
-
-        "",
-
-        "【个人感受】",
-
-        book.feeling || "暂无",
-
-        "",
-
-        "【名场面 / 备注】",
-
-        book.note || "暂无"
-
-    ]
-    .filter(Boolean)
-    .join("\n");
+    document
+        .getElementById("detailContent")
+        .innerHTML = `
 
 
-    alert(message);
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    作者
+                </div>
+
+                <div class="detail-text">
+                    ${escapeHtml(book.author || "未记录")}
+                </div>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    主角
+                </div>
+
+                <div class="detail-text">
+                    ${escapeHtml(book.protagonist || "未记录")}
+                </div>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    字数
+                </div>
+
+                <div class="detail-text">
+                    ${formatNumber(book.words)}w
+                </div>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    阅读状态
+                </div>
+
+                <div class="detail-text">
+                    ${getStatusText(book.status)}
+                </div>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    阅读时间
+                </div>
+
+                <div class="detail-text">
+
+                    ${getDateRange(book)}
+
+                    ${
+                        getReadingDays(book)
+                            ? "　·　" +
+                              getReadingDays(book) +
+                              "天"
+                            : ""
+                    }
+
+                </div>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    评分
+                </div>
+
+                <div class="rating">
+                    ${stars}
+                </div>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    标签
+                </div>
+
+                <div>
+
+                    ${
+                        (book.tags || [])
+                            .map(
+                                function (tag) {
+
+                                    return `
+                                        <span class="tag">
+                                            ${escapeHtml(tag)}
+                                        </span>
+                                    `;
+
+                                }
+                            )
+                            .join("")
+                        ||
+                        "暂无"
+                    }
+
+                </div>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    个人感受
+                </div>
+
+                <div class="detail-text">
+                    ${escapeHtml(book.feeling || "暂无记录")}
+                </div>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    名场面 / 备注
+                </div>
+
+                <div class="detail-text">
+                    ${escapeHtml(book.note || "暂无记录")}
+                </div>
+
+            </div>
+
+
+        `;
+
+
+    document
+        .getElementById("detailModal")
+        .classList.add("show");
 
 }
 
 
-/* =========================================================
+
+/* ==================================================
+   删除
+================================================== */
+
+function deleteBook(id) {
+
+
+    const book =
+        books.find(
+            function (item) {
+
+                return item.id === id;
+
+            }
+        );
+
+
+    if (!book) {
+
+        return;
+
+    }
+
+
+    if (
+        !confirm(
+            "确定删除《" +
+            book.title +
+            "》吗？"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    books =
+        books.filter(
+            function (item) {
+
+                return item.id !== id;
+
+            }
+        );
+
+
+    saveData();
+
+    renderAll();
+
+    showToast(
+        "小说已删除"
+    );
+
+}
+
+
+
+/* ==================================================
    统计
-========================================================= */
+================================================== */
 
 function renderStats() {
+
 
     const now =
         new Date();
 
+
     const year =
         now.getFullYear();
+
 
     const month =
         now.getMonth() + 1;
 
 
     const yearBooks =
-        books.filter(book => {
+        books.filter(
+            function (book) {
 
-            if (!book.startDate) return false;
 
-            return (
-                new Date(book.startDate)
-                    .getFullYear() === year
-            );
+                if (!book.startDate) {
 
-        });
+                    return false;
+
+                }
+
+
+                const date =
+                    new Date(
+                        book.startDate
+                    );
+
+
+                return (
+                    date.getFullYear() === year
+                );
+
+            }
+        );
 
 
     const yearWords =
-        yearBooks
-        .reduce(
-            (sum, book) =>
-                sum + Number(book.words || 0),
+        yearBooks.reduce(
+            function (sum, book) {
+
+                return (
+                    sum +
+                    Number(
+                        book.words || 0
+                    )
+                );
+
+            },
             0
         );
-
-
-    const monthBooks =
-        yearBooks.filter(book => {
-
-            return (
-                new Date(book.startDate)
-                    .getMonth() + 1 === month
-            );
-
-        });
 
 
     const monthWords =
-        monthBooks
-        .reduce(
-            (sum, book) =>
-                sum + Number(book.words || 0),
-            0
-        );
+        yearBooks
+            .filter(
+                function (book) {
+
+                    const date =
+                        new Date(
+                            book.startDate
+                        );
 
 
-    document.getElementById("yearWords")
+                    return (
+                        date.getMonth() + 1 === month
+                    );
+
+                }
+            )
+            .reduce(
+                function (sum, book) {
+
+                    return (
+                        sum +
+                        Number(
+                            book.words || 0
+                        )
+                    );
+
+                },
+                0
+            );
+
+
+    document
+        .getElementById("yearWords")
         .textContent =
-        formatNumber(yearWords);
+        formatNumber(yearWords) +
+        "w";
 
 
-    document.getElementById("monthWords")
+    document
+        .getElementById("monthWords")
         .textContent =
-        formatNumber(monthWords);
+        formatNumber(monthWords) +
+        "w";
 
 
-    document.getElementById("yearBooks")
+    document
+        .getElementById("yearBooks")
         .textContent =
-        yearBooks.length;
+        yearBooks.filter(
+            function (book) {
+
+                return (
+                    book.status ===
+                    "finished"
+                );
+
+            }
+        ).length;
 
 
-    document.getElementById("totalBooks")
+    document
+        .getElementById("totalBooks")
         .textContent =
         books.length;
 
 }
 
 
-/* =========================================================
-   月度列表
-========================================================= */
+
+/* ==================================================
+   月度统计
+================================================== */
 
 function renderMonthList() {
 
+
     const container =
-        document.getElementById("monthList");
-
-
-    const year =
-        new Date().getFullYear();
-
-
-    const data = [];
-
-
-    for (let i = 1; i <= 12; i++) {
-
-        const total =
-            books
-            .filter(book => {
-
-                if (!book.startDate) return false;
-
-                const d =
-                    new Date(book.startDate);
-
-                return (
-                    d.getFullYear() === year &&
-                    d.getMonth() + 1 === i
-                );
-
-            })
-            .reduce(
-                (sum, book) =>
-                    sum + Number(book.words || 0),
-                0
-            );
-
-
-        data.push(total);
-
-    }
-
-
-    const max =
-        Math.max(...data, 1);
-
-
-    container.innerHTML =
-        data.map((value, index) => {
-
-            const percent =
-                value / max * 100;
-
-
-            return `
-
-                <div class="month-row">
-
-                    <div class="month-name">
-                        ${index + 1}月
-                    </div>
-
-                    <div class="bar-bg">
-
-                        <div
-                            class="bar"
-                            style="width:${percent}%"
-                        ></div>
-
-                    </div>
-
-                    <div class="month-value">
-                        ${formatNumber(value)}w
-                    </div>
-
-                </div>
-
-            `;
-
-        }).join("");
-
-}
-
-
-/* =========================================================
-   年度图表
-========================================================= */
-
-function initializeYearSelect() {
-
-    const select =
-        document.getElementById("chartYear");
-
-
-    const years =
-        new Set();
-
-
-    const current =
-        new Date().getFullYear();
-
-
-    years.add(current);
-
-
-    books.forEach(book => {
-
-        if (book.startDate) {
-
-            years.add(
-                new Date(book.startDate)
-                    .getFullYear()
-            );
-
-        }
-
-    });
-
-
-    select.innerHTML =
-        [...years]
-        .sort((a,b) => b-a)
-        .map(year =>
-            `<option value="${year}">
-                ${year}
-            </option>`
-        )
-        .join("");
-
-}
-
-
-function renderChart() {
-
-    const year =
-        Number(
-            document.getElementById("chartYear")
-                .value
+        document.getElementById(
+            "monthList"
         );
 
 
-    document.getElementById("chartTitle")
-        .textContent =
-        `${year} 年阅读趋势`;
+    const year =
+        new Date().getFullYear();
 
 
-    const data = [];
+    const values = [];
 
 
-    for (let month = 1; month <= 12; month++) {
-
-        const total =
-            books
-            .filter(book => {
-
-                if (!book.startDate) return false;
-
-                const d =
-                    new Date(book.startDate);
-
-                return (
-                    d.getFullYear() === year &&
-                    d.getMonth() + 1 === month
-                );
-
-            })
-            .reduce(
-                (sum, book) =>
-                    sum + Number(book.words || 0),
-                0
-            );
+    for (
+        let month = 1;
+        month <= 12;
+        month++
+    ) {
 
 
-        data.push(total);
+        let total = 0;
+
+
+        books.forEach(
+            function (book) {
+
+
+                if (!book.startDate) {
+
+                    return;
+
+                }
+
+
+                const date =
+                    new Date(
+                        book.startDate
+                    );
+
+
+                if (
+
+                    date.getFullYear() ===
+                    year
+
+                    &&
+
+                    date.getMonth() + 1 ===
+                    month
+
+                ) {
+
+                    total +=
+                        Number(
+                            book.words || 0
+                        );
+
+                }
+
+            }
+        );
+
+
+        values.push(total);
 
     }
 
 
     const max =
-        Math.max(...data, 1);
+        Math.max(
+            ...values,
+            1
+        );
 
 
-    const chart =
-        document.getElementById("chart");
+    container.innerHTML =
+        values
+            .map(
+                function (value, index) {
 
 
-    chart.innerHTML =
-        data.map((value, index) => {
-
-            const height =
-                value / max * 150;
+                    const width =
+                        value / max * 100;
 
 
-            return `
+                    return `
 
-                <div class="chart-column">
+                        <div
+                            class="month-row"
+                        >
 
-                    <div class="chart-value">
-                        ${value
-                            ? formatNumber(value) + "w"
-                            : ""}
-                    </div>
+                            <div>
+                                ${index + 1}月
+                            </div>
 
-                    <div
-                        class="chart-bar"
-                        style="height:${height}px"
-                        title="${value}w"
-                    ></div>
 
-                    <div class="chart-label">
-                        ${index + 1}月
-                    </div>
+                            <div
+                                class="progress-bg"
+                            >
 
-                </div>
+                                <div
+                                    class="progress"
+                                    style="
+                                        width:${width}%;
+                                    "
+                                ></div>
 
-            `;
+                            </div>
 
-        }).join("");
+
+                            <div>
+                                ${formatNumber(value)}w
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            )
+            .join("");
 
 }
 
 
-/* =========================================================
+
+/* ==================================================
    时间线
-========================================================= */
+================================================== */
 
 function renderTimeline() {
 
+
     const container =
-        document.getElementById("timeline");
+        document.getElementById(
+            "timeline"
+        );
 
 
-    const timelineBooks =
-        [...books]
-        .filter(book => book.startDate)
-        .sort(
-            (a,b) =>
-                new Date(b.startDate) -
-                new Date(a.startDate)
-        )
-        .slice(0, 10);
+    const list =
+        books
+            .filter(
+                function (book) {
+
+                    return Boolean(
+                        book.startDate
+                    );
+
+                }
+            )
+            .sort(
+                function (a, b) {
+
+                    return (
+                        new Date(
+                            b.startDate
+                        ) -
+                        new Date(
+                            a.startDate
+                        )
+                    );
+
+                }
+            )
+            .slice(
+                0,
+                8
+            );
 
 
-    if (timelineBooks.length === 0) {
+    if (
+        list.length === 0
+    ) {
 
-        container.innerHTML = `
-            <div style="
-                color:var(--subtext);
-                font-size:13px;
-            ">
-                暂无阅读时间记录
-            </div>
-        `;
+        container.innerHTML =
+            `
+                <div
+                    class="book-meta"
+                >
+                    暂无阅读时间记录
+                </div>
+            `;
 
         return;
 
@@ -2140,209 +2764,246 @@ function renderTimeline() {
 
 
     container.innerHTML =
-        timelineBooks
-        .map(book => {
+        list
+            .map(
+                function (book) {
 
-            return `
+                    return `
 
-                <div class="timeline-item">
+                        <div
+                            class="timeline-item"
+                        >
 
-                    <div class="timeline-date">
+                            <div
+                                class="timeline-date"
+                            >
+                                ${formatDate(book.startDate)}
+                            </div>
 
-                        ${formatDate(book.startDate)}
+                            <div
+                                class="timeline-title"
+                            >
+                                ${escapeHtml(book.title)}
+                            </div>
 
-                    </div>
+                        </div>
 
-                    <div class="timeline-title">
-
-                        ${escapeHtml(book.title)}
-
-                    </div>
-
-                </div>
-
-            `;
-
-        })
-        .join("");
-
-}
-
-
-/* =========================================================
-   星级评分
-========================================================= */
-
-function setupRating() {
-
-    document
-        .querySelectorAll(".star")
-        .forEach(star => {
-
-            star.addEventListener(
-                "click",
-                () => {
-
-                    currentRating =
-                        Number(
-                            star.dataset.rating
-                        );
-
-                    updateStars();
+                    `;
 
                 }
-            );
-
-        });
+            )
+            .join("");
 
 }
 
+
+
+/* ==================================================
+   星星
+================================================== */
 
 function updateStars() {
 
+
     document
         .querySelectorAll(".star")
-        .forEach(star => {
-
-            const rating =
-                Number(star.dataset.rating);
+        .forEach(
+            function (star) {
 
 
-            star.classList.toggle(
-                "active",
-                rating <= currentRating
-            );
+                const rating =
+                    Number(
+                        star.dataset.rating
+                    );
 
-        });
+
+                if (
+                    rating <=
+                    currentRating
+                ) {
+
+                    star.classList.add(
+                        "active"
+                    );
+
+                } else {
+
+                    star.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
 
 }
 
 
-/* =========================================================
+
+/* ==================================================
    导出
-========================================================= */
+================================================== */
 
 function exportData() {
-
-    const data =
-        JSON.stringify(
-            books,
-            null,
-            2
-        );
 
 
     const blob =
         new Blob(
-            [data],
+            [
+                JSON.stringify(
+                    books,
+                    null,
+                    2
+                )
+            ],
             {
-                type: "application/json"
+                type:
+                    "application/json"
             }
         );
 
 
     const url =
-        URL.createObjectURL(blob);
+        URL.createObjectURL(
+            blob
+        );
 
 
     const a =
-        document.createElement("a");
-
-
-    const date =
-        new Date()
-        .toISOString()
-        .slice(0,10);
+        document.createElement(
+            "a"
+        );
 
 
     a.href = url;
 
+
     a.download =
-        `reading-record-${date}.json`;
+        "我的阅读记录.json";
+
+
+    document
+        .body
+        .appendChild(a);
+
 
     a.click();
 
 
-    URL.revokeObjectURL(url);
+    a.remove();
 
-    showToast("数据已导出");
+
+    URL.revokeObjectURL(
+        url
+    );
+
+
+    showToast(
+        "数据已导出"
+    );
 
 }
 
 
-/* =========================================================
+
+/* ==================================================
    导入
-========================================================= */
+================================================== */
 
 function importData(event) {
+
 
     const file =
         event.target.files[0];
 
 
-    if (!file) return;
+    if (!file) {
+
+        return;
+
+    }
 
 
     const reader =
         new FileReader();
 
 
-    reader.onload = function(e) {
-
-        try {
-
-            const imported =
-                JSON.parse(e.target.result);
+    reader.onload =
+        function (e) {
 
 
-            if (!Array.isArray(imported)) {
+            try {
 
-                throw new Error();
+
+                const data =
+                    JSON.parse(
+                        e.target.result
+                    );
+
+
+                if (
+                    !Array.isArray(data)
+                ) {
+
+                    throw new Error(
+                        "invalid"
+                    );
+
+                }
+
+
+                if (
+                    !confirm(
+                        "导入数据会覆盖当前阅读记录，确定继续吗？"
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                books = data;
+
+
+                saveData();
+
+
+                renderAll();
+
+
+                showToast(
+                    "数据导入成功"
+                );
+
+
+            } catch (error) {
+
+
+                alert(
+                    "导入失败：文件格式不正确。"
+                );
 
             }
 
-
-            if (
-                !confirm(
-                    `发现 ${imported.length} 条记录。\n\n` +
-                    `导入后将覆盖当前数据，确定继续吗？`
-                )
-            ) {
-
-                return;
-
-            }
+        };
 
 
-            books = imported;
-
-            saveToStorage();
-
-            initializeYearSelect();
-
-            renderAll();
-
-            showToast("数据导入成功");
-
-        } catch (error) {
-
-            alert(
-                "导入失败：文件格式不正确。"
-            );
-
-        }
-
-    };
+    reader.readAsText(
+        file
+    );
 
 
-    reader.readAsText(file);
+    event.target.value = "";
 
 }
 
 
-/* =========================================================
-   总刷新
-========================================================= */
+
+/* ==================================================
+   工具函数
+================================================== */
 
 function renderAll() {
 
@@ -2352,113 +3013,231 @@ function renderAll() {
 
     renderMonthList();
 
-    initializeYearSelect();
-
-    renderChart();
-
     renderTimeline();
 
 }
 
 
-/* =========================================================
-   工具函数
-========================================================= */
+function getStatusText(status) {
 
-function formatNumber(number) {
 
-    return Number(number)
-        .toLocaleString(
-            "zh-CN",
-            {
-                maximumFractionDigits: 1
-            }
-        );
+    const map = {
+
+        reading: "在读",
+
+        finished: "已完成",
+
+        want: "想读",
+
+        dropped: "弃读"
+
+    };
+
+
+    return (
+        map[status] ||
+        "未知"
+    );
 
 }
 
 
-function escapeHtml(text) {
+function getReadingDays(book) {
 
-    if (text === null ||
-        text === undefined) {
+
+    if (!book.startDate) {
+
+        return null;
+
+    }
+
+
+    const start =
+        new Date(
+            book.startDate
+        );
+
+
+    const end =
+        book.endDate
+            ? new Date(
+                book.endDate
+            )
+            : new Date();
+
+
+    return Math.max(
+        1,
+        Math.floor(
+            (
+                end - start
+            ) /
+            86400000
+        ) + 1
+    );
+
+}
+
+
+function getDateRange(book) {
+
+
+    if (!book.startDate) {
+
+        return "未记录阅读时间";
+
+    }
+
+
+    if (!book.endDate) {
+
+        return (
+            formatDate(
+                book.startDate
+            ) +
+            " - 至今"
+        );
+
+    }
+
+
+    return (
+        formatDate(
+            book.startDate
+        ) +
+        " - " +
+        formatDate(
+            book.endDate
+        )
+    );
+
+}
+
+
+function formatDate(value) {
+
+
+    if (!value) {
 
         return "";
 
     }
 
 
-    return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    const date =
+        new Date(value);
+
+
+    return (
+
+        date.getFullYear() +
+        "." +
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0") +
+        "." +
+        String(
+            date.getDate()
+        ).padStart(2, "0")
+
+    );
 
 }
 
 
+function formatNumber(value) {
+
+
+    return Number(
+        value || 0
+    ).toLocaleString(
+        "zh-CN",
+        {
+            maximumFractionDigits: 1
+        }
+    );
+
+}
+
+
+function escapeHtml(value) {
+
+
+    return String(
+        value || ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* ==================================================
+   Toast
+================================================== */
+
+let toastTimer;
+
+
 function showToast(message) {
 
+
     const toast =
-        document.getElementById("toast");
+        document.getElementById(
+            "toast"
+        );
 
 
     toast.textContent =
         message;
 
 
-    toast.classList.add("show");
-
-
-    setTimeout(
-        () => {
-            toast.classList.remove("show");
-        },
-        2000
+    toast.classList.add(
+        "show"
     );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            function () {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            2000
+        );
 
 }
 
 
-/* =========================================================
-   点击弹窗外部关闭
-========================================================= */
-
-document
-    .getElementById("bookModal")
-    .addEventListener(
-        "click",
-        function(e) {
-
-            if (e.target === this) {
-
-                closeModal();
-
-            }
-
-        }
-    );
-
-
-/* =========================================================
-   ESC关闭
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    function(e) {
-
-        if (e.key === "Escape") {
-
-            closeModal();
-
-        }
-
-    }
-);
-
 </script>
+
 
 </body>
 </html>
