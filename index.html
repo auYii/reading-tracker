@@ -6,20 +6,20 @@
 <title>我的阅读记录</title>
 
 <style>
-:root {
-    --bg: #f6f4f1;
-    --card: #ffffff;
-    --text: #292725;
-    --subtext: #85817c;
-    --border: #e8e4df;
-    --accent: #806b5c;
-    --accent-light: #eee8e2;
-    --danger: #b96b6b;
-    --shadow: 0 8px 30px rgba(70, 60, 50, 0.07);
-}
-
 * {
     box-sizing: border-box;
+}
+
+:root {
+    --bg: #f6f3ef;
+    --card: #ffffff;
+    --text: #292725;
+    --sub: #88827b;
+    --border: #e8e2dc;
+    --accent: #806b5c;
+    --accent-light: #eee7e1;
+    --danger: #b96565;
+    --shadow: 0 8px 30px rgba(60, 45, 35, 0.07);
 }
 
 body {
@@ -48,29 +48,28 @@ button {
 
 .app {
     max-width: 1400px;
-    margin: auto;
+    margin: 0 auto;
     padding: 30px;
 }
 
-/* 顶部 */
+/* ==================== 顶部 ==================== */
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 28px;
 }
 
 .logo h1 {
     margin: 0;
     font-size: 30px;
     font-weight: 600;
-    letter-spacing: 1px;
 }
 
 .logo p {
     margin: 7px 0 0;
-    color: var(--subtext);
+    color: var(--sub);
     font-size: 14px;
 }
 
@@ -94,8 +93,8 @@ button {
 }
 
 .btn-primary {
-    background: var(--accent);
     color: white;
+    background: var(--accent);
     border-color: var(--accent);
 }
 
@@ -103,45 +102,45 @@ button {
     color: var(--danger);
 }
 
-/* 统计卡片 */
+/* ==================== 统计 ==================== */
 
-.stats-grid {
+.stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 15px;
-    margin-bottom: 25px;
+    margin-bottom: 22px;
 }
 
-.stat-card {
+.stat {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 22px;
+    padding: 21px;
     box-shadow: var(--shadow);
 }
 
-.stat-label {
-    color: var(--subtext);
+.stat-name {
+    color: var(--sub);
     font-size: 13px;
-    margin-bottom: 10px;
+    margin-bottom: 9px;
 }
 
-.stat-value {
+.stat-number {
     font-size: 28px;
     font-weight: 600;
 }
 
 .stat-unit {
+    color: var(--sub);
     font-size: 13px;
-    color: var(--subtext);
     margin-left: 4px;
 }
 
-/* 页面主体 */
+/* ==================== 主体 ==================== */
 
-.content-grid {
+.layout {
     display: grid;
-    grid-template-columns: 1fr 350px;
+    grid-template-columns: minmax(0, 1fr) 350px;
     gap: 20px;
 }
 
@@ -150,10 +149,16 @@ button {
     border: 1px solid var(--border);
     border-radius: 16px;
     box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.panel + .panel {
+    margin-top: 20px;
 }
 
 .panel-header {
-    padding: 20px 22px;
+    min-height: 64px;
+    padding: 17px 20px;
     border-bottom: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
@@ -170,29 +175,30 @@ button {
     padding: 20px;
 }
 
-/* 搜索 */
+/* ==================== 搜索 ==================== */
 
-.search-area {
+.search-box {
     display: flex;
     gap: 10px;
     margin-bottom: 18px;
 }
 
-.search-input {
+.search-box input {
     flex: 1;
 }
+
+/* ==================== 输入框 ==================== */
 
 input,
 select,
 textarea {
     width: 100%;
-    padding: 11px 13px;
+    padding: 10px 12px;
     border: 1px solid var(--border);
     border-radius: 9px;
-    outline: none;
-    background: var(--card);
+    background: white;
     color: var(--text);
-    transition: 0.2s;
+    outline: none;
 }
 
 input:focus,
@@ -206,7 +212,7 @@ textarea {
     resize: vertical;
 }
 
-/* 小说列表 */
+/* ==================== 小说列表 ==================== */
 
 .book-list {
     display: flex;
@@ -214,60 +220,79 @@ textarea {
     gap: 12px;
 }
 
-.book-item {
+.book {
+    padding: 17px;
     border: 1px solid var(--border);
     border-radius: 13px;
-    padding: 17px;
     transition: 0.2s;
 }
 
-.book-item:hover {
-    box-shadow: 0 5px 20px rgba(70, 60, 50, 0.06);
-    transform: translateY(-1px);
+.book:hover {
+    box-shadow: 0 5px 20px rgba(50, 40, 30, 0.06);
 }
 
-.book-main {
+.book-top {
     display: flex;
     justify-content: space-between;
-    gap: 20px;
-}
-
-.book-info {
-    min-width: 0;
+    gap: 15px;
 }
 
 .book-title {
     font-size: 17px;
     font-weight: 600;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
 }
 
-.book-meta {
-    color: var(--subtext);
+.book-info {
+    color: var(--sub);
     font-size: 13px;
     line-height: 1.8;
 }
 
-.book-side {
-    text-align: right;
-    min-width: 110px;
-}
-
 .book-words {
+    text-align: right;
     font-size: 20px;
     font-weight: 600;
+    white-space: nowrap;
 }
 
-.book-date {
-    color: var(--subtext);
-    font-size: 12px;
-    margin-top: 4px;
+.book-status {
+    margin-top: 5px;
+    text-align: right;
+}
+
+.status {
+    display: inline-block;
+    padding: 4px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+}
+
+.status-finished {
+    color: #607a5e;
+    background: #e7f0e5;
+}
+
+.status-reading {
+    color: #896d48;
+    background: #f0e9dc;
+}
+
+.status-want {
+    color: #66718a;
+    background: #e7eaf1;
+}
+
+.status-dropped {
+    color: #9b6262;
+    background: #f1e4e4;
 }
 
 .book-bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
     margin-top: 13px;
     padding-top: 12px;
     border-top: 1px solid var(--border);
@@ -275,79 +300,42 @@ textarea {
 
 .tags {
     display: flex;
-    gap: 5px;
     flex-wrap: wrap;
+    gap: 5px;
 }
 
 .tag {
-    background: var(--accent-light);
+    padding: 4px 9px;
+    border-radius: 20px;
     color: var(--accent);
-    border-radius: 20px;
-    padding: 4px 9px;
+    background: var(--accent-light);
     font-size: 11px;
 }
 
-.status {
-    display: inline-block;
-    border-radius: 20px;
-    padding: 4px 9px;
-    font-size: 11px;
+.rating {
+    margin-top: 6px;
+    color: #b28b53;
+    font-size: 13px;
 }
 
-.status-finished {
-    background: #e8f0e7;
-    color: #607b5e;
-}
-
-.status-reading {
-    background: #eee8dd;
-    color: #8a704c;
-}
-
-.status-dropped {
-    background: #f1e5e5;
-    color: #9a6262;
-}
-
-.status-want {
-    background: #e7e9ef;
-    color: #65708a;
-}
-
-.book-actions {
+.book-buttons {
     display: flex;
-    gap: 6px;
+    gap: 4px;
 }
 
-.small-btn {
+.text-button {
     border: none;
     background: transparent;
-    color: var(--subtext);
+    color: var(--sub);
+    padding: 5px 7px;
     font-size: 12px;
-    padding: 4px 7px;
 }
 
-.small-btn:hover {
+.text-button:hover {
     color: var(--accent);
 }
 
-/* 右侧 */
-
-.side-section {
-    margin-bottom: 20px;
-}
-
-.side-section:last-child {
-    margin-bottom: 0;
-}
-
-.side-title {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 14px;
-}
-
-/* 月度统计 */
+/* ==================== 月度统计 ==================== */
 
 .month-list {
     display: flex;
@@ -357,35 +345,68 @@ textarea {
 
 .month-row {
     display: grid;
-    grid-template-columns: 45px 1fr 70px;
-    align-items: center;
+    grid-template-columns: 40px 1fr 65px;
     gap: 8px;
+    align-items: center;
     font-size: 12px;
 }
 
 .month-name {
-    color: var(--subtext);
+    color: var(--sub);
 }
 
-.bar-bg {
+.progress-bg {
     height: 8px;
-    border-radius: 10px;
     background: #eeeae6;
+    border-radius: 20px;
     overflow: hidden;
 }
 
-.bar {
+.progress {
     height: 100%;
     background: var(--accent);
-    border-radius: 10px;
+    border-radius: 20px;
 }
 
 .month-value {
     text-align: right;
-    color: var(--subtext);
+    color: var(--sub);
 }
 
-/* 时间线 */
+/* ==================== 图表 ==================== */
+
+.chart {
+    height: 240px;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    padding: 10px 5px;
+}
+
+.chart-column {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 5px;
+}
+
+.chart-bar {
+    width: min(35px, 70%);
+    min-height: 2px;
+    background: var(--accent);
+    border-radius: 5px 5px 0 0;
+}
+
+.chart-label,
+.chart-value {
+    font-size: 10px;
+    color: var(--sub);
+}
+
+/* ==================== 时间线 ==================== */
 
 .timeline {
     position: relative;
@@ -395,9 +416,9 @@ textarea {
 .timeline::before {
     content: "";
     position: absolute;
-    left: 4px;
     top: 4px;
     bottom: 4px;
+    left: 4px;
     width: 1px;
     background: var(--border);
 }
@@ -419,7 +440,7 @@ textarea {
 }
 
 .timeline-date {
-    color: var(--subtext);
+    color: var(--sub);
     font-size: 11px;
     margin-bottom: 3px;
 }
@@ -428,12 +449,12 @@ textarea {
     font-size: 13px;
 }
 
-/* 空状态 */
+/* ==================== 空状态 ==================== */
 
 .empty {
+    padding: 55px 20px;
     text-align: center;
-    padding: 60px 20px;
-    color: var(--subtext);
+    color: var(--sub);
 }
 
 .empty-icon {
@@ -441,64 +462,60 @@ textarea {
     margin-bottom: 10px;
 }
 
-/* 弹窗 */
+/* ==================== 弹窗 ==================== */
 
 .modal {
     display: none;
     position: fixed;
+    z-index: 1000;
     inset: 0;
-    background: rgba(20, 18, 16, 0.45);
-    z-index: 100;
     padding: 20px;
+    background: rgba(20, 18, 16, 0.48);
     overflow-y: auto;
 }
 
-.modal.active {
+.modal.show {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
 }
 
-.modal-content {
+.modal-box {
     width: min(720px, 100%);
-    background: var(--card);
+    background: white;
     border-radius: 18px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
     overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
 }
 
-.modal-header {
-    padding: 20px 22px;
+.modal-head {
+    padding: 18px 22px;
     border-bottom: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.modal-header h2 {
+.modal-head h2 {
     margin: 0;
     font-size: 19px;
 }
 
-.close {
+.close-button {
     border: none;
     background: transparent;
+    color: var(--sub);
     font-size: 25px;
-    color: var(--subtext);
 }
 
-.modal-body {
+.modal-content {
     padding: 22px;
 }
 
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 16px;
-}
-
-.form-group {
-    margin-bottom: 2px;
 }
 
 .form-group.full {
@@ -507,15 +524,11 @@ textarea {
 
 .form-label {
     display: block;
-    font-size: 13px;
     margin-bottom: 7px;
+    font-size: 13px;
 }
 
-.required {
-    color: var(--danger);
-}
-
-.modal-footer {
+.form-footer {
     padding: 15px 22px;
     border-top: 1px solid var(--border);
     display: flex;
@@ -523,150 +536,124 @@ textarea {
     gap: 10px;
 }
 
-/* 星星 */
+/* ==================== 星星 ==================== */
 
-.rating {
+.stars {
     display: flex;
     gap: 3px;
 }
 
 .star {
-    font-size: 24px;
+    font-size: 25px;
     color: #d9d2ca;
     cursor: pointer;
 }
 
 .star.active {
-    color: #b28c54;
+    color: #b28b53;
 }
 
-/* 图表 */
-
-.chart-container {
-    width: 100%;
-    height: 240px;
-    position: relative;
-}
-
-.chart {
-    display: flex;
-    height: 190px;
-    align-items: flex-end;
-    gap: 10px;
-    padding: 10px 5px 0;
-}
-
-.chart-column {
-    flex: 1;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 5px;
-}
-
-.chart-bar {
-    width: min(35px, 70%);
-    background: var(--accent);
-    border-radius: 5px 5px 0 0;
-    min-height: 2px;
-    transition: 0.3s;
-}
-
-.chart-bar:hover {
-    opacity: 0.75;
-}
-
-.chart-label {
-    font-size: 10px;
-    color: var(--subtext);
-}
-
-.chart-value {
-    font-size: 9px;
-    color: var(--subtext);
-}
-
-/* Toast */
+/* ==================== Toast ==================== */
 
 .toast {
     position: fixed;
-    bottom: 25px;
+    z-index: 3000;
     left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: #292725;
-    color: white;
+    bottom: 25px;
+    transform: translate(-50%, 20px);
     padding: 10px 18px;
+    color: white;
+    background: #292725;
     border-radius: 9px;
     font-size: 13px;
     opacity: 0;
     pointer-events: none;
-    transition: 0.3s;
-    z-index: 300;
+    transition: 0.25s;
 }
 
 .toast.show {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translate(-50%, 0);
 }
 
-/* 响应式 */
+/* ==================== 详情 ==================== */
+
+.detail-row {
+    margin-bottom: 15px;
+}
+
+.detail-label {
+    margin-bottom: 5px;
+    color: var(--sub);
+    font-size: 12px;
+}
+
+.detail-text {
+    line-height: 1.8;
+    white-space: pre-wrap;
+}
+
+/* ==================== 手机 ==================== */
 
 @media (max-width: 900px) {
-    .content-grid {
+
+    .layout {
         grid-template-columns: 1fr;
     }
 
-    .stats-grid {
+    .stats {
         grid-template-columns: repeat(2, 1fr);
     }
+
 }
 
 @media (max-width: 600px) {
+
     .app {
         padding: 15px;
     }
 
     .header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
+        display: block;
     }
 
     .header-actions {
-        width: 100%;
+        margin-top: 15px;
     }
 
     .header-actions .btn {
         flex: 1;
+        padding: 9px 8px;
+        font-size: 12px;
     }
 
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .stats {
         gap: 10px;
     }
 
-    .stat-card {
+    .stat {
         padding: 16px;
     }
 
-    .stat-value {
-        font-size: 23px;
+    .stat-number {
+        font-size: 22px;
     }
 
-    .book-main {
-        flex-direction: column;
-        gap: 8px;
+    .book-top {
+        display: block;
     }
 
-    .book-side {
+    .book-words {
+        text-align: left;
+        margin-top: 8px;
+    }
+
+    .book-status {
         text-align: left;
     }
 
     .book-bottom {
         align-items: flex-start;
-        gap: 10px;
         flex-direction: column;
     }
 
@@ -677,6 +664,7 @@ textarea {
     .form-group.full {
         grid-column: auto;
     }
+
 }
 </style>
 </head>
@@ -685,7 +673,8 @@ textarea {
 
 <div class="app">
 
-    <!-- 顶部 -->
+    <!-- ==================== 顶部 ==================== -->
+
     <header class="header">
 
         <div class="logo">
@@ -694,9 +683,12 @@ textarea {
         </div>
 
         <div class="header-actions">
-            <button class="btn" onclick="exportData()">导出数据</button>
 
-            <button class="btn" onclick="document.getElementById('importFile').click()">
+            <button class="btn" id="exportBtn">
+                导出数据
+            </button>
+
+            <button class="btn" id="importBtn">
                 导入数据
             </button>
 
@@ -705,49 +697,49 @@ textarea {
                 id="importFile"
                 accept=".json"
                 style="display:none"
-                onchange="importData(event)"
             >
 
-            <button class="btn btn-primary" onclick="openAddModal()">
+            <button class="btn btn-primary" id="addBookBtn">
                 ＋ 添加小说
             </button>
+
         </div>
 
     </header>
 
 
-    <!-- 数据统计 -->
+    <!-- ==================== 数据统计 ==================== -->
 
-    <section class="stats-grid">
+    <section class="stats">
 
-        <div class="stat-card">
-            <div class="stat-label">今年阅读</div>
-            <div class="stat-value">
-                <span id="yearWords">0</span>
+        <div class="stat">
+            <div class="stat-name">今年阅读</div>
+            <div>
+                <span class="stat-number" id="yearWords">0</span>
                 <span class="stat-unit">w</span>
             </div>
         </div>
 
-        <div class="stat-card">
-            <div class="stat-label">本月阅读</div>
-            <div class="stat-value">
-                <span id="monthWords">0</span>
+        <div class="stat">
+            <div class="stat-name">本月阅读</div>
+            <div>
+                <span class="stat-number" id="monthWords">0</span>
                 <span class="stat-unit">w</span>
             </div>
         </div>
 
-        <div class="stat-card">
-            <div class="stat-label">今年小说</div>
-            <div class="stat-value">
-                <span id="yearBooks">0</span>
+        <div class="stat">
+            <div class="stat-name">今年小说</div>
+            <div>
+                <span class="stat-number" id="yearBooks">0</span>
                 <span class="stat-unit">本</span>
             </div>
         </div>
 
-        <div class="stat-card">
-            <div class="stat-label">全部小说</div>
-            <div class="stat-value">
-                <span id="totalBooks">0</span>
+        <div class="stat">
+            <div class="stat-name">全部小说</div>
+            <div>
+                <span class="stat-number" id="totalBooks">0</span>
                 <span class="stat-unit">本</span>
             </div>
         </div>
@@ -755,43 +747,42 @@ textarea {
     </section>
 
 
-    <!-- 主体 -->
+    <!-- ==================== 主体 ==================== -->
 
-    <div class="content-grid">
-
-        <!-- 左侧小说 -->
+    <div class="layout">
 
         <main>
 
-            <div class="panel">
+            <!-- 小说列表 -->
+
+            <section class="panel">
 
                 <div class="panel-header">
 
-                    <h2 class="panel-title">我的书目</h2>
+                    <h2 class="panel-title">
+                        我的书目
+                    </h2>
 
-                    <select
-                        id="statusFilter"
-                        onchange="renderBooks()"
-                        style="width:120px"
-                    >
+                    <select id="statusFilter" style="width:120px">
+
                         <option value="all">全部</option>
                         <option value="finished">已完成</option>
                         <option value="reading">在读</option>
                         <option value="want">想读</option>
                         <option value="dropped">弃读</option>
+
                     </select>
 
                 </div>
 
+
                 <div class="panel-body">
 
-                    <div class="search-area">
+                    <div class="search-box">
 
                         <input
                             id="searchInput"
-                            class="search-input"
-                            placeholder="搜索小说、作者、主角或标签..."
-                            oninput="renderBooks()"
+                            placeholder="搜索小说、作者、主角或标签"
                         >
 
                     </div>
@@ -800,48 +791,46 @@ textarea {
 
                 </div>
 
-            </div>
+            </section>
 
 
-            <!-- 年度图表 -->
+            <!-- 年度统计 -->
 
-            <div class="panel" style="margin-top:20px">
+            <section class="panel">
 
                 <div class="panel-header">
+
                     <h2 class="panel-title" id="chartTitle">
-                        2026 年阅读趋势
+                        阅读趋势
                     </h2>
 
-                    <select
-                        id="chartYear"
-                        onchange="renderChart()"
-                        style="width:100px"
-                    ></select>
+                    <select id="chartYear" style="width:100px"></select>
+
                 </div>
 
                 <div class="panel-body">
 
-                    <div class="chart-container">
-                        <div id="chart" class="chart"></div>
-                    </div>
+                    <div id="chart" class="chart"></div>
 
                 </div>
 
-            </div>
+            </section>
 
         </main>
 
 
-        <!-- 右侧 -->
+        <!-- ==================== 右侧 ==================== -->
 
         <aside>
 
-            <!-- 月度 -->
-
-            <div class="panel side-section">
+            <section class="panel">
 
                 <div class="panel-header">
-                    <h2 class="panel-title">月度阅读</h2>
+
+                    <h2 class="panel-title">
+                        月度阅读
+                    </h2>
+
                 </div>
 
                 <div class="panel-body">
@@ -850,15 +839,17 @@ textarea {
 
                 </div>
 
-            </div>
+            </section>
 
 
-            <!-- 最近阅读 -->
-
-            <div class="panel side-section">
+            <section class="panel">
 
                 <div class="panel-header">
-                    <h2 class="panel-title">阅读时间线</h2>
+
+                    <h2 class="panel-title">
+                        阅读时间线
+                    </h2>
+
                 </div>
 
                 <div class="panel-body">
@@ -867,7 +858,7 @@ textarea {
 
                 </div>
 
-            </div>
+            </section>
 
         </aside>
 
@@ -876,30 +867,38 @@ textarea {
 </div>
 
 
-<!-- 添加/编辑小说 -->
+<!-- ==================== 添加/编辑弹窗 ==================== -->
 
-<div id="bookModal" class="modal">
+<div class="modal" id="bookModal">
 
-    <div class="modal-content">
+    <div class="modal-box">
 
-        <div class="modal-header">
+        <div class="modal-head">
 
-            <h2 id="modalTitle">添加小说</h2>
+            <h2 id="modalTitle">
+                添加小说
+            </h2>
 
-            <button class="close" onclick="closeModal()">×</button>
+            <button
+                class="close-button"
+                id="closeModalBtn"
+            >
+                ×
+            </button>
 
         </div>
 
 
-        <div class="modal-body">
+        <div class="modal-content">
 
             <form id="bookForm">
 
                 <div class="form-grid">
 
                     <div class="form-group">
+
                         <label class="form-label">
-                            小说名称 <span class="required">*</span>
+                            小说名称 *
                         </label>
 
                         <input
@@ -907,30 +906,40 @@ textarea {
                             required
                             placeholder="例如：某某"
                         >
+
                     </div>
 
 
                     <div class="form-group">
-                        <label class="form-label">作者</label>
+
+                        <label class="form-label">
+                            作者
+                        </label>
 
                         <input
                             id="bookAuthor"
                             placeholder="作者名称"
                         >
+
                     </div>
 
 
                     <div class="form-group">
-                        <label class="form-label">主角</label>
+
+                        <label class="form-label">
+                            主角
+                        </label>
 
                         <input
                             id="bookProtagonist"
                             placeholder="例如：A × B"
                         >
+
                     </div>
 
 
                     <div class="form-group">
+
                         <label class="form-label">
                             字数（万字）
                         </label>
@@ -938,15 +947,19 @@ textarea {
                         <input
                             id="bookWords"
                             type="number"
-                            step="0.1"
                             min="0"
+                            step="0.1"
                             placeholder="例如：120"
                         >
+
                     </div>
 
 
                     <div class="form-group">
-                        <label class="form-label">阅读状态</label>
+
+                        <label class="form-label">
+                            阅读状态
+                        </label>
 
                         <select id="bookStatus">
 
@@ -977,7 +990,7 @@ textarea {
                             评分
                         </label>
 
-                        <div id="rating" class="rating">
+                        <div class="stars" id="rating">
 
                             <span class="star" data-rating="1">★</span>
                             <span class="star" data-rating="2">★</span>
@@ -1026,7 +1039,7 @@ textarea {
 
                         <input
                             id="bookTags"
-                            placeholder="用逗号分隔，例如：现代,BL,HE,无限流"
+                            placeholder="例如：现代,BL,HE,无限流"
                         >
 
                     </div>
@@ -1054,7 +1067,7 @@ textarea {
 
                         <textarea
                             id="bookNote"
-                            placeholder="可以记录喜欢的角色、情节、名场面、吐槽等等……"
+                            placeholder="记录喜欢的角色、情节、名场面、吐槽等等……"
                         ></textarea>
 
                     </div>
@@ -1066,33 +1079,14 @@ textarea {
         </div>
 
 
-        <div class="modal-footer">
+        <div class="form-footer">
 
-            <button class="btn" onclick="closeModal()">
+            <button
+                class="btn"
+                id="cancelBtn"
+            >
                 取消
             </button>
 
             <button
-                class="btn btn-primary"
-                onclick="saveBook()"
-            >
-                保存
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- Toast -->
-
-<div id="toast" class="toast"></div>
-
-
-<script>
-
-/* =========================================================
-   数据
-==================
+       
