@@ -858,7 +858,33 @@
 
         }
 
-    </style>
+    
+        .feeling-card {
+            margin: 2px 0;
+            padding: 16px 18px;
+            background: #fffdf9;
+            border: 1px solid #e8e1d8;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(80,65,50,.05);
+        }
+
+        .feeling-card-title {
+            margin-bottom: 9px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #6f655c;
+        }
+
+        .feeling-card-content {
+            min-height: 42px;
+            color: #514a44;
+            font-size: 14px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+</style>
 
 </head>
 
@@ -2863,237 +2889,26 @@ function toggleBookCard(id) {
 
 function viewBook(id) {
 
-    const book =
-        books.find(
-            function (item) {
-
-                return item.id === id;
-
-            }
-        );
+    const book = books.find(function(item) {
+        return item.id === id;
+    });
 
     if (!book) {
-
         return;
-
     }
 
-    const rating =
-        Number(
-            book.rating || 0
-        );
+    document.getElementById("detailTitle").textContent = book.title;
 
-    const stars =
-        "★".repeat(
-            rating
-        ) +
-        "☆".repeat(
-            5 - rating
-        );
+    document.getElementById("detailContent").innerHTML = `
+        <div class="feeling-card">
+            <div class="feeling-card-title">个人感受</div>
+            <div class="feeling-card-content">${escapeHtml(
+                book.feeling || "暂无记录"
+            )}</div>
+        </div>
+    `;
 
-    document
-        .getElementById("detailTitle")
-        .textContent =
-        book.title;
-
-    const mainCp =
-        formatCp(
-            book.mainCp
-        );
-
-    const subCps =
-        (book.subCps || [])
-            .map(
-                function (cp, index) {
-
-                    return `
-
-                        <div
-                            class="detail-cp"
-                        >
-                            副CP ${index + 1}：
-                            ${escapeHtml(
-                                formatCp(cp)
-                            )}
-                        </div>
-
-                    `;
-
-                }
-            )
-            .join("");
-
-    document
-        .getElementById("detailContent")
-        .innerHTML = `
-
-            <div class="detail-row">
-
-                <div class="detail-label">
-                    作者
-                </div>
-
-                <div class="detail-text">
-                    ${escapeHtml(
-                        book.author ||
-                        "未记录"
-                    )}
-                </div>
-
-            </div>
-
-
-            <div class="detail-row">
-
-                <div class="detail-label">
-                    主CP
-                </div>
-
-                <div class="detail-text">
-
-                    ${
-                        mainCp
-                            ? escapeHtml(
-                                mainCp
-                              )
-                            : "未记录"
-                    }
-
-                </div>
-
-                ${subCps}
-
-            </div>
-
-
-            <div class="detail-row">
-
-                <div class="detail-label">
-                    字数
-                </div>
-
-                <div class="detail-text">
-                    ${formatNumber(
-                        book.words
-                    )}w
-                </div>
-
-            </div>
-
-
-            <div class="detail-row">
-
-                <div class="detail-label">
-                    阅读状态
-                </div>
-
-                <div class="detail-text">
-                    ${getStatusText(
-                        book.status
-                    )}
-                </div>
-
-            </div>
-
-
-            <div class="detail-row">
-
-                <div class="detail-label">
-                    阅读时间
-                </div>
-
-                <div class="detail-text">
-
-                    ${getDateRange(
-                        book
-                    )}
-
-                    ${
-                        getReadingDays(
-                            book
-                        )
-                            ? "　·　" +
-                              getReadingDays(
-                                  book
-                              ) +
-                              "天"
-                            : ""
-                    }
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-row">
-
-                <div class="detail-label">
-                    评分
-                </div>
-
-                <div class="rating">
-                    ${stars}
-                </div>
-
-            </div>
-
-
-            <div class="detail-row">
-
-                <div class="detail-label">
-                    标签
-                </div>
-
-                <div>
-
-                    ${
-                        (book.tags || [])
-                            .map(
-                                function (tag) {
-
-                                    return `
-
-                                        <span class="tag">
-                                            ${escapeHtml(
-                                                tag
-                                            )}
-                                        </span>
-
-                                    `;
-
-                                }
-                            )
-                            .join("")
-                        ||
-                        "暂无"
-                    }
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-row">
-
-                <div class="detail-label">
-                    个人感受
-                </div>
-
-                <div class="detail-text">
-                    ${escapeHtml(
-                        book.feeling ||
-                        "暂无记录"
-                    )}
-                </div>
-
-            </div>
-
-        `;
-
-    document
-        .getElementById("detailModal")
-        .classList.add("show");
-
+    document.getElementById("detailModal").classList.add("show");
 }
 
 
