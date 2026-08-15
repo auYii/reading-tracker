@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>我的阅读记录</title>
 
@@ -18,7 +23,6 @@
 
         body {
             margin: 0;
-            padding: 0;
             background: #f6f3ee;
             color: #403b36;
             font-family:
@@ -40,11 +44,6 @@
         button {
             cursor: pointer;
         }
-
-
-        /* =========================
-           顶部
-        ========================= */
 
         header {
             background: #ffffff;
@@ -68,22 +67,12 @@
             font-size: 14px;
         }
 
-
-        /* =========================
-           主体
-        ========================= */
-
         main {
             width: 100%;
             max-width: 1100px;
             margin: 28px auto;
             padding: 0 20px;
         }
-
-
-        /* =========================
-           工具栏
-        ========================= */
 
         .toolbar {
             display: flex;
@@ -119,13 +108,7 @@
         textarea {
             min-height: 110px;
             max-height: 110px;
-
-            /*
-             * 关键：
-             * 禁止用户拖动文本框改变大小
-             */
             resize: none;
-
             line-height: 1.6;
         }
 
@@ -150,16 +133,6 @@
             color: #514a43;
             border: 1px solid #ddd5cc;
         }
-
-        .btn-danger {
-            background: #fff1ef;
-            color: #b55347;
-        }
-
-
-        /* =========================
-           统计卡片
-        ========================= */
 
         .stats {
             display: grid;
@@ -186,11 +159,6 @@
             font-weight: 700;
         }
 
-
-        /* =========================
-           内容布局
-        ========================= */
-
         .content-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -209,11 +177,6 @@
             margin: 0 0 16px;
             font-size: 18px;
         }
-
-
-        /* =========================
-           小说卡片
-        ========================= */
 
         .book-card {
             background: #ffffff;
@@ -315,10 +278,26 @@
             background: #ece8e1;
         }
 
+        .cp-display {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #faf8f5;
+            border-radius: 9px;
+            color: #5e574f;
+            font-size: 14px;
+            line-height: 1.7;
+        }
 
-        /* =========================
-           空状态
-        ========================= */
+        .cp-label {
+            color: #968c83;
+            font-size: 12px;
+            margin-right: 6px;
+        }
+
+        .sub-cp-display {
+            margin-top: 4px;
+            color: #716960;
+        }
 
         .empty {
             text-align: center;
@@ -330,11 +309,6 @@
             font-size: 42px;
             margin-bottom: 10px;
         }
-
-
-        /* =========================
-           月度统计
-        ========================= */
 
         .month-row {
             display: grid;
@@ -358,11 +332,6 @@
             border-radius: 10px;
         }
 
-
-        /* =========================
-           最近阅读
-        ========================= */
-
         .timeline-item {
             padding: 10px 0;
             border-bottom: 1px solid #eee8e1;
@@ -383,33 +352,15 @@
             font-weight: 600;
         }
 
-
-        /* =========================
-           弹窗
-        ========================= */
-
         .modal {
             position: fixed;
             inset: 0;
-
             z-index: 1000;
-
-            /*
-             * 不使用 align-items:center
-             * 防止窗口太高时顶部被截掉
-             */
             display: none;
-
             align-items: flex-start;
             justify-content: center;
-
             padding: 40px 20px;
-
             background: rgba(0, 0, 0, 0.45);
-
-            /*
-             * 页面本身可以滚动
-             */
             overflow-y: auto;
         }
 
@@ -419,47 +370,26 @@
 
         .modal-box {
             position: relative;
-
             width: min(680px, 100%);
-
-            /*
-             * 最大高度不能超过浏览器窗口
-             */
             max-height: calc(100vh - 80px);
-
             margin: 0 auto;
-
             background: #ffffff;
-
             border-radius: 16px;
-
             padding: 24px;
-
-            /*
-             * 如果表单内容太长，
-             * 只让弹窗内部滚动
-             */
             overflow-y: auto;
-
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.18);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
         }
 
         .modal-head {
             display: flex;
             align-items: center;
             justify-content: space-between;
-
             margin-bottom: 20px;
-
             position: sticky;
             top: -24px;
-
             padding-top: 2px;
             padding-bottom: 14px;
-
             background: #ffffff;
-
             z-index: 2;
         }
 
@@ -480,11 +410,6 @@
         .close-button:hover {
             color: #333;
         }
-
-
-        /* =========================
-           表单
-        ========================= */
 
         .form-grid {
             display: grid;
@@ -507,23 +432,118 @@
             display: flex;
             justify-content: flex-end;
             gap: 10px;
-
             margin-top: 20px;
-
             padding-top: 16px;
-
             border-top: 1px solid #eee8e1;
-
             position: sticky;
             bottom: -24px;
-
             background: #ffffff;
         }
 
+        .cp-section {
+            grid-column: 1 / -1;
+            border: 1px solid #e7e0d7;
+            border-radius: 12px;
+            padding: 15px;
+            background: #fcfaf7;
+        }
 
-        /* =========================
-           星星
-        ========================= */
+        .cp-section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .cp-section-title strong {
+            font-size: 14px;
+        }
+
+        .person-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .person-group input {
+            flex: 1;
+        }
+
+        .multiply {
+            flex: 0 0 auto;
+            color: #8e857d;
+            font-weight: 600;
+        }
+
+        .remove-person {
+            flex: 0 0 auto;
+            width: 34px;
+            height: 38px;
+            border: 0;
+            border-radius: 8px;
+            background: #f2eeea;
+            color: #8c8178;
+            font-size: 16px;
+        }
+
+        .remove-person:hover {
+            background: #eee7df;
+            color: #b35c50;
+        }
+
+        .add-person-btn {
+            border: 1px dashed #cfc5ba;
+            background: #ffffff;
+            color: #70665d;
+            border-radius: 8px;
+            padding: 7px 11px;
+            font-size: 13px;
+        }
+
+        .add-person-btn:hover {
+            background: #f7f3ee;
+        }
+
+        .sub-cp {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e7e0d7;
+        }
+
+        .sub-cp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .sub-cp-title {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .remove-cp-btn {
+            border: 0;
+            background: transparent;
+            color: #a36d64;
+            font-size: 12px;
+        }
+
+        .add-cp-btn {
+            width: 100%;
+            margin-top: 12px;
+            padding: 9px;
+            border: 1px dashed #cfc5ba;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #6f665e;
+        }
+
+        .add-cp-btn:hover {
+            background: #f7f3ee;
+        }
 
         .star-rating {
             display: flex;
@@ -540,11 +560,6 @@
         .star.active {
             color: #c28d45;
         }
-
-
-        /* =========================
-           详情
-        ========================= */
 
         .detail-row {
             padding: 13px 0;
@@ -567,40 +582,30 @@
             word-break: break-word;
         }
 
-
-        /* =========================
-           Toast
-        ========================= */
+        .detail-cp {
+            padding: 9px 11px;
+            margin-top: 7px;
+            background: #faf8f5;
+            border-radius: 8px;
+        }
 
         .toast {
             position: fixed;
             z-index: 2000;
-
             left: 50%;
             bottom: 30px;
-
             transform: translateX(-50%);
-
             display: none;
-
             padding: 10px 18px;
-
             border-radius: 9px;
-
             background: #403b36;
             color: #ffffff;
-
             font-size: 14px;
         }
 
         .toast.show {
             display: block;
         }
-
-
-        /* =========================
-           响应式
-        ========================= */
 
         @media (max-width: 800px) {
 
@@ -613,7 +618,6 @@
             }
 
         }
-
 
         @media (max-width: 600px) {
 
@@ -637,6 +641,10 @@
                 grid-column: auto;
             }
 
+            .cp-section {
+                grid-column: auto;
+            }
+
             .modal {
                 padding: 20px 12px;
             }
@@ -650,19 +658,19 @@
                 top: -18px;
             }
 
+            .book-top {
+                flex-direction: column;
+            }
+
         }
 
-
     </style>
+
 </head>
 
 
 <body>
 
-
-<!-- =========================
-     顶部
-========================= -->
 
 <header>
 
@@ -685,10 +693,6 @@
 <main>
 
 
-    <!-- =========================
-         工具栏
-    ========================= -->
-
     <div class="toolbar">
 
         <div class="search-box">
@@ -696,7 +700,7 @@
             <input
                 id="searchInput"
                 type="text"
-                placeholder="搜索小说、作者、主角、标签……"
+                placeholder="搜索小说、作者、人物、标签……"
             >
 
         </div>
@@ -765,10 +769,6 @@
     </div>
 
 
-
-    <!-- =========================
-         统计
-    ========================= -->
 
     <section class="stats">
 
@@ -841,14 +841,8 @@
 
 
 
-    <!-- =========================
-         内容
-    ========================= -->
-
     <div class="content-grid">
 
-
-        <!-- 小说列表 -->
 
         <section>
 
@@ -856,9 +850,6 @@
 
         </section>
 
-
-
-        <!-- 右侧统计 -->
 
         <aside>
 
@@ -872,7 +863,6 @@
                 <div id="monthList"></div>
 
             </div>
-
 
 
             <div
@@ -899,9 +889,7 @@
 
 
 
-<!-- ==================================================
-     添加 / 编辑小说弹窗
-================================================== -->
+<!-- 添加 / 编辑小说 -->
 
 <div
     class="modal"
@@ -934,8 +922,6 @@
         <div class="form-grid">
 
 
-            <!-- 小说名称 -->
-
             <div class="form-field">
 
                 <label>
@@ -945,14 +931,12 @@
                 <input
                     id="bookTitle"
                     type="text"
-                    placeholder="例如：XXX"
+                    placeholder="例如：某某小说"
                 >
 
             </div>
 
 
-
-            <!-- 作者 -->
 
             <div class="form-field">
 
@@ -969,26 +953,6 @@
             </div>
 
 
-
-            <!-- 主角 -->
-
-            <div class="form-field">
-
-                <label>
-                    主角
-                </label>
-
-                <input
-                    id="bookProtagonist"
-                    type="text"
-                    placeholder="主角名称"
-                >
-
-            </div>
-
-
-
-            <!-- 字数 -->
 
             <div class="form-field">
 
@@ -1007,8 +971,6 @@
             </div>
 
 
-
-            <!-- 状态 -->
 
             <div class="form-field">
 
@@ -1040,9 +1002,91 @@
 
 
 
+            <!-- 主 CP -->
+
+            <div class="cp-section">
+
+
+                <div class="cp-section-title">
+
+                    <strong>
+                        主 CP
+                    </strong>
+
+                    <span
+                        style="
+                            font-size:12px;
+                            color:#988e85;
+                        "
+                    >
+                        可以添加多个人物
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="mainCpContainer"
+                ></div>
+
+
+                <button
+                    type="button"
+                    class="add-person-btn"
+                    id="addMainPersonBtn"
+                >
+                    ＋ 添加人物
+                </button>
+
+
+            </div>
+
+
+
+            <!-- 副 CP -->
+
+            <div class="cp-section">
+
+
+                <div class="cp-section-title">
+
+                    <strong>
+                        副 CP
+                    </strong>
+
+                    <span
+                        style="
+                            font-size:12px;
+                            color:#988e85;
+                        "
+                    >
+                        可以添加多个副 CP
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="subCpContainer"
+                ></div>
+
+
+                <button
+                    type="button"
+                    class="add-cp-btn"
+                    id="addSubCpBtn"
+                >
+                    ＋ 添加副 CP
+                </button>
+
+
+            </div>
+
+
+
             <!-- 标签 -->
 
-            <div class="form-field">
+            <div class="form-field full">
 
                 <label>
                     标签
@@ -1051,7 +1095,7 @@
                 <input
                     id="bookTags"
                     type="text"
-                    placeholder="多个标签用逗号分隔"
+                    placeholder="多个标签用逗号分隔，例如：古风,甜文,HE"
                 >
 
             </div>
@@ -1099,6 +1143,7 @@
                 <label>
                     评分
                 </label>
+
 
                 <div
                     class="star-rating"
@@ -1162,23 +1207,6 @@
             </div>
 
 
-
-            <!-- 备注 -->
-
-            <div class="form-field full">
-
-                <label>
-                    名场面 / 备注
-                </label>
-
-                <textarea
-                    id="bookNote"
-                    placeholder="可以记录喜欢的情节、名场面、吐槽等……"
-                ></textarea>
-
-            </div>
-
-
         </div>
 
 
@@ -1214,9 +1242,7 @@
 
 
 
-<!-- ==================================================
-     查看详情弹窗
-================================================== -->
+<!-- 查看详情 -->
 
 <div
     class="modal"
@@ -1268,8 +1294,6 @@
 
 
 
-<!-- Toast -->
-
 <div
     class="toast"
     id="toast"
@@ -1280,21 +1304,15 @@
 <script>
 
 
-/* ==================================================
-   数据
-================================================== */
-
 let books = [];
 
 let editingId = null;
 
 let currentRating = 0;
 
+let subCpCounter = 0;
 
 
-/* ==================================================
-   初始化
-================================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -1311,9 +1329,9 @@ document.addEventListener(
 
 
 
-/* ==================================================
-   LocalStorage
-================================================== */
+/* =========================
+   数据
+========================= */
 
 function loadData() {
 
@@ -1324,12 +1342,10 @@ function loadData() {
                 "readingTrackerBooks"
             );
 
-
         if (data) {
 
             const parsed =
                 JSON.parse(data);
-
 
             if (
                 Array.isArray(parsed)
@@ -1352,6 +1368,7 @@ function loadData() {
 }
 
 
+
 function saveData() {
 
     localStorage.setItem(
@@ -1363,12 +1380,11 @@ function saveData() {
 
 
 
-/* ==================================================
+/* =========================
    事件
-================================================== */
+========================= */
 
 function bindEvents() {
-
 
     document
         .getElementById("addBookBtn")
@@ -1465,6 +1481,30 @@ function bindEvents() {
 
 
     document
+        .getElementById("addMainPersonBtn")
+        .addEventListener(
+            "click",
+            function () {
+
+                addMainPerson();
+
+            }
+        );
+
+
+    document
+        .getElementById("addSubCpBtn")
+        .addEventListener(
+            "click",
+            function () {
+
+                addSubCp();
+
+            }
+        );
+
+
+    document
         .querySelectorAll(".star")
         .forEach(
             function (star) {
@@ -1490,9 +1530,661 @@ function bindEvents() {
 
 
 
-/* ==================================================
-   添加小说
-================================================== */
+/* =========================
+   人物输入框
+========================= */
+
+function createPersonInput(
+    value = "",
+    removable = true
+) {
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+    wrapper.className =
+        "person-group";
+
+    const input =
+        document.createElement(
+            "input"
+        );
+
+    input.type = "text";
+
+    input.className =
+        "person-input";
+
+    input.placeholder =
+        "请输入人名";
+
+    input.value =
+        value;
+
+    wrapper.appendChild(
+        input
+    );
+
+    const groups =
+        document.querySelectorAll(
+            "#mainCpContainer .person-group"
+        );
+
+    if (
+        groups.length > 0
+    ) {
+
+        const multiply =
+            document.createElement(
+                "span"
+            );
+
+        multiply.className =
+            "multiply";
+
+        multiply.textContent =
+            "×";
+
+        wrapper.insertBefore(
+            multiply,
+            input
+        );
+
+    }
+
+    if (removable) {
+
+        const remove =
+            document.createElement(
+                "button"
+            );
+
+        remove.type =
+            "button";
+
+        remove.className =
+            "remove-person";
+
+        remove.textContent =
+            "×";
+
+        remove.title =
+            "删除人物";
+
+        remove.addEventListener(
+            "click",
+            function () {
+
+                wrapper.remove();
+
+                updatePersonMultiplication();
+
+            }
+        );
+
+        wrapper.appendChild(
+            remove
+        );
+
+    }
+
+    return wrapper;
+
+}
+
+
+
+function addMainPerson(
+    value = ""
+) {
+
+    const container =
+        document.getElementById(
+            "mainCpContainer"
+        );
+
+    const existing =
+        container.querySelectorAll(
+            ".person-group"
+        );
+
+    const group =
+        createPersonInput(
+            value,
+            existing.length > 0
+        );
+
+    container.appendChild(
+        group
+    );
+
+    updatePersonMultiplication();
+
+}
+
+
+
+function updatePersonMultiplication() {
+
+    const groups =
+        Array.from(
+            document.querySelectorAll(
+                "#mainCpContainer .person-group"
+            )
+        );
+
+    groups.forEach(
+        function (group, index) {
+
+            const old =
+                group.querySelector(
+                    ".multiply"
+                );
+
+            if (old) {
+
+                old.remove();
+
+            }
+
+            if (index > 0) {
+
+                const multiply =
+                    document.createElement(
+                        "span"
+                    );
+
+                multiply.className =
+                    "multiply";
+
+                multiply.textContent =
+                    "×";
+
+                group.insertBefore(
+                    multiply,
+                    group.firstChild
+                );
+
+            }
+
+            const remove =
+                group.querySelector(
+                    ".remove-person"
+                );
+
+            if (remove) {
+
+                if (
+                    groups.length <= 2 &&
+                    index === 0
+                ) {
+
+                    remove.style.display =
+                        "none";
+
+                } else {
+
+                    remove.style.display =
+                        "";
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+
+/* =========================
+   副 CP
+========================= */
+
+function createSubCp(
+    people = ["", ""]
+) {
+
+    subCpCounter++;
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+    wrapper.className =
+        "sub-cp";
+
+    const header =
+        document.createElement(
+            "div"
+        );
+
+    header.className =
+        "sub-cp-header";
+
+    header.innerHTML = `
+
+        <div class="sub-cp-title">
+            副 CP ${subCpCounter}
+        </div>
+
+        <button
+            type="button"
+            class="remove-cp-btn"
+        >
+            删除这个副 CP
+        </button>
+
+    `;
+
+    header
+        .querySelector(
+            ".remove-cp-btn"
+        )
+        .addEventListener(
+            "click",
+            function () {
+
+                wrapper.remove();
+
+                renumberSubCps();
+
+            }
+        );
+
+    wrapper.appendChild(
+        header
+    );
+
+    const peopleContainer =
+        document.createElement(
+            "div"
+        );
+
+    peopleContainer.className =
+        "sub-cp-people";
+
+    wrapper.appendChild(
+        peopleContainer
+    );
+
+    people.forEach(
+        function (person, index) {
+
+            addSubPerson(
+                peopleContainer,
+                person,
+                index > 1
+            );
+
+        }
+    );
+
+    const addPerson =
+        document.createElement(
+            "button"
+        );
+
+    addPerson.type =
+        "button";
+
+    addPerson.className =
+        "add-person-btn";
+
+    addPerson.textContent =
+        "＋ 添加人物";
+
+    addPerson.addEventListener(
+        "click",
+        function () {
+
+            addSubPerson(
+                peopleContainer,
+                "",
+                true
+            );
+
+        }
+    );
+
+    wrapper.appendChild(
+        addPerson
+    );
+
+    return wrapper;
+
+}
+
+
+
+function addSubPerson(
+    container,
+    value = "",
+    removable = true
+) {
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+    wrapper.className =
+        "person-group";
+
+    const input =
+        document.createElement(
+            "input"
+        );
+
+    input.type =
+        "text";
+
+    input.className =
+        "person-input";
+
+    input.placeholder =
+        "请输入人名";
+
+    input.value =
+        value;
+
+    const current =
+        container.querySelectorAll(
+            ".person-group"
+        );
+
+    if (
+        current.length > 0
+    ) {
+
+        const multiply =
+            document.createElement(
+                "span"
+            );
+
+        multiply.className =
+            "multiply";
+
+        multiply.textContent =
+            "×";
+
+        wrapper.appendChild(
+            multiply
+        );
+
+    }
+
+    wrapper.appendChild(
+        input
+    );
+
+    if (removable) {
+
+        const remove =
+            document.createElement(
+                "button"
+            );
+
+        remove.type =
+            "button";
+
+        remove.className =
+            "remove-person";
+
+        remove.textContent =
+            "×";
+
+        remove.title =
+            "删除人物";
+
+        remove.addEventListener(
+            "click",
+            function () {
+
+                wrapper.remove();
+
+                updateSubMultiplication(
+                    container
+                );
+
+            }
+        );
+
+        wrapper.appendChild(
+            remove
+        );
+
+    }
+
+    container.appendChild(
+        wrapper
+    );
+
+    updateSubMultiplication(
+        container
+    );
+
+}
+
+
+
+function updateSubMultiplication(
+    container
+) {
+
+    const groups =
+        Array.from(
+            container.querySelectorAll(
+                ".person-group"
+            )
+        );
+
+    groups.forEach(
+        function (group, index) {
+
+            const old =
+                group.querySelector(
+                    ".multiply"
+                );
+
+            if (old) {
+
+                old.remove();
+
+            }
+
+            if (index > 0) {
+
+                const multiply =
+                    document.createElement(
+                        "span"
+                    );
+
+                multiply.className =
+                    "multiply";
+
+                multiply.textContent =
+                    "×";
+
+                group.insertBefore(
+                    multiply,
+                    group.firstChild
+                );
+
+            }
+
+            const remove =
+                group.querySelector(
+                    ".remove-person"
+                );
+
+            if (remove) {
+
+                if (
+                    groups.length <= 2 &&
+                    index === 0
+                ) {
+
+                    remove.style.display =
+                        "none";
+
+                } else {
+
+                    remove.style.display =
+                        "";
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+
+function addSubCp(
+    people = ["", ""]
+) {
+
+    const container =
+        document.getElementById(
+            "subCpContainer"
+        );
+
+    const cp =
+        createSubCp(
+            people
+        );
+
+    container.appendChild(
+        cp
+    );
+
+}
+
+
+
+function renumberSubCps() {
+
+    const list =
+        document.querySelectorAll(
+            "#subCpContainer .sub-cp"
+        );
+
+    list.forEach(
+        function (cp, index) {
+
+            const title =
+                cp.querySelector(
+                    ".sub-cp-title"
+                );
+
+            title.textContent =
+                "副 CP " +
+                (index + 1);
+
+        }
+    );
+
+    subCpCounter =
+        list.length;
+
+}
+
+
+
+/* =========================
+   获取 CP
+========================= */
+
+function getMainCp() {
+
+    const inputs =
+        document.querySelectorAll(
+            "#mainCpContainer .person-input"
+        );
+
+    return Array.from(
+        inputs
+    )
+        .map(
+            function (input) {
+
+                return input.value.trim();
+
+            }
+        )
+        .filter(
+            function (value) {
+
+                return value !== "";
+
+            }
+        );
+
+}
+
+
+
+function getSubCps() {
+
+    const cps =
+        document.querySelectorAll(
+            "#subCpContainer .sub-cp"
+        );
+
+    return Array.from(
+        cps
+    )
+        .map(
+            function (cp) {
+
+                const inputs =
+                    cp.querySelectorAll(
+                        ".person-input"
+                    );
+
+                return Array.from(
+                    inputs
+                )
+                    .map(
+                        function (input) {
+
+                            return input.value.trim();
+
+                        }
+                    )
+                    .filter(
+                        function (value) {
+
+                            return value !== "";
+
+                        }
+                    );
+
+            }
+        )
+        .filter(
+            function (people) {
+
+                return people.length > 0;
+
+            }
+        );
+
+}
+
+
+
+/* =========================
+   添加
+========================= */
 
 function openAddModal() {
 
@@ -1503,62 +2195,60 @@ function openAddModal() {
         .textContent =
         "添加小说";
 
-
     document
         .getElementById("bookTitle")
         .value = "";
-
 
     document
         .getElementById("bookAuthor")
         .value = "";
 
-
-    document
-        .getElementById("bookProtagonist")
-        .value = "";
-
-
     document
         .getElementById("bookWords")
         .value = "";
-
 
     document
         .getElementById("bookStatus")
         .value =
         "reading";
 
-
     document
         .getElementById("bookTags")
         .value = "";
-
 
     document
         .getElementById("startDate")
         .value = "";
 
-
     document
         .getElementById("endDate")
         .value = "";
-
 
     document
         .getElementById("bookFeeling")
         .value = "";
 
-
-    document
-        .getElementById("bookNote")
-        .value = "";
-
-
     currentRating = 0;
 
     updateStars();
 
+    document
+        .getElementById(
+            "mainCpContainer"
+        )
+        .innerHTML = "";
+
+    document
+        .getElementById(
+            "subCpContainer"
+        )
+        .innerHTML = "";
+
+    subCpCounter = 0;
+
+    addMainPerson();
+
+    addMainPerson();
 
     document
         .getElementById("bookModal")
@@ -1568,9 +2258,9 @@ function openAddModal() {
 
 
 
-/* ==================================================
-   编辑小说
-================================================== */
+/* =========================
+   编辑
+========================= */
 
 function openEditModal(id) {
 
@@ -1583,52 +2273,38 @@ function openEditModal(id) {
             }
         );
 
-
     if (!book) {
 
         return;
 
     }
 
-
     editingId = id;
-
 
     document
         .getElementById("modalTitle")
         .textContent =
         "编辑小说";
 
-
     document
         .getElementById("bookTitle")
         .value =
         book.title || "";
-
 
     document
         .getElementById("bookAuthor")
         .value =
         book.author || "";
 
-
-    document
-        .getElementById("bookProtagonist")
-        .value =
-        book.protagonist || "";
-
-
     document
         .getElementById("bookWords")
         .value =
         book.words || "";
 
-
     document
         .getElementById("bookStatus")
         .value =
         book.status || "reading";
-
 
     document
         .getElementById("bookTags")
@@ -1637,39 +2313,87 @@ function openEditModal(id) {
             ? book.tags.join(",")
             : "";
 
-
     document
         .getElementById("startDate")
         .value =
         book.startDate || "";
-
 
     document
         .getElementById("endDate")
         .value =
         book.endDate || "";
 
-
     document
         .getElementById("bookFeeling")
         .value =
         book.feeling || "";
-
-
-    document
-        .getElementById("bookNote")
-        .value =
-        book.note || "";
-
 
     currentRating =
         Number(
             book.rating || 0
         );
 
-
     updateStars();
 
+    document
+        .getElementById(
+            "mainCpContainer"
+        )
+        .innerHTML = "";
+
+    document
+        .getElementById(
+            "subCpContainer"
+        )
+        .innerHTML = "";
+
+    subCpCounter = 0;
+
+    const mainCp =
+        Array.isArray(
+            book.mainCp
+        )
+            ? book.mainCp
+            : [];
+
+    if (
+        mainCp.length >= 2
+    ) {
+
+        mainCp.forEach(
+            function (person) {
+
+                addMainPerson(
+                    person
+                );
+
+            }
+        );
+
+    } else {
+
+        addMainPerson();
+
+        addMainPerson();
+
+    }
+
+    const subCps =
+        Array.isArray(
+            book.subCps
+        )
+            ? book.subCps
+            : [];
+
+    subCps.forEach(
+        function (cp) {
+
+            addSubCp(
+                cp
+            );
+
+        }
+    );
 
     document
         .getElementById("bookModal")
@@ -1679,19 +2403,17 @@ function openEditModal(id) {
 
 
 
-/* ==================================================
+/* =========================
    保存
-================================================== */
+========================= */
 
 function saveBook() {
-
 
     const title =
         document
             .getElementById("bookTitle")
             .value
             .trim();
-
 
     if (!title) {
 
@@ -1702,7 +2424,6 @@ function saveBook() {
         return;
 
     }
-
 
     const tags =
         document
@@ -1724,32 +2445,20 @@ function saveBook() {
                 }
             );
 
-
     const book = {
-
 
         id:
             editingId ||
             Date.now().toString(),
 
-
         title:
             title,
-
 
         author:
             document
                 .getElementById("bookAuthor")
                 .value
                 .trim(),
-
-
-        protagonist:
-            document
-                .getElementById("bookProtagonist")
-                .value
-                .trim(),
-
 
         words:
             Number(
@@ -1758,52 +2467,42 @@ function saveBook() {
                     .value
             ) || 0,
 
-
         status:
             document
                 .getElementById("bookStatus")
                 .value,
 
+        mainCp:
+            getMainCp(),
+
+        subCps:
+            getSubCps(),
 
         tags:
             tags,
 
-
         rating:
             currentRating,
-
 
         startDate:
             document
                 .getElementById("startDate")
                 .value,
 
-
         endDate:
             document
                 .getElementById("endDate")
                 .value,
 
-
         feeling:
             document
                 .getElementById("bookFeeling")
                 .value
-                .trim(),
-
-
-        note:
-            document
-                .getElementById("bookNote")
-                .value
                 .trim()
-
 
     };
 
-
     if (editingId) {
-
 
         const index =
             books.findIndex(
@@ -1814,20 +2513,20 @@ function saveBook() {
                 }
             );
 
-
         if (index !== -1) {
 
-            books[index] = book;
+            books[index] =
+                book;
 
         }
 
-
     } else {
 
-        books.unshift(book);
+        books.unshift(
+            book
+        );
 
     }
-
 
     saveData();
 
@@ -1841,14 +2540,13 @@ function saveBook() {
             : "小说已添加"
     );
 
-
 }
 
 
 
-/* ==================================================
-   关闭弹窗
-================================================== */
+/* =========================
+   关闭
+========================= */
 
 function closeBookModal() {
 
@@ -1856,10 +2554,10 @@ function closeBookModal() {
         .getElementById("bookModal")
         .classList.remove("show");
 
-
     editingId = null;
 
 }
+
 
 
 function closeDetailModal() {
@@ -1872,18 +2570,16 @@ function closeDetailModal() {
 
 
 
-/* ==================================================
+/* =========================
    小说列表
-================================================== */
+========================= */
 
 function renderBooks() {
-
 
     const container =
         document.getElementById(
             "bookList"
         );
-
 
     const keyword =
         document
@@ -1892,22 +2588,27 @@ function renderBooks() {
             .trim()
             .toLowerCase();
 
-
     const status =
         document
             .getElementById("statusFilter")
             .value;
 
-
     const filtered =
         books.filter(
             function (book) {
-
 
                 const statusOK =
                     status === "all" ||
                     book.status === status;
 
+                const allPeople = [
+
+                    ...(book.mainCp || []),
+
+                    ...(book.subCps || [])
+                        .flat()
+
+                ];
 
                 const text = [
 
@@ -1915,7 +2616,7 @@ function renderBooks() {
 
                     book.author,
 
-                    book.protagonist,
+                    ...allPeople,
 
                     ...(book.tags || [])
 
@@ -1923,26 +2624,22 @@ function renderBooks() {
                     .join(" ")
                     .toLowerCase();
 
-
                 return (
-
                     statusOK &&
-
                     (
                         keyword === "" ||
-                        text.includes(keyword)
+                        text.includes(
+                            keyword
+                        )
                     )
-
                 );
 
             }
         );
 
-
     if (
         filtered.length === 0
     ) {
-
 
         container.innerHTML = `
 
@@ -1977,19 +2674,14 @@ function renderBooks() {
 
         `;
 
-
         return;
 
     }
 
-
-
     container.innerHTML =
-
         filtered
             .map(
                 function (book) {
-
 
                     const tags =
                         (book.tags || [])
@@ -2008,17 +2700,43 @@ function renderBooks() {
                             )
                             .join("");
 
-
                     const rating =
                         Number(
                             book.rating || 0
                         );
 
-
                     const stars =
-                        "★".repeat(rating) +
-                        "☆".repeat(5 - rating);
+                        "★".repeat(
+                            rating
+                        ) +
+                        "☆".repeat(
+                            5 - rating
+                        );
 
+                    const mainCpText =
+                        formatCp(
+                            book.mainCp
+                        );
+
+                    const subCpHtml =
+                        (book.subCps || [])
+                            .map(
+                                function (cp, index) {
+
+                                    return `
+
+                                        <div class="sub-cp-display">
+                                            副CP ${index + 1}：
+                                            ${escapeHtml(
+                                                formatCp(cp)
+                                            )}
+                                        </div>
+
+                                    `;
+
+                                }
+                            )
+                            .join("");
 
                     return `
 
@@ -2026,19 +2744,15 @@ function renderBooks() {
                             class="book-card"
                         >
 
-
                             <div class="book-top">
 
-
                                 <div>
-
 
                                     <div
                                         class="book-title"
                                     >
                                         ${escapeHtml(book.title)}
                                     </div>
-
 
                                     <div
                                         class="book-meta"
@@ -2047,47 +2761,45 @@ function renderBooks() {
                                         ${
                                             book.author
                                                 ? "作者：" +
-                                                  escapeHtml(book.author)
-                                                : ""
-                                        }
-
-                                        ${
-                                            book.protagonist
-                                                ? "　主角：" +
-                                                  escapeHtml(book.protagonist)
+                                                  escapeHtml(
+                                                      book.author
+                                                  )
                                                 : ""
                                         }
 
                                         <br>
 
                                         ${
-                                            getDateRange(book)
+                                            getDateRange(
+                                                book
+                                            )
                                         }
 
                                         ${
-                                            getReadingDays(book)
+                                            getReadingDays(
+                                                book
+                                            )
                                                 ? "　·　" +
-                                                  getReadingDays(book) +
+                                                  getReadingDays(
+                                                      book
+                                                  ) +
                                                   "天"
                                                 : ""
                                         }
 
                                     </div>
 
-
                                 </div>
 
-
-
                                 <div>
-
 
                                     <div
                                         class="book-words"
                                     >
-                                        ${formatNumber(book.words)}w
+                                        ${formatNumber(
+                                            book.words
+                                        )}w
                                     </div>
-
 
                                     <span
                                         class="
@@ -2095,26 +2807,46 @@ function renderBooks() {
                                             status-${book.status}
                                         "
                                     >
-
-                                        ${getStatusText(book.status)}
-
+                                        ${getStatusText(
+                                            book.status
+                                        )}
                                     </span>
-
 
                                 </div>
 
-
                             </div>
 
+                            ${
+                                mainCpText
+                                    ? `
 
+                                        <div
+                                            class="cp-display"
+                                        >
+
+                                            <span
+                                                class="cp-label"
+                                            >
+                                                主CP
+                                            </span>
+
+                                            ${escapeHtml(
+                                                mainCpText
+                                            )}
+
+                                            ${subCpHtml}
+
+                                        </div>
+
+                                    `
+                                    : ""
+                            }
 
                             <div class="tags">
 
                                 ${tags}
 
                             </div>
-
-
 
                             ${
                                 rating
@@ -2126,10 +2858,7 @@ function renderBooks() {
                                     : ""
                             }
 
-
-
                             <div class="book-actions">
-
 
                                 <button
                                     class="small-btn"
@@ -2140,7 +2869,6 @@ function renderBooks() {
                                     查看
                                 </button>
 
-
                                 <button
                                     class="small-btn"
                                     onclick="
@@ -2149,7 +2877,6 @@ function renderBooks() {
                                 >
                                     编辑
                                 </button>
-
 
                                 <button
                                     class="small-btn"
@@ -2160,9 +2887,7 @@ function renderBooks() {
                                     删除
                                 </button>
 
-
                             </div>
-
 
                         </article>
 
@@ -2176,12 +2901,11 @@ function renderBooks() {
 
 
 
-/* ==================================================
-   查看详情
-================================================== */
+/* =========================
+   详情
+========================= */
 
 function viewBook(id) {
-
 
     const book =
         books.find(
@@ -2192,35 +2916,60 @@ function viewBook(id) {
             }
         );
 
-
     if (!book) {
 
         return;
 
     }
 
-
     const rating =
         Number(
             book.rating || 0
         );
 
-
     const stars =
-        "★".repeat(rating) +
-        "☆".repeat(5 - rating);
-
+        "★".repeat(
+            rating
+        ) +
+        "☆".repeat(
+            5 - rating
+        );
 
     document
         .getElementById("detailTitle")
         .textContent =
         book.title;
 
+    const mainCp =
+        formatCp(
+            book.mainCp
+        );
+
+    const subCps =
+        (book.subCps || [])
+            .map(
+                function (cp, index) {
+
+                    return `
+
+                        <div
+                            class="detail-cp"
+                        >
+                            副CP ${index + 1}：
+                            ${escapeHtml(
+                                formatCp(cp)
+                            )}
+                        </div>
+
+                    `;
+
+                }
+            )
+            .join("");
 
     document
         .getElementById("detailContent")
         .innerHTML = `
-
 
             <div class="detail-row">
 
@@ -2229,7 +2978,10 @@ function viewBook(id) {
                 </div>
 
                 <div class="detail-text">
-                    ${escapeHtml(book.author || "未记录")}
+                    ${escapeHtml(
+                        book.author ||
+                        "未记录"
+                    )}
                 </div>
 
             </div>
@@ -2238,12 +2990,22 @@ function viewBook(id) {
             <div class="detail-row">
 
                 <div class="detail-label">
-                    主角
+                    主CP
                 </div>
 
                 <div class="detail-text">
-                    ${escapeHtml(book.protagonist || "未记录")}
+
+                    ${
+                        mainCp
+                            ? escapeHtml(
+                                mainCp
+                              )
+                            : "未记录"
+                    }
+
                 </div>
+
+                ${subCps}
 
             </div>
 
@@ -2255,7 +3017,9 @@ function viewBook(id) {
                 </div>
 
                 <div class="detail-text">
-                    ${formatNumber(book.words)}w
+                    ${formatNumber(
+                        book.words
+                    )}w
                 </div>
 
             </div>
@@ -2268,7 +3032,9 @@ function viewBook(id) {
                 </div>
 
                 <div class="detail-text">
-                    ${getStatusText(book.status)}
+                    ${getStatusText(
+                        book.status
+                    )}
                 </div>
 
             </div>
@@ -2282,12 +3048,18 @@ function viewBook(id) {
 
                 <div class="detail-text">
 
-                    ${getDateRange(book)}
+                    ${getDateRange(
+                        book
+                    )}
 
                     ${
-                        getReadingDays(book)
+                        getReadingDays(
+                            book
+                        )
                             ? "　·　" +
-                              getReadingDays(book) +
+                              getReadingDays(
+                                  book
+                              ) +
                               "天"
                             : ""
                     }
@@ -2324,9 +3096,13 @@ function viewBook(id) {
                                 function (tag) {
 
                                     return `
+
                                         <span class="tag">
-                                            ${escapeHtml(tag)}
+                                            ${escapeHtml(
+                                                tag
+                                            )}
                                         </span>
+
                                     `;
 
                                 }
@@ -2348,27 +3124,15 @@ function viewBook(id) {
                 </div>
 
                 <div class="detail-text">
-                    ${escapeHtml(book.feeling || "暂无记录")}
+                    ${escapeHtml(
+                        book.feeling ||
+                        "暂无记录"
+                    )}
                 </div>
 
             </div>
-
-
-            <div class="detail-row">
-
-                <div class="detail-label">
-                    名场面 / 备注
-                </div>
-
-                <div class="detail-text">
-                    ${escapeHtml(book.note || "暂无记录")}
-                </div>
-
-            </div>
-
 
         `;
-
 
     document
         .getElementById("detailModal")
@@ -2378,12 +3142,11 @@ function viewBook(id) {
 
 
 
-/* ==================================================
+/* =========================
    删除
-================================================== */
+========================= */
 
 function deleteBook(id) {
-
 
     const book =
         books.find(
@@ -2394,13 +3157,11 @@ function deleteBook(id) {
             }
         );
 
-
     if (!book) {
 
         return;
 
     }
-
 
     if (
         !confirm(
@@ -2414,7 +3175,6 @@ function deleteBook(id) {
 
     }
 
-
     books =
         books.filter(
             function (item) {
@@ -2423,7 +3183,6 @@ function deleteBook(id) {
 
             }
         );
-
 
     saveData();
 
@@ -2437,29 +3196,24 @@ function deleteBook(id) {
 
 
 
-/* ==================================================
+/* =========================
    统计
-================================================== */
+========================= */
 
 function renderStats() {
-
 
     const now =
         new Date();
 
-
     const year =
         now.getFullYear();
-
 
     const month =
         now.getMonth() + 1;
 
-
     const yearBooks =
         books.filter(
             function (book) {
-
 
                 if (!book.startDate) {
 
@@ -2467,20 +3221,18 @@ function renderStats() {
 
                 }
 
-
                 const date =
                     new Date(
                         book.startDate
                     );
 
-
                 return (
-                    date.getFullYear() === year
+                    date.getFullYear() ===
+                    year
                 );
 
             }
         );
-
 
     const yearWords =
         yearBooks.reduce(
@@ -2497,7 +3249,6 @@ function renderStats() {
             0
         );
 
-
     const monthWords =
         yearBooks
             .filter(
@@ -2508,9 +3259,9 @@ function renderStats() {
                             book.startDate
                         );
 
-
                     return (
-                        date.getMonth() + 1 === month
+                        date.getMonth() + 1 ===
+                        month
                     );
 
                 }
@@ -2529,20 +3280,21 @@ function renderStats() {
                 0
             );
 
-
     document
         .getElementById("yearWords")
         .textContent =
-        formatNumber(yearWords) +
+        formatNumber(
+            yearWords
+        ) +
         "w";
-
 
     document
         .getElementById("monthWords")
         .textContent =
-        formatNumber(monthWords) +
+        formatNumber(
+            monthWords
+        ) +
         "w";
-
 
     document
         .getElementById("yearBooks")
@@ -2558,7 +3310,6 @@ function renderStats() {
             }
         ).length;
 
-
     document
         .getElementById("totalBooks")
         .textContent =
@@ -2568,25 +3319,21 @@ function renderStats() {
 
 
 
-/* ==================================================
+/* =========================
    月度统计
-================================================== */
+========================= */
 
 function renderMonthList() {
-
 
     const container =
         document.getElementById(
             "monthList"
         );
 
-
     const year =
         new Date().getFullYear();
 
-
     const values = [];
-
 
     for (
         let month = 1;
@@ -2594,13 +3341,10 @@ function renderMonthList() {
         month++
     ) {
 
-
         let total = 0;
-
 
         books.forEach(
             function (book) {
-
 
                 if (!book.startDate) {
 
@@ -2608,23 +3352,14 @@ function renderMonthList() {
 
                 }
 
-
                 const date =
                     new Date(
                         book.startDate
                     );
 
-
                 if (
-
-                    date.getFullYear() ===
-                    year
-
-                    &&
-
-                    date.getMonth() + 1 ===
-                    month
-
+                    date.getFullYear() === year &&
+                    date.getMonth() + 1 === month
                 ) {
 
                     total +=
@@ -2637,11 +3372,11 @@ function renderMonthList() {
             }
         );
 
-
-        values.push(total);
+        values.push(
+            total
+        );
 
     }
-
 
     const max =
         Math.max(
@@ -2649,16 +3384,18 @@ function renderMonthList() {
             1
         );
 
-
     container.innerHTML =
         values
             .map(
-                function (value, index) {
-
+                function (
+                    value,
+                    index
+                ) {
 
                     const width =
-                        value / max * 100;
-
+                        value /
+                        max *
+                        100;
 
                     return `
 
@@ -2669,7 +3406,6 @@ function renderMonthList() {
                             <div>
                                 ${index + 1}月
                             </div>
-
 
                             <div
                                 class="progress-bg"
@@ -2684,9 +3420,10 @@ function renderMonthList() {
 
                             </div>
 
-
                             <div>
-                                ${formatNumber(value)}w
+                                ${formatNumber(
+                                    value
+                                )}w
                             </div>
 
                         </div>
@@ -2701,18 +3438,16 @@ function renderMonthList() {
 
 
 
-/* ==================================================
-   时间线
-================================================== */
+/* =========================
+   最近阅读
+========================= */
 
 function renderTimeline() {
-
 
     const container =
         document.getElementById(
             "timeline"
         );
-
 
     const list =
         books
@@ -2744,24 +3479,21 @@ function renderTimeline() {
                 8
             );
 
-
     if (
         list.length === 0
     ) {
 
-        container.innerHTML =
-            `
-                <div
-                    class="book-meta"
-                >
-                    暂无阅读时间记录
-                </div>
-            `;
+        container.innerHTML = `
+
+            <div class="book-meta">
+                暂无阅读时间记录
+            </div>
+
+        `;
 
         return;
 
     }
-
 
     container.innerHTML =
         list
@@ -2777,13 +3509,17 @@ function renderTimeline() {
                             <div
                                 class="timeline-date"
                             >
-                                ${formatDate(book.startDate)}
+                                ${formatDate(
+                                    book.startDate
+                                )}
                             </div>
 
                             <div
                                 class="timeline-title"
                             >
-                                ${escapeHtml(book.title)}
+                                ${escapeHtml(
+                                    book.title
+                                )}
                             </div>
 
                         </div>
@@ -2798,24 +3534,21 @@ function renderTimeline() {
 
 
 
-/* ==================================================
+/* =========================
    星星
-================================================== */
+========================= */
 
 function updateStars() {
-
 
     document
         .querySelectorAll(".star")
         .forEach(
             function (star) {
 
-
                 const rating =
                     Number(
                         star.dataset.rating
                     );
-
 
                 if (
                     rating <=
@@ -2841,12 +3574,11 @@ function updateStars() {
 
 
 
-/* ==================================================
+/* =========================
    导出
-================================================== */
+========================= */
 
 function exportData() {
-
 
     const blob =
         new Blob(
@@ -2863,41 +3595,35 @@ function exportData() {
             }
         );
 
-
     const url =
         URL.createObjectURL(
             blob
         );
-
 
     const a =
         document.createElement(
             "a"
         );
 
-
-    a.href = url;
-
+    a.href =
+        url;
 
     a.download =
         "我的阅读记录.json";
 
-
     document
         .body
-        .appendChild(a);
-
+        .appendChild(
+            a
+        );
 
     a.click();
 
-
     a.remove();
-
 
     URL.revokeObjectURL(
         url
     );
-
 
     showToast(
         "数据已导出"
@@ -2907,16 +3633,14 @@ function exportData() {
 
 
 
-/* ==================================================
+/* =========================
    导入
-================================================== */
+========================= */
 
 function importData(event) {
 
-
     const file =
         event.target.files[0];
-
 
     if (!file) {
 
@@ -2924,26 +3648,23 @@ function importData(event) {
 
     }
 
-
     const reader =
         new FileReader();
-
 
     reader.onload =
         function (e) {
 
-
             try {
-
 
                 const data =
                     JSON.parse(
                         e.target.result
                     );
 
-
                 if (
-                    !Array.isArray(data)
+                    !Array.isArray(
+                        data
+                    )
                 ) {
 
                     throw new Error(
@@ -2951,7 +3672,6 @@ function importData(event) {
                     );
 
                 }
-
 
                 if (
                     !confirm(
@@ -2963,23 +3683,18 @@ function importData(event) {
 
                 }
 
-
-                books = data;
-
+                books =
+                    data;
 
                 saveData();
 
-
                 renderAll();
-
 
                 showToast(
                     "数据导入成功"
                 );
 
-
             } catch (error) {
-
 
                 alert(
                     "导入失败：文件格式不正确。"
@@ -2989,21 +3704,20 @@ function importData(event) {
 
         };
 
-
     reader.readAsText(
         file
     );
 
-
-    event.target.value = "";
+    event.target.value =
+        "";
 
 }
 
 
 
-/* ==================================================
+/* =========================
    工具函数
-================================================== */
+========================= */
 
 function renderAll() {
 
@@ -3018,8 +3732,33 @@ function renderAll() {
 }
 
 
-function getStatusText(status) {
 
+function formatCp(
+    people
+) {
+
+    if (
+        !Array.isArray(
+            people
+        ) ||
+        people.length === 0
+    ) {
+
+        return "";
+
+    }
+
+    return people.join(
+        " × "
+    );
+
+}
+
+
+
+function getStatusText(
+    status
+) {
 
     const map = {
 
@@ -3033,7 +3772,6 @@ function getStatusText(status) {
 
     };
 
-
     return (
         map[status] ||
         "未知"
@@ -3042,21 +3780,23 @@ function getStatusText(status) {
 }
 
 
-function getReadingDays(book) {
 
+function getReadingDays(
+    book
+) {
 
-    if (!book.startDate) {
+    if (
+        !book.startDate
+    ) {
 
         return null;
 
     }
 
-
     const start =
         new Date(
             book.startDate
         );
-
 
     const end =
         book.endDate
@@ -3065,12 +3805,12 @@ function getReadingDays(book) {
             )
             : new Date();
 
-
     return Math.max(
         1,
         Math.floor(
             (
-                end - start
+                end -
+                start
             ) /
             86400000
         ) + 1
@@ -3079,17 +3819,22 @@ function getReadingDays(book) {
 }
 
 
-function getDateRange(book) {
 
+function getDateRange(
+    book
+) {
 
-    if (!book.startDate) {
+    if (
+        !book.startDate
+    ) {
 
         return "未记录阅读时间";
 
     }
 
-
-    if (!book.endDate) {
+    if (
+        !book.endDate
+    ) {
 
         return (
             formatDate(
@@ -3099,7 +3844,6 @@ function getDateRange(book) {
         );
 
     }
-
 
     return (
         formatDate(
@@ -3114,8 +3858,10 @@ function getDateRange(book) {
 }
 
 
-function formatDate(value) {
 
+function formatDate(
+    value
+) {
 
     if (!value) {
 
@@ -3123,45 +3869,54 @@ function formatDate(value) {
 
     }
 
-
     const date =
-        new Date(value);
-
+        new Date(
+            value
+        );
 
     return (
-
         date.getFullYear() +
         "." +
         String(
             date.getMonth() + 1
-        ).padStart(2, "0") +
+        ).padStart(
+            2,
+            "0"
+        ) +
         "." +
         String(
             date.getDate()
-        ).padStart(2, "0")
-
+        ).padStart(
+            2,
+            "0"
+        )
     );
 
 }
 
 
-function formatNumber(value) {
 
+function formatNumber(
+    value
+) {
 
     return Number(
         value || 0
     ).toLocaleString(
         "zh-CN",
         {
-            maximumFractionDigits: 1
+            maximumFractionDigits:
+                1
         }
     );
 
 }
 
 
-function escapeHtml(value) {
 
+function escapeHtml(
+    value
+) {
 
     return String(
         value || ""
@@ -3191,35 +3946,32 @@ function escapeHtml(value) {
 
 
 
-/* ==================================================
+/* =========================
    Toast
-================================================== */
+========================= */
 
 let toastTimer;
 
 
-function showToast(message) {
-
+function showToast(
+    message
+) {
 
     const toast =
         document.getElementById(
             "toast"
         );
 
-
     toast.textContent =
         message;
-
 
     toast.classList.add(
         "show"
     );
 
-
     clearTimeout(
         toastTimer
     );
-
 
     toastTimer =
         setTimeout(
@@ -3240,4 +3992,5 @@ function showToast(message) {
 
 
 </body>
+
 </html>
