@@ -319,34 +319,6 @@
             white-space: nowrap;
         }
 
-        .status {
-            display: inline-block;
-            margin-top: 5px;
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-size: 12px;
-        }
-
-        .status-reading {
-            background: #edf3e8;
-            color: #637452;
-        }
-
-        .status-finished {
-            background: #eeeaf6;
-            color: #71628b;
-        }
-
-        .status-want {
-            background: #f5eee1;
-            color: #947548;
-        }
-
-        .status-dropped {
-            background: #f6e9e6;
-            color: #a86459;
-        }
-
         .tags {
             margin-top: 10px;
         }
@@ -917,33 +889,7 @@
         </div>
 
 
-        <div style="width:140px">
 
-            <select id="statusFilter">
-
-                <option value="all">
-                    全部状态
-                </option>
-
-                <option value="reading">
-                    在读
-                </option>
-
-                <option value="finished">
-                    已完成
-                </option>
-
-                <option value="want">
-                    想读
-                </option>
-
-                <option value="dropped">
-                    弃读
-                </option>
-
-            </select>
-
-        </div>
 
 
         <button
@@ -1019,7 +965,7 @@
         <div class="stat-card">
 
             <div class="stat-label">
-                今年完成小说
+                今年阅读小说
             </div>
 
             <div
@@ -1079,6 +1025,8 @@
                         <option value="start-asc">按开始时间正序</option>
                         <option value="words-desc">按字数倒序</option>
                         <option value="words-asc">按字数正序</option>
+                        <option value="days-desc">按阅读时间最长</option>
+                        <option value="days-asc">按阅读时间最短</option>
                     </select>
                 </div>
             </div>
@@ -1178,33 +1126,7 @@
 
 
 
-            <div class="form-field">
 
-                <label>
-                    阅读状态
-                </label>
-
-                <select id="bookStatus">
-
-                    <option value="reading">
-                        在读
-                    </option>
-
-                    <option value="finished">
-                        已完成
-                    </option>
-
-                    <option value="want">
-                        想读
-                    </option>
-
-                    <option value="dropped">
-                        弃读
-                    </option>
-
-                </select>
-
-            </div>
 
 
 
@@ -1644,14 +1566,6 @@ function bindEvents() {
         .getElementById("searchInput")
         .addEventListener(
             "input",
-            renderBooks
-        );
-
-
-    document
-        .getElementById("statusFilter")
-        .addEventListener(
-            "change",
             renderBooks
         );
 
@@ -2414,11 +2328,6 @@ function openAddModal() {
         .value = "";
 
     document
-        .getElementById("bookStatus")
-        .value =
-        "reading";
-
-    document
         .getElementById("bookTags")
         .value = "";
 
@@ -2506,11 +2415,6 @@ function openEditModal(id) {
         .getElementById("bookWords")
         .value =
         book.words || "";
-
-    document
-        .getElementById("bookStatus")
-        .value =
-        book.status || "reading";
 
     document
         .getElementById("bookTags")
@@ -2673,11 +2577,6 @@ function saveBook() {
                     .value
             ) || 0,
 
-        status:
-            document
-                .getElementById("bookStatus")
-                .value,
-
         mainCp:
             getMainCp(),
 
@@ -2784,11 +2683,9 @@ function renderBooks() {
     renderMonthly();
     const container = document.getElementById("bookList");
     const keyword = document.getElementById("searchInput").value.trim().toLowerCase();
-    const status = document.getElementById("statusFilter").value;
 
     const filtered = books
         .filter(function(book) {
-            const statusOK = status === "all" || book.status === status;
             const allPeople = [
                 ...(book.mainCp || []),
                 ...(book.subCps || []).flat()
@@ -2799,7 +2696,7 @@ function renderBooks() {
                 ...allPeople,
                 ...(book.tags || [])
             ].join(" ").toLowerCase();
-            return statusOK && (keyword === "" || text.includes(keyword));
+            return keyword === "" || text.includes(keyword);
         })
         .sort(function(a,b) {
             const mode = document.getElementById("sortFilter")?.value || "start-desc";
@@ -2809,7 +2706,13 @@ function renderBooks() {
             if (mode === "words-asc") {
                 return Number(a.words || 0) - Number(b.words || 0);
             }
-            // 排序选项：开始时间倒序、开始时间正序、字数倒序
+            if (mode === "days-desc") {
+                return (getReadingDays(b) || 0) - (getReadingDays(a) || 0);
+            }
+            if (mode === "days-asc") {
+                return (getReadingDays(a) || 0) - (getReadingDays(b) || 0);
+            }
+            // 排序选项：开始时间、字数、阅读时长
             if (mode === "start-asc") {
                 return new Date(a.startDate || "1900-01-01") - new Date(b.startDate || "1900-01-01");
             }
@@ -2853,7 +2756,6 @@ function renderBooks() {
                         </div>
                         <div>
                             <div class="book-words">${formatNumber(book.words)}w</div>
-                            <span class="status status-${book.status}">${getStatusText(book.status)}</span>
                         </div>
                     </div>
 
@@ -3074,9 +2976,7 @@ function renderStats() {
         formatNumber(monthWords) + "w";
 
     document.getElementById("yearBooks").textContent =
-        yearBooks.filter(function(book) {
-            return book.status === "finished";
-        }).length;
+        yearBooks.length;
 
     document.getElementById("totalBooks").textContent = books.length;
 }
@@ -3420,31 +3320,6 @@ function formatCp(
 
     return people.join(
         " × "
-    );
-
-}
-
-
-
-function getStatusText(
-    status
-) {
-
-    const map = {
-
-        reading: "在读",
-
-        finished: "已完成",
-
-        want: "想读",
-
-        dropped: "弃读"
-
-    };
-
-    return (
-        map[status] ||
-        "未知"
     );
 
 }
