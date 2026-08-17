@@ -2967,40 +2967,69 @@ function deleteBook(id) {
 ========================= */
 
 
-function renderMonthly() {
-    const year = new Date().getFullYear();
+function getMonthlyReadingTotals(year) {
     const values = Array(12).fill(0);
 
     books.forEach(function(book) {
-        const date = book.startDate || "";
+        const words = Number(book.words || 0);
+        if (!book.startDate || !Number.isFinite(words) || words <= 0) {
+            return;
+        }
 
-        if (date.startsWith(String(year) + "-")) {
-            const month = parseInt(date.slice(5, 7), 10);
+        // 按“自然日”计算，避免 new Date("YYYY-MM-DD") 带来的时区偏移问题。
+        const start = new Date(book.startDate + "T00:00:00");
+        const end = new Date(
+            (book.endDate || formatDateForInput(new Date())) + "T00:00:00"
+        );
 
-            if (month >= 1 && month <= 12) {
-                values[month - 1] += Number(book.words || 0);
+        if (Number.isNaN(start.getTime())) {
+            return;
+        }
+
+        // 没有结束日期时，视为从开始日期一直阅读到今天。
+        // 如果结束日期早于开始日期，则按开始当天计算，避免产生负数。
+        const safeEnd = Number.isNaN(end.getTime()) || end < start ? start : end;
+        const totalDays = Math.floor((safeEnd - start) / 86400000) + 1;
+        const wordsPerDay = words / totalDays;
+
+        for (let dayIndex = 0; dayIndex < totalDays; dayIndex++) {
+            const current = new Date(start.getTime() + dayIndex * 86400000);
+            if (current.getFullYear() === year) {
+                const month = current.getMonth();
+                values[month] += wordsPerDay;
             }
         }
     });
 
+    return values;
+}
+
+function formatDateForInput(date) {
+    return date.getFullYear() + "-" +
+        String(date.getMonth() + 1).padStart(2, "0") + "-" +
+        String(date.getDate()).padStart(2, "0");
+}
+
+function renderMonthly() {
+    const year = new Date().getFullYear();
+    const values = getMonthlyReadingTotals(year);
     const maxValue = Math.max(...values, 1);
     const chart = document.getElementById("monthChart");
 
     chart.innerHTML = values.map(function(value, index) {
         /*
-         * 使用固定大小的月份格子，而不是根据字数改变格子宽度。
-         * 这样有字数和没有字数时，月份、字数都会始终处于同一个中心位置。
-         *
-         * 颜色采用半透明柔和绿色：
-         * 0w 时也保留非常浅的底色；
-         * 阅读字数越多，绿色透明度越高，因此颜色越深。
+         * 每个月固定一个完整格子。
+         * 颜色根据该月实际分配到的阅读字数计算，字数越多颜色越深。
+         * 月份和字数都在固定内容区域的正中央，因此 0w 和有字数时
+         * 文字位置完全一致，不会因为内容长度或背景大小发生跳动。
          */
         const ratio = value > 0
             ? Math.min(value / maxValue, 1)
             : 0;
 
-        const alpha = 0.10 + ratio * 0.38;
-        const textColor = ratio > 0.58 ? "#ffffff" : "#66715f";
+        const alpha = 0.08 + ratio * 0.32;
+        // 只改变格子背景颜色深浅，月份和字数始终使用完全相同的文字颜色。
+        const textColor = "#66715f";
 
         return `<div class="month-column">
             <div
@@ -3008,134 +3037,48 @@ function renderMonthly() {
                 style="background:rgba(123, 164, 113, ${alpha.toFixed(3)})"
             ></div>
             <div class="month-cell-content">
-                <span
-                    class="month-name"
-                    style="color:${textColor}"
-                >${index + 1}月</span>
-                <span
-                    class="month-bar-value"
-                    style="color:${textColor}"
-                >${formatNumber(value)}w</span>
+                <span class="month-name" style="color:${textColor}">${index + 1}月</span>
+                <span class="month-bar-value" style="color:${textColor}">${formatNumber(value)}w</span>
             </div>
         </div>`;
     }).join("");
 }
 
 function renderStats() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const monthlyValues = getMonthlyReadingTotals(year);
 
-    const now =
-        new Date();
+    // 年度阅读字数同样采用按阅读天数分配后的结果，
+    // 不再简单地把整本小说全部归到开始阅读的月份。
+    const yearWords = monthlyValues.reduce(function(sum, value) {
+        return sum + value;
+    }, 0);
 
-    const year =
-        now.getFullYear();
+    const monthWords = monthlyValues[month - 1] || 0;
 
-    const month =
-        now.getMonth() + 1;
+    const yearBooks = books.filter(function(book) {
+        if (!book.startDate) {
+            return false;
+        }
 
-    const yearBooks =
-        books.filter(
-            function (book) {
+        const date = new Date(book.startDate + "T00:00:00");
+        return date.getFullYear() === year;
+    });
 
-                if (!book.startDate) {
+    document.getElementById("yearWords").textContent =
+        formatNumber(yearWords) + "w";
 
-                    return false;
+    document.getElementById("monthWords").textContent =
+        formatNumber(monthWords) + "w";
 
-                }
+    document.getElementById("yearBooks").textContent =
+        yearBooks.filter(function(book) {
+            return book.status === "finished";
+        }).length;
 
-                const date =
-                    new Date(
-                        book.startDate
-                    );
-
-                return (
-                    date.getFullYear() ===
-                    year
-                );
-
-            }
-        );
-
-    const yearWords =
-        yearBooks.reduce(
-            function (sum, book) {
-
-                return (
-                    sum +
-                    Number(
-                        book.words || 0
-                    )
-                );
-
-            },
-            0
-        );
-
-    const monthWords =
-        yearBooks
-            .filter(
-                function (book) {
-
-                    const date =
-                        new Date(
-                            book.startDate
-                        );
-
-                    return (
-                        date.getMonth() + 1 ===
-                        month
-                    );
-
-                }
-            )
-            .reduce(
-                function (sum, book) {
-
-                    return (
-                        sum +
-                        Number(
-                            book.words || 0
-                        )
-                    );
-
-                },
-                0
-            );
-
-    document
-        .getElementById("yearWords")
-        .textContent =
-        formatNumber(
-            yearWords
-        ) +
-        "w";
-
-    document
-        .getElementById("monthWords")
-        .textContent =
-        formatNumber(
-            monthWords
-        ) +
-        "w";
-
-    document
-        .getElementById("yearBooks")
-        .textContent =
-        yearBooks.filter(
-            function (book) {
-
-                return (
-                    book.status ===
-                    "finished"
-                );
-
-            }
-        ).length;
-
-    document
-        .getElementById("totalBooks")
-        .textContent =
-        books.length;
-
+    document.getElementById("totalBooks").textContent = books.length;
 }
 
 
@@ -3145,116 +3088,24 @@ function renderStats() {
 ========================= */
 
 function renderMonthList() {
+    const container = document.getElementById("monthList");
+    const year = new Date().getFullYear();
+    const values = getMonthlyReadingTotals(year);
+    const max = Math.max(...values, 1);
 
-    const container =
-        document.getElementById(
-            "monthList"
-        );
+    container.innerHTML = values.map(function(value, index) {
+        const width = value / max * 100;
 
-    const year =
-        new Date().getFullYear();
-
-    const values = [];
-
-    for (
-        let month = 1;
-        month <= 12;
-        month++
-    ) {
-
-        let total = 0;
-
-        books.forEach(
-            function (book) {
-
-                if (!book.startDate) {
-
-                    return;
-
-                }
-
-                const date =
-                    new Date(
-                        book.startDate
-                    );
-
-                if (
-                    date.getFullYear() === year &&
-                    date.getMonth() + 1 === month
-                ) {
-
-                    total +=
-                        Number(
-                            book.words || 0
-                        );
-
-                }
-
-            }
-        );
-
-        values.push(
-            total
-        );
-
-    }
-
-    const max =
-        Math.max(
-            ...values,
-            1
-        );
-
-    container.innerHTML =
-        values
-            .map(
-                function (
-                    value,
-                    index
-                ) {
-
-                    const width =
-                        value /
-                        max *
-                        100;
-
-                    return `
-
-                        <div
-                            class="month-row"
-                        >
-
-                            <div>
-                                ${index + 1}月
-                            </div>
-
-                            <div
-                                class="progress-bg"
-                            >
-
-                                <div
-                                    class="progress"
-                                    style="
-                                        width:${width}%;
-                                    "
-                                ></div>
-
-                            </div>
-
-                            <div>
-                                ${formatNumber(
-                                    value
-                                )}w
-                            </div>
-
-                        </div>
-
-                    `;
-
-                }
-            )
-            .join("");
-
+        return `
+            <div class="month-row">
+                <div>${index + 1}月</div>
+                <div class="progress-bg">
+                    <div class="progress" style="width:${width}%"></div>
+                </div>
+                <div>${formatNumber(value)}w</div>
+            </div>
+        `;
+    }).join("");
 }
 
 
