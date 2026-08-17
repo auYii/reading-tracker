@@ -184,68 +184,306 @@
         .book-sortbar select {
             width:250px;
         }
-        .month-grid{
-            display:grid;
-            grid-template-columns:repeat(4,1fr);
-            gap:10px;
+        /* 月份格子 */
+        .chart-box {
+            position: relative;
+            padding: 8px 4px 4px;
         }
 
-        .month-cell{
-            min-height:88px;
-            border:1px solid #e8e1d8;
-            border-radius:12px;
-            padding:12px;
-            display:flex;
-            flex-direction:column;
-            justify-content:space-between;
-            transition:transform .15s, box-shadow .15s;
+        .chart-y-title {
+            display: none;
         }
 
-        .month-cell:hover{
-            transform:translateY(-1px);
-            box-shadow:0 3px 10px rgba(80,65,50,.08);
+        .month-chart {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            width: 100%;
         }
 
-        .month-cell-name{
-            font-size:13px;
-            color:#6e665e;
+        .month-column {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+            height: 78px;
+            padding: 8px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(151, 181, 142, 0.10);
+            border: 1px solid rgba(126, 157, 118, 0.14);
+            transition: transform .15s, box-shadow .15s;
         }
 
-        .month-cell-value{
-            font-size:18px;
-            font-weight:700;
-            color:#3f3934;
+        .month-column:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(90, 120, 82, 0.10);
         }
 
-        .month-cell-unit{
-            font-size:11px;
-            font-weight:400;
-            color:#81786f;
-            margin-left:2px;
+        .month-cell-fill {
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            transition: background-color .2s;
         }
 
-        .month-cell.empty .month-cell-value{
-            color:#aaa39c;
-            font-weight:500;
+        .month-cell-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            line-height: 1.35;
+            pointer-events: none;
         }
 
-        @media(max-width:600px){
-            .month-grid{
-                grid-template-columns:repeat(3,1fr);
-                gap:8px;
+        .month-name {
+            display: block;
+            color: #66715f;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .month-bar-value {
+            display: block;
+            margin-top: 3px;
+            color: #687361;
+            font-size: 11px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .sort-control {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .sort-label {
+            color: #8d847b;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+
+.panel {
+            background: #ffffff;
+            border: 1px solid #e8e1d8;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .panel-title {
+            margin: 0 0 16px;
+            font-size: 18px;
+        }
+
+        .book-card {
+            background: #ffffff;
+            border: 1px solid #e8e1d8;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 12px;
+        }
+
+        .book-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .book-title {
+            font-size: 19px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .book-meta {
+            margin-top: 7px;
+            color: #8d847b;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .book-words {
+            font-size: 20px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .status-reading {
+            background: #edf3e8;
+            color: #637452;
+        }
+
+        .status-finished {
+            background: #eeeaf6;
+            color: #71628b;
+        }
+
+        .status-want {
+            background: #f5eee1;
+            color: #947548;
+        }
+
+        .status-dropped {
+            background: #f6e9e6;
+            color: #a86459;
+        }
+
+        .tags {
+            margin-top: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            margin: 3px 4px 3px 0;
+            padding: 4px 9px;
+            background: #f1eee9;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #716a63;
+        }
+
+        .rating {
+            margin-top: 8px;
+            color: #c28d45;
+            letter-spacing: 2px;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .small-btn {
+            border: 0;
+            border-radius: 8px;
+            padding: 7px 11px;
+            background: #f5f2ed;
+            color: #5c554e;
+        }
+
+        .small-btn:hover {
+            background: #ece8e1;
+        }
+
+        .cp-display {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #faf8f5;
+            border-radius: 9px;
+            color: #5e574f;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .cp-label {
+            color: #968c83;
+            font-size: 12px;
+            margin-right: 6px;
+        }
+
+        .sub-cp-display {
+            margin-top: 4px;
+            color: #716960;
+        }
+
+        /* 小说卡片折叠 */
+        .book-card {
+            padding: 0;
+            overflow: hidden;
+        }
+        .book-summary {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 100px 32px;
+            align-items: center;
+            gap: 14px;
+            min-height: 68px;
+            padding: 13px 18px;
+            cursor: pointer;
+        }
+
+        .book-summary:hover { background: #faf8f5; }
+
+        .summary-date {
+            display: none;
+        }
+
+        .summary-title {
+            min-width: 0;
+            font-size: 17px;
+            font-weight: 700;
+            line-height: 1.4;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .summary-words {
+            min-width: 0;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .summary-arrow { width:28px; height:28px; border-radius:50%; background:#f1eee9; color:#69795c; display:flex; align-items:center; justify-content:center; transition:.2s; }
+        .book-card.open .summary-arrow { transform:rotate(180deg); }
+        .book-detail { display:none; padding: 0 18px 18px; }
+        .book-card.open .book-detail { display:block; }
+        .book-detail-inner { border-top:1px solid #eee8e1; padding-top:16px; }
+        .cp-display .main-cp-big { font-size:20px; font-weight:700; }
+        .cp-display .sub-cp-display { font-size:16px; }
+        @media (max-width:600px) {
+            .book-summary {
+                grid-template-columns: minmax(0,1fr) 68px 28px;
+                gap: 8px;
+                padding: 12px;
             }
 
-            .month-cell{
-                min-height:78px;
-                padding:10px;
+            .summary-date {
+                display: none;
             }
 
-            .month-cell-value{
-                font-size:15px;
-            }
-        }
+            .summary-title { font-size: 15px; }
+            .summary-words { font-size: 13px; }
 
-        .book-sortbar {
+            .chart-box {
+                padding: 6px 0 2px;
+            }
+
+            .month-chart {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 9px;
+            }
+
+            .month-column {
+                height: 72px;
+                border-radius: 10px;
+                padding: 6px;
+            }
+
+            .month-name { font-size: 12px; }
+            .month-bar-value { font-size: 10px; }
+
+            .book-sortbar {
                 align-items: stretch;
                 flex-direction: column;
             }
@@ -257,213 +495,6 @@
             .sort-control select {
                 flex: 1;
                 width: 100%;
-            }
-        }
-
-
-        /* =========================
-           阅读记录折叠卡片
-        ========================= */
-
-        .book-card {
-            background: #ffffff;
-            border: 1px solid #e8e1d8;
-            border-radius: 18px;
-            margin-bottom: 12px;
-            overflow: hidden;
-        }
-
-        .book-summary {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) 100px 40px;
-            align-items: center;
-            gap: 16px;
-            min-height: 82px;
-            padding: 16px 28px;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .book-summary:hover {
-            background: #fcfaf7;
-        }
-
-        .summary-title {
-            min-width: 0;
-            font-size: 18px;
-            font-weight: 700;
-            line-height: 1.45;
-            color: #403b36;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .summary-words {
-            min-width: 0;
-            font-size: 17px;
-            font-weight: 700;
-            text-align: right;
-            color: #403b36;
-            white-space: nowrap;
-        }
-
-        .summary-arrow {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f3f0eb;
-            color: #7c8b70;
-            font-size: 19px;
-            line-height: 1;
-            transform: rotate(0deg);
-            transition: transform .18s, background .18s;
-        }
-
-        .book-card.open .summary-arrow {
-            transform: rotate(180deg);
-            background: #eeeae4;
-        }
-
-        .book-detail {
-            display: none;
-            border-top: 1px solid #eee8e1;
-        }
-
-        .book-card.open .book-detail {
-            display: block;
-        }
-
-        .book-detail-inner {
-            padding: 22px 28px 24px;
-        }
-
-        .book-top {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .book-title {
-            font-size: 22px;
-            font-weight: 700;
-            line-height: 1.4;
-        }
-
-        .book-meta {
-            margin-top: 7px;
-            color: #8d847b;
-            font-size: 13px;
-            line-height: 1.7;
-        }
-
-        .book-words {
-            font-size: 19px;
-            font-weight: 700;
-            text-align: right;
-            white-space: nowrap;
-        }
-
-        .status {
-            display: inline-block;
-            margin-top: 7px;
-            padding: 4px 9px;
-            border-radius: 999px;
-            background: #f2eee9;
-            color: #756d65;
-            font-size: 12px;
-        }
-
-        .cp-display {
-            margin-top: 18px;
-            line-height: 1.8;
-        }
-
-        .cp-label {
-            display: inline-block;
-            margin-right: 9px;
-            color: #978e85;
-            font-size: 12px;
-        }
-
-        .main-cp-big {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .sub-cp-display {
-            margin-top: 5px;
-            color: #756d65;
-            font-size: 14px;
-        }
-
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 14px;
-        }
-
-        .tag {
-            padding: 4px 8px;
-            border-radius: 999px;
-            background: #f4f0eb;
-            color: #756d65;
-            font-size: 12px;
-        }
-
-        .rating {
-            margin-top: 13px;
-            color: #c28d45;
-            letter-spacing: 2px;
-        }
-
-        .book-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 20px;
-        }
-
-        .small-btn {
-            padding: 7px 14px;
-            border: 1px solid #ddd5cc;
-            border-radius: 8px;
-            background: #ffffff;
-            color: #514a43;
-        }
-
-        .small-btn:hover {
-            background: #f7f3ee;
-        }
-
-        @media (max-width: 600px) {
-            .book-summary {
-                grid-template-columns: minmax(0, 1fr) 72px 34px;
-                gap: 9px;
-                min-height: 70px;
-                padding: 13px 15px;
-            }
-
-            .summary-title {
-                font-size: 16px;
-            }
-
-            .summary-words {
-                font-size: 14px;
-            }
-
-            .summary-arrow {
-                width: 34px;
-                height: 34px;
-                font-size: 16px;
-            }
-
-            .book-detail-inner {
-                padding: 18px 15px 20px;
             }
         }
 
@@ -1032,7 +1063,10 @@
                     今年每月阅读量
                 </h2>
 
-                <div class="month-grid" id="monthChart"></div>
+                <div class="chart-box">
+                    <div class="chart-y-title">阅读字数（w）</div>
+                    <div id="monthChart" class="month-chart"></div>
+                </div>
 
             </div>
 
@@ -2800,6 +2834,7 @@ function renderBooks() {
 
         return `<article class="book-card" data-book-id="${escapeHtml(book.id)}">
             <div class="book-summary" onclick="toggleBookCard('${escapeHtml(book.id)}')">
+                <div class="summary-date">${escapeHtml(getDateRange(book))}</div>
                 <div class="summary-title">${escapeHtml(book.title)}</div>
                 <div class="summary-words">${formatNumber(book.words)}w</div>
                 <div class="summary-arrow">⌄</div>
@@ -2937,40 +2972,51 @@ function renderMonthly() {
     const values = Array(12).fill(0);
 
     books.forEach(function(book) {
-        const date = book.startDate || book.start || "";
+        const date = book.startDate || "";
+
         if (date.startsWith(String(year) + "-")) {
             const month = parseInt(date.slice(5, 7), 10);
+
             if (month >= 1 && month <= 12) {
                 values[month - 1] += Number(book.words || 0);
             }
         }
     });
 
-    const maxValue = Math.max(...values, 0);
-
-    const color = function(value) {
-        if (maxValue <= 0 || value <= 0) {
-            return "#f5f1ec";
-        }
-
-        const ratio = value / maxValue;
-
-        // 阅读量越多，格子颜色越深
-        if (ratio >= 0.85) return "#66765a";
-        if (ratio >= 0.65) return "#7f8f70";
-        if (ratio >= 0.45) return "#9baa8c";
-        if (ratio >= 0.25) return "#c0cbb7";
-        return "#dfe5d9";
-    };
-
+    const maxValue = Math.max(...values, 1);
     const chart = document.getElementById("monthChart");
 
     chart.innerHTML = values.map(function(value, index) {
-        const empty = value <= 0 ? " empty" : "";
+        /*
+         * 使用固定大小的月份格子，而不是根据字数改变格子宽度。
+         * 这样有字数和没有字数时，月份、字数都会始终处于同一个中心位置。
+         *
+         * 颜色采用半透明柔和绿色：
+         * 0w 时也保留非常浅的底色；
+         * 阅读字数越多，绿色透明度越高，因此颜色越深。
+         */
+        const ratio = value > 0
+            ? Math.min(value / maxValue, 1)
+            : 0;
 
-        return `<div class="month-cell${empty}" style="background:${color(value)}">
-            <div class="month-cell-name">${index + 1}月</div>
-            <div class="month-cell-value">${formatNumber(value)}<span class="month-cell-unit">w</span></div>
+        const alpha = 0.10 + ratio * 0.38;
+        const textColor = ratio > 0.58 ? "#ffffff" : "#66715f";
+
+        return `<div class="month-column">
+            <div
+                class="month-cell-fill"
+                style="background:rgba(123, 164, 113, ${alpha.toFixed(3)})"
+            ></div>
+            <div class="month-cell-content">
+                <span
+                    class="month-name"
+                    style="color:${textColor}"
+                >${index + 1}月</span>
+                <span
+                    class="month-bar-value"
+                    style="color:${textColor}"
+                >${formatNumber(value)}w</span>
+            </div>
         </div>`;
     }).join("");
 }
