@@ -186,13 +186,12 @@
         }
         .chart-box {
             position: relative;
-            height: 270px;
-            padding: 10px 10px 34px 48px;
+            padding: 10px 18px 12px 58px;
         }
 
         .chart-y-title {
             position: absolute;
-            left: 3px;
+            left: 12px;
             top: 12px;
             color: #91877e;
             font-size: 11px;
@@ -201,44 +200,27 @@
         }
 
         .month-chart {
-            position: relative;
-            height: 100%;
-            display: grid;
-            grid-template-columns: repeat(12, minmax(18px, 1fr));
-            align-items: end;
+            display: flex;
+            flex-direction: column;
             gap: 9px;
-            border-bottom: 1px solid #dcd5cd;
+            width: 100%;
         }
-
-        .month-chart::before,
-        .month-chart::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            border-top: 1px dashed #eee8e1;
-            pointer-events: none;
-        }
-
-        .month-chart::before { top: 33.33%; }
-        .month-chart::after { top: 66.66%; }
 
         .month-column {
-            position: relative;
-            height: 100%;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            min-width: 0;
+            display: grid;
+            grid-template-columns: 34px minmax(0,1fr);
+            align-items: center;
+            gap: 10px;
+            min-height: 22px;
         }
 
         .month-bar {
             position: relative;
-            width: min(30px, 72%);
-            min-height: 2px;
+            height: 22px;
+            min-width: 2px;
+            width: 0;
             background: #8b9a78;
-            border-radius: 6px 6px 0 0;
-            z-index: 1;
+            border-radius: 5px;
             transition: opacity .15s;
         }
 
@@ -246,21 +228,19 @@
 
         .month-bar-value {
             position: absolute;
-            left: 50%;
-            bottom: calc(100% + 5px);
-            transform: translateX(-50%);
+            left: calc(100% + 7px);
+            top: 50%;
+            transform: translateY(-50%);
             color: #6e665e;
             font-size: 10px;
             white-space: nowrap;
         }
 
         .month-name {
-            position: absolute;
-            left: 50%;
-            top: calc(100% + 8px);
-            transform: translateX(-50%);
+            position: static;
             color: #91877e;
             font-size: 11px;
+            text-align: right;
             white-space: nowrap;
         }
 
@@ -470,13 +450,13 @@
             .summary-words { font-size: 13px; }
 
             .chart-box {
-                height: 235px;
-                padding-left: 38px;
+                padding: 8px 10px 10px 38px;
             }
 
-            .month-chart { gap: 4px; }
-            .month-bar { width: min(22px, 78%); }
-            .month-bar-value { font-size: 8px; }
+            .month-chart { gap: 7px; }
+            .month-column { grid-template-columns: 28px minmax(0,1fr); gap: 7px; }
+            .month-bar { height: 18px; }
+            .month-bar-value { font-size: 8px; left: calc(100% + 5px); }
 
             .book-sortbar {
                 align-items: stretch;
@@ -892,21 +872,7 @@
 <body>
 
 
-<header>
 
-    <div class="header-inner">
-
-        <h1>
-            我的阅读记录
-        </h1>
-
-        <div class="subtitle">
-            记录读过的小说，也记录读完之后还剩多少余味。
-        </div>
-
-    </div>
-
-</header>
 
 
 
@@ -1087,6 +1053,7 @@
                         <option value="start-desc">按开始时间倒序</option>
                         <option value="start-asc">按开始时间正序</option>
                         <option value="words-desc">按字数倒序</option>
+                        <option value="words-asc">按字数正序</option>
                     </select>
                 </div>
             </div>
@@ -2814,6 +2781,9 @@ function renderBooks() {
             if (mode === "words-desc") {
                 return Number(b.words || 0) - Number(a.words || 0);
             }
+            if (mode === "words-asc") {
+                return Number(a.words || 0) - Number(b.words || 0);
+            }
             // 排序选项：开始时间倒序、开始时间正序、字数倒序
             if (mode === "start-asc") {
                 return new Date(a.startDate || "1900-01-01") - new Date(b.startDate || "1900-01-01");
@@ -2990,15 +2960,15 @@ function renderMonthly() {
     const chart = document.getElementById("monthChart");
 
     chart.innerHTML = values.map(function(value, index) {
-        const height = value > 0
-            ? Math.max(3, value / maxValue * 100)
-            : 2;
+        const width = value > 0
+            ? Math.max(1, value / maxValue * 100)
+            : 0;
 
         return `<div class="month-column">
-            <div class="month-bar" style="height:${height}%">
+            <span class="month-name">${index + 1}月</span>
+            <div class="month-bar" style="width:${width}%">
                 <span class="month-bar-value">${formatNumber(value)}w</span>
             </div>
-            <span class="month-name">${index + 1}月</span>
         </div>`;
     }).join("");
 }
