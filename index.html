@@ -1607,12 +1607,66 @@ function bindEvents() {
             }
         );
 
-        }
-    );
-
 }
 
 
+/* =========================
+   主 CP
+========================= */
+
+function addMainPerson(value = "", removable = true) {
+    const container = document.getElementById("mainCpContainer");
+    const wrapper = document.createElement("div");
+    wrapper.className = "person-group";
+
+    const current = container.querySelectorAll(".person-group");
+    if (current.length > 0) {
+        const multiply = document.createElement("span");
+        multiply.className = "multiply";
+        multiply.textContent = "×";
+        wrapper.appendChild(multiply);
+    }
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "person-input";
+    input.placeholder = "请输入人名";
+    input.value = value;
+    wrapper.appendChild(input);
+
+    if (removable) {
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "remove-person";
+        remove.textContent = "×";
+        remove.title = "删除人物";
+        remove.addEventListener("click", function () {
+            wrapper.remove();
+            updateMainMultiplication();
+        });
+        wrapper.appendChild(remove);
+    }
+
+    container.appendChild(wrapper);
+    updateMainMultiplication();
+}
+
+function updateMainMultiplication() {
+    const container = document.getElementById("mainCpContainer");
+    const groups = Array.from(container.querySelectorAll(".person-group"));
+    groups.forEach(function (group, index) {
+        const old = group.querySelector(".multiply");
+        if (old) old.remove();
+        if (index > 0) {
+            const multiply = document.createElement("span");
+            multiply.className = "multiply";
+            multiply.textContent = "×";
+            group.insertBefore(multiply, group.firstChild);
+        }
+        const remove = group.querySelector(".remove-person");
+        if (remove) remove.style.display = groups.length <= 2 && index < 2 ? "none" : "";
+    });
+}
 
 /* =========================
    副 CP
@@ -1978,72 +2032,23 @@ function renumberSubCps() {
 ========================= */
 
 function getMainCp() {
-
-    const inputs =
-        document.querySelectorAll(
-            "#mainCpContainer .person-input"
-        );
-
-    return Array.from(
-        inputs
-    )
-        .map(
-            function (input) {
-
-                return input.value.trim();
-
-            }
-        )
-        .filter(
-            function (value) {
-
-                return value !== "";
-
-
+    const inputs = document.querySelectorAll("#mainCpContainer .person-input");
+    return Array.from(inputs)
+        .map(function (input) { return input.value.trim(); })
+        .filter(function (value) { return value !== ""; });
+}
 
 function getSubCps() {
-
-    const cps =
-        document.querySelectorAll(
-            "#subCpContainer .sub-cp"
-        );
-
-    return Array.from(
-        cps
-    )
-        .map(
-            function (cp) {
-
-                const inputs =
-                    cp.querySelectorAll(
-                        ".person-input"
-                    );
-
-                return Array.from(
-                    inputs
-                )
-                    .map(
-                        function (input) {
-
-                            return input.value.trim();
-
-                        }
-                    )
-                    .filter(
-                        function (value) {
-
-                            return value !== "";
-
-                        }
-                    );
-
-            }
-        )
-        .filter(
-            function (people) {
-
-                return people.length > 0;
-
+    const cps = document.querySelectorAll("#subCpContainer .sub-cp");
+    return Array.from(cps)
+        .map(function (cp) {
+            const inputs = cp.querySelectorAll(".person-input");
+            return Array.from(inputs)
+                .map(function (input) { return input.value.trim(); })
+                .filter(function (value) { return value !== ""; });
+        })
+        .filter(function (people) { return people.length > 0; });
+}
 
 
 /* =========================
