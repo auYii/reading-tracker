@@ -922,6 +922,43 @@
             display: block;
         }
 
+
+        /* =========================
+           手机端布局优化
+        ========================= */
+        @media (max-width: 700px) {
+            /* 顶部操作按钮 */
+            .header-actions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            /* 添加小说单独占一行 */
+            .header-actions #addBookBtn {
+                grid-column: 1 / -1;
+                width: 100%;
+            }
+
+            /* 导出、导入保持同一行 */
+            .header-actions #exportBtn,
+            .header-actions #importBtn {
+                width: 100%;
+            }
+
+            /* 顶部统计卡片 */
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            /* 累计记录单独一行并铺满 */
+            .stats-grid .stat-card:last-child {
+                grid-column: 1 / -1;
+                width: 100%;
+            }
+        }
+
 </style>
 
 </head>
