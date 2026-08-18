@@ -927,33 +927,42 @@
            手机端布局优化
         ========================= */
         @media (max-width: 700px) {
-            /* 顶部操作按钮 */
-            .header-actions {
+            /* 顶部工具栏：搜索框、添加小说、导入/导出 */
+            .toolbar {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
+                width: 100%;
             }
 
-            /* 添加小说单独占一行 */
-            .header-actions #addBookBtn {
+            /* 搜索框单独占一整行 */
+            .toolbar .search-box {
+                grid-column: 1 / -1;
+                width: 100%;
+                min-width: 0;
+            }
+
+            /* 添加小说单独占一整行 */
+            .toolbar #addBookBtn {
                 grid-column: 1 / -1;
                 width: 100%;
             }
 
-            /* 导出、导入保持同一行 */
-            .header-actions #exportBtn,
-            .header-actions #importBtn {
+            /* 导出数据 + 导入数据保持同一行 */
+            .toolbar #exportBtn,
+            .toolbar #importBtn {
+                width: 100%;
+                min-width: 0;
+            }
+
+            /* 统计卡片：前两个两列，累计记录独占整行 */
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
                 width: 100%;
             }
 
-            /* 顶部统计卡片 */
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-
-            /* 累计记录单独一行并铺满 */
-            .stats-grid .stat-card:last-child {
+            .stats .stat-card:last-child {
                 grid-column: 1 / -1;
                 width: 100%;
             }
