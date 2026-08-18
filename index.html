@@ -332,13 +332,6 @@
             font-size: 12px;
             color: #716a63;
         }
-
-        .rating {
-            margin-top: 8px;
-            color: #c28d45;
-            letter-spacing: 2px;
-        }
-
         .book-actions {
             display: flex;
             gap: 8px;
@@ -385,7 +378,7 @@
         }
         .book-summary {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 100px 32px;
+            grid-template-columns: minmax(0, 1fr) 100px;
             align-items: center;
             gap: 14px;
             min-height: 68px;
@@ -416,8 +409,6 @@
             text-align: right;
             white-space: nowrap;
         }
-        .summary-arrow { width:28px; height:28px; border-radius:50%; background:#f1eee9; color:#69795c; display:flex; align-items:center; justify-content:center; transition:.2s; }
-        .book-card.open .summary-arrow { transform:rotate(180deg); }
         .book-detail { display:none; padding: 0 18px 18px; }
         .book-card.open .book-detail { display:block; }
         .book-detail-inner { border-top:1px solid #eee8e1; padding-top:16px; }
@@ -425,7 +416,7 @@
         .cp-display .sub-cp-display { font-size:16px; }
         @media (max-width:600px) {
             .book-summary {
-                grid-template-columns: minmax(0,1fr) 68px 28px;
+                grid-template-columns: minmax(0,1fr) 68px;
                 gap: 8px;
                 padding: 12px;
             }
@@ -716,22 +707,6 @@
             background: #f7f3ee;
         }
 
-        .star-rating {
-            display: flex;
-            gap: 5px;
-            font-size: 28px;
-        }
-
-        .star {
-            color: #d3ccc3;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .star.active {
-            color: #c28d45;
-        }
-
         .detail-row {
             padding: 13px 0;
             border-bottom: 1px solid #eee8e1;
@@ -861,6 +836,92 @@
             overflow-wrap: anywhere;
             word-break: break-word;
         }
+
+        /* 搜索结果：始终直接显示在搜索框下方 */
+        .search-box {
+            position: relative;
+        }
+
+        .search-results {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            z-index: 900;
+            display: none;
+            max-height: min(70vh, 620px);
+            overflow-y: auto;
+            background: #ffffff;
+            border: 1px solid #e8e1d8;
+            border-radius: 12px;
+            box-shadow: 0 12px 35px rgba(70, 60, 50, .12);
+            padding: 8px;
+        }
+
+        .search-results.show {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 13px 14px;
+            border-radius: 9px;
+            border-bottom: 1px solid #eee8e1;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: 0;
+        }
+
+        .search-result-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .search-result-title {
+            min-width: 0;
+            font-size: 16px;
+            font-weight: 700;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .search-result-words {
+            flex: 0 0 auto;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .search-result-meta {
+            margin-top: 5px;
+            color: #8d847b;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .search-result-tags {
+            margin-top: 5px;
+        }
+
+        .search-result-actions {
+            display: flex;
+            gap: 7px;
+            margin-top: 8px;
+        }
+
+        .search-empty {
+            padding: 20px 12px;
+            text-align: center;
+            color: #99918a;
+            font-size: 13px;
+        }
+
+        .search-box:focus-within .search-results.show {
+            display: block;
+        }
+
 </style>
 
 </head>
@@ -879,13 +940,12 @@
     <div class="toolbar">
 
         <div class="search-box">
-
             <input
                 id="searchInput"
                 type="text"
                 placeholder="搜索小说、作者、人物、标签……"
             >
-
+            <div id="searchResults" class="search-results"></div>
         </div>
 
 
@@ -960,25 +1020,7 @@
             </div>
 
         </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-label">
-                今年阅读小说
-            </div>
-
-            <div
-                class="stat-value"
-                id="yearBooks"
-            >
-                0
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
+<div class="stat-card">
 
             <div class="stat-label">
                 累计记录
@@ -1021,8 +1063,8 @@
                 <div class="sort-control">
                     <span class="sort-label">排序</span>
                     <select id="sortFilter" aria-label="小说排序">
-                        <option value="start-desc">按开始时间倒序</option>
-                        <option value="start-asc">按开始时间正序</option>
+                        <option value="end-desc">按结束时间倒序</option>
+                        <option value="end-asc">按结束时间正序</option>
                         <option value="words-desc">按字数倒序</option>
                         <option value="words-asc">按字数正序</option>
                         <option value="days-desc">按阅读时间最长</option>
@@ -1223,7 +1265,7 @@
                 <input
                     id="bookTags"
                     type="text"
-                    placeholder="多个标签用中文逗号“，”分隔，例如：古风，甜文，HE"
+                    placeholder="多个标签用空格分隔，例如：古风 甜文 HE"
                 >
 
             </div>
@@ -1261,63 +1303,6 @@
                 >
 
             </div>
-
-
-
-            <!-- 评分 -->
-
-            <div class="form-field full">
-
-                <label>
-                    评分
-                </label>
-
-
-                <div
-                    class="star-rating"
-                    id="starRating"
-                >
-
-                    <span
-                        class="star"
-                        data-rating="1"
-                    >
-                        ★
-                    </span>
-
-                    <span
-                        class="star"
-                        data-rating="2"
-                    >
-                        ★
-                    </span>
-
-                    <span
-                        class="star"
-                        data-rating="3"
-                    >
-                        ★
-                    </span>
-
-                    <span
-                        class="star"
-                        data-rating="4"
-                    >
-                        ★
-                    </span>
-
-                    <span
-                        class="star"
-                        data-rating="5"
-                    >
-                        ★
-                    </span>
-
-                </div>
-
-            </div>
-
-
 
             <!-- 个人感受 -->
 
@@ -1436,7 +1421,6 @@ let books = [];
 
 let editingId = null;
 
-let currentRating = 0;
 
 let subCpCounter = 0;
 
@@ -1622,236 +1606,6 @@ function bindEvents() {
 
             }
         );
-
-
-    document
-        .querySelectorAll(".star")
-        .forEach(
-            function (star) {
-
-                star.addEventListener(
-                    "click",
-                    function () {
-
-                        currentRating =
-                            Number(
-                                this.dataset.rating
-                            );
-
-                        updateStars();
-
-                    }
-                );
-
-            }
-        );
-
-}
-
-
-
-/* =========================
-   人物输入框
-========================= */
-
-function createPersonInput(
-    value = "",
-    removable = true
-) {
-
-    const wrapper =
-        document.createElement(
-            "div"
-        );
-
-    wrapper.className =
-        "person-group";
-
-    const input =
-        document.createElement(
-            "input"
-        );
-
-    input.type = "text";
-
-    input.className =
-        "person-input";
-
-    input.placeholder =
-        "请输入人名";
-
-    input.value =
-        value;
-
-    wrapper.appendChild(
-        input
-    );
-
-    const groups =
-        document.querySelectorAll(
-            "#mainCpContainer .person-group"
-        );
-
-    if (
-        groups.length > 0
-    ) {
-
-        const multiply =
-            document.createElement(
-                "span"
-            );
-
-        multiply.className =
-            "multiply";
-
-        multiply.textContent =
-            "×";
-
-        wrapper.insertBefore(
-            multiply,
-            input
-        );
-
-    }
-
-    if (removable) {
-
-        const remove =
-            document.createElement(
-                "button"
-            );
-
-        remove.type =
-            "button";
-
-        remove.className =
-            "remove-person";
-
-        remove.textContent =
-            "×";
-
-        remove.title =
-            "删除人物";
-
-        remove.addEventListener(
-            "click",
-            function () {
-
-                wrapper.remove();
-
-                updatePersonMultiplication();
-
-            }
-        );
-
-        wrapper.appendChild(
-            remove
-        );
-
-    }
-
-    return wrapper;
-
-}
-
-
-
-function addMainPerson(
-    value = ""
-) {
-
-    const container =
-        document.getElementById(
-            "mainCpContainer"
-        );
-
-    const existing =
-        container.querySelectorAll(
-            ".person-group"
-        );
-
-    const group =
-        createPersonInput(
-            value,
-            existing.length > 0
-        );
-
-    container.appendChild(
-        group
-    );
-
-    updatePersonMultiplication();
-
-}
-
-
-
-function updatePersonMultiplication() {
-
-    const groups =
-        Array.from(
-            document.querySelectorAll(
-                "#mainCpContainer .person-group"
-            )
-        );
-
-    groups.forEach(
-        function (group, index) {
-
-            const old =
-                group.querySelector(
-                    ".multiply"
-                );
-
-            if (old) {
-
-                old.remove();
-
-            }
-
-            if (index > 0) {
-
-                const multiply =
-                    document.createElement(
-                        "span"
-                    );
-
-                multiply.className =
-                    "multiply";
-
-                multiply.textContent =
-                    "×";
-
-                group.insertBefore(
-                    multiply,
-                    group.firstChild
-                );
-
-            }
-
-            const remove =
-                group.querySelector(
-                    ".remove-person"
-                );
-
-            if (remove) {
-
-                if (
-                    groups.length <= 2 &&
-                    index === 0
-                ) {
-
-                    remove.style.display =
-                        "none";
-
-                } else {
-
-                    remove.style.display =
-                        "";
-
-                }
-
-            }
 
         }
     );
@@ -2342,12 +2096,7 @@ function openAddModal() {
     document
         .getElementById("bookFeeling")
         .value = "";
-
-    currentRating = 0;
-
-    updateStars();
-
-    document
+document
         .getElementById(
             "mainCpContainer"
         )
@@ -2437,15 +2186,7 @@ function openEditModal(id) {
         .getElementById("bookFeeling")
         .value =
         book.feeling || "";
-
-    currentRating =
-        Number(
-            book.rating || 0
-        );
-
-    updateStars();
-
-    document
+document
         .getElementById(
             "mainCpContainer"
         )
@@ -2539,7 +2280,7 @@ function saveBook() {
         document
             .getElementById("bookTags")
             .value
-            .split(/[，,]/)
+            .split(/\s+/)
             .map(
                 function (tag) {
 
@@ -2585,11 +2326,7 @@ function saveBook() {
 
         tags:
             tags,
-
-        rating:
-            currentRating,
-
-        startDate:
+startDate:
             document
                 .getElementById("startDate")
                 .value,
@@ -2681,7 +2418,9 @@ function closeDetailModal() {
 
 function renderBooks() {
     renderMonthly();
+
     const container = document.getElementById("bookList");
+    const searchResults = document.getElementById("searchResults");
     const keyword = document.getElementById("searchInput").value.trim().toLowerCase();
 
     const filtered = books
@@ -2699,7 +2438,7 @@ function renderBooks() {
             return keyword === "" || text.includes(keyword);
         })
         .sort(function(a,b) {
-            const mode = document.getElementById("sortFilter")?.value || "start-desc";
+            const mode = document.getElementById("sortFilter")?.value || "end-desc";
             if (mode === "words-desc") {
                 return Number(b.words || 0) - Number(a.words || 0);
             }
@@ -2711,13 +2450,20 @@ function renderBooks() {
             }
             if (mode === "days-asc") {
                 return (getReadingDays(a) || 0) - (getReadingDays(b) || 0);
+            }            // 排序选项：结束时间、字数、阅读时长
+            if (mode === "end-asc") {
+                return new Date(a.endDate || "1900-01-01") - new Date(b.endDate || "1900-01-01");
             }
-            // 排序选项：开始时间、字数、阅读时长
-            if (mode === "start-asc") {
-                return new Date(a.startDate || "1900-01-01") - new Date(b.startDate || "1900-01-01");
-            }
-            return new Date(b.startDate || "1900-01-01") - new Date(a.startDate || "1900-01-01");
+            return new Date(b.endDate || "1900-01-01") - new Date(a.endDate || "1900-01-01");
         });
+
+    renderSearchResults(keyword, filtered);
+
+    if (keyword !== "") {
+        container.style.display = "none";
+    } else {
+        container.style.display = "";
+    }
 
     if (filtered.length === 0) {
         container.innerHTML = `<div class="panel empty"><div class="empty-icon">📖</div><div>${books.length === 0 ? "还没有记录小说" : "没有找到符合条件的小说"}</div><div style="margin-top:8px;font-size:12px">${books.length === 0 ? "点击右上角「添加小说」开始记录" : "试试其他搜索条件"}</div></div>`;
@@ -2728,8 +2474,6 @@ function renderBooks() {
         const tags = (book.tags || []).map(function(tag) {
             return `<span class="tag">${escapeHtml(tag)}</span>`;
         }).join("");
-        const rating = Number(book.rating || 0);
-        const stars = "★".repeat(rating) + "☆".repeat(5-rating);
         const mainCpText = formatCp(book.mainCp);
         const subCpHtml = (book.subCps || []).map(function(cp,index) {
             return `<div class="sub-cp-display">副CP ${index+1}：${escapeHtml(formatCp(cp))}</div>`;
@@ -2740,7 +2484,6 @@ function renderBooks() {
                 <div class="summary-date">${escapeHtml(getDateRange(book))}</div>
                 <div class="summary-title">${escapeHtml(book.title)}</div>
                 <div class="summary-words">${formatNumber(book.words)}w</div>
-                <div class="summary-arrow">⌄</div>
             </div>
 
             <div class="book-detail">
@@ -2761,7 +2504,6 @@ function renderBooks() {
 
                     ${mainCpText ? `<div class="cp-display"><span class="cp-label">主CP</span><span class="main-cp-big">${escapeHtml(mainCpText)}</span>${subCpHtml}</div>` : (subCpHtml ? `<div class="cp-display">${subCpHtml}</div>` : "")}
                     <div class="tags">${tags}</div>
-                    ${rating ? `<div class="rating">${stars}</div>` : ""}
 
                     <div class="book-actions">
                         <button class="small-btn" onclick="event.stopPropagation();viewBook('${escapeHtml(book.id)}')">查看</button>
@@ -2771,6 +2513,62 @@ function renderBooks() {
                 </div>
             </div>
         </article>`;
+    }).join("");
+}
+
+
+function renderSearchResults(keyword, filtered) {
+    const searchResults = document.getElementById("searchResults");
+
+    if (!keyword) {
+        searchResults.classList.remove("show");
+        searchResults.innerHTML = "";
+        return;
+    }
+
+    searchResults.classList.add("show");
+
+    if (filtered.length === 0) {
+        searchResults.innerHTML = `
+            <div class="search-empty">没有找到符合条件的小说</div>
+        `;
+        return;
+    }
+
+    searchResults.innerHTML = filtered.map(function(book) {
+        const tags = (book.tags || []).map(function(tag) {
+            return `<span class="tag">${escapeHtml(tag)}</span>`;
+        }).join("");
+
+        const people = [
+            ...(book.mainCp || []),
+            ...(book.subCps || []).flat()
+        ].filter(Boolean);
+
+        const peopleText = people.length
+            ? "　·　" + people.map(escapeHtml).join(" × ")
+            : "";
+
+        return `
+            <div class="search-result-item">
+                <div class="search-result-top">
+                    <div class="search-result-title">${escapeHtml(book.title)}</div>
+                    <div class="search-result-words">${formatNumber(book.words)}w</div>
+                </div>
+                <div class="search-result-meta">
+                    ${book.author ? "作者：" + escapeHtml(book.author) + "　·　" : ""}
+                    ${escapeHtml(getDateRange(book))}
+                    ${getReadingDays(book) ? "　·　" + getReadingDays(book) + "天" : ""}
+                    ${peopleText}
+                </div>
+                ${tags ? `<div class="search-result-tags">${tags}</div>` : ""}
+                <div class="search-result-actions">
+                    <button class="small-btn" onclick="viewBook('${escapeHtml(book.id)}')">查看</button>
+                    <button class="small-btn" onclick="openEditModal('${escapeHtml(book.id)}')">编辑</button>
+                    <button class="small-btn" onclick="deleteBook('${escapeHtml(book.id)}')">删除</button>
+                </div>
+            </div>
+        `;
     }).join("");
 }
 
@@ -2959,185 +2757,15 @@ function renderStats() {
     }, 0);
 
     const monthWords = monthlyValues[month - 1] || 0;
-
-    const yearBooks = books.filter(function(book) {
-        if (!book.startDate) {
-            return false;
-        }
-
-        const date = new Date(book.startDate + "T00:00:00");
-        return date.getFullYear() === year;
-    });
-
-    document.getElementById("yearWords").textContent =
+document.getElementById("yearWords").textContent =
         formatNumber(yearWords) + "w";
 
     document.getElementById("monthWords").textContent =
         formatNumber(monthWords) + "w";
-
-    document.getElementById("yearBooks").textContent =
-        yearBooks.length;
-
-    document.getElementById("totalBooks").textContent = books.length;
+document.getElementById("totalBooks").textContent = books.length;
 }
 
 
-
-/* =========================
-   月度统计
-========================= */
-
-function renderMonthList() {
-    const container = document.getElementById("monthList");
-    const year = new Date().getFullYear();
-    const values = getMonthlyReadingTotals(year);
-    const max = Math.max(...values, 1);
-
-    container.innerHTML = values.map(function(value, index) {
-        const width = value / max * 100;
-
-        return `
-            <div class="month-row">
-                <div>${index + 1}月</div>
-                <div class="progress-bg">
-                    <div class="progress" style="width:${width}%"></div>
-                </div>
-                <div>${formatNumber(value)}w</div>
-            </div>
-        `;
-    }).join("");
-}
-
-
-
-/* =========================
-   最近阅读
-========================= */
-
-function renderTimeline() {
-
-    const container =
-        document.getElementById(
-            "timeline"
-        );
-
-    const list =
-        books
-            .filter(
-                function (book) {
-
-                    return Boolean(
-                        book.startDate
-                    );
-
-                }
-            )
-            .sort(
-                function (a, b) {
-
-                    return (
-                        new Date(
-                            b.startDate
-                        ) -
-                        new Date(
-                            a.startDate
-                        )
-                    );
-
-                }
-            )
-            .slice(
-                0,
-                8
-            );
-
-    if (
-        list.length === 0
-    ) {
-
-        container.innerHTML = `
-
-            <div class="book-meta">
-                暂无阅读时间记录
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-    container.innerHTML =
-        list
-            .map(
-                function (book) {
-
-                    return `
-
-                        <div
-                            class="timeline-item"
-                        >
-
-                            <div
-                                class="timeline-date"
-                            >
-                                ${formatDate(
-                                    book.startDate
-                                )}
-                            </div>
-
-                            <div
-                                class="timeline-title"
-                            >
-                                ${escapeHtml(
-                                    book.title
-                                )}
-                            </div>
-
-                        </div>
-
-                    `;
-
-                }
-            )
-            .join("");
-
-}
-
-
-
-/* =========================
-   星星
-========================= */
-
-function updateStars() {
-
-    document
-        .querySelectorAll(".star")
-        .forEach(
-            function (star) {
-
-                const rating =
-                    Number(
-                        star.dataset.rating
-                    );
-
-                if (
-                    rating <=
-                    currentRating
-                ) {
-
-                    star.classList.add(
-                        "active"
-                    );
-
-                } else {
-
-                    star.classList.remove(
-                        "active"
-                    );
-
-                }
 
             }
         );
