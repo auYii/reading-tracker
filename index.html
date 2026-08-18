@@ -1999,11 +1999,6 @@ function getMainCp() {
 
                 return value !== "";
 
-            }
-        );
-
-}
-
 
 
 function getSubCps() {
@@ -2048,11 +2043,6 @@ function getSubCps() {
             function (people) {
 
                 return people.length > 0;
-
-            }
-        );
-
-}
 
 
 
@@ -2169,7 +2159,7 @@ function openEditModal(id) {
         .getElementById("bookTags")
         .value =
         Array.isArray(book.tags)
-            ? book.tags.join(",")
+            ? book.tags.join(" ")
             : "";
 
     document
@@ -2766,11 +2756,6 @@ document.getElementById("totalBooks").textContent = books.length;
 }
 
 
-
-            }
-        );
-
-}
 
 
 
